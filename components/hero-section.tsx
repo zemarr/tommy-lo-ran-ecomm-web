@@ -28,7 +28,7 @@ export function HeroSection() {
             <div className="mt-12">
               <Button
                 size="lg"
-                className="bg-charcoal text-cream hover:bg-espresso tracking-[0.2em] uppercase text-xs px-10 py-7 group"
+                className="bg-charcoal text-cream hover:bg-espresso tracking-[0.2em] uppercase text-xs px-10 py-5 group"
               >
                 Explore
                 <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />

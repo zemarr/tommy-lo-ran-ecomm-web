@@ -25,7 +25,7 @@ export function StorySection() {
             <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-light text-foreground leading-tight">
               Rooted in
               <br />
-              <span className="italic">Traditional Heritage</span>
+              <span className="italic">Traditional Heritage.</span>
               <br />
               Designed for Modern Men
             </h2>
