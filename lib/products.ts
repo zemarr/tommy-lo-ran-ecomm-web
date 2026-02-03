@@ -1,3 +1,20 @@
+export interface Service {
+  id: string;
+  name: string;
+  category: string;
+  price: string;
+  priceValue: number;
+  image: string;
+  images: string[];
+  description: string;
+  longDescription: string;
+  options?: string[];
+  features: string[];
+  materials: string[];
+  deliveryTime: string;
+  popularity?: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -8,11 +25,141 @@ export interface Product {
   images: string[];
   description: string;
   longDescription: string;
+  options?: string[];
   features: string[];
   materials: string[];
   deliveryTime: string;
   popularity?: number;
 }
+
+export const services: Service[] = [
+  {
+    id: "two-three-piece-outfits",
+    name: "Two & Three Piece Outfits",
+    category: "BESPOKE NATIVE WEAR",
+    price: "From NGN80,000 - NGN250,000",
+    priceValue: 80000,
+    image: "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
+    images: [
+      "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
+      "https://i.etsystatic.com/46223954/r/il/defc7e/7502727542/il_fullxfull.7502727542_mxu0.jpg",
+      "https://d13k5xkmdqbhs.cloudfront.net/products/ECVDWU7/52HIIEHY-large.jpg",
+      "https://browninspiredluxury.com/wp-content/uploads/2023/04/8344C198-6E53-4F8B-9811-044796B46A66.jpeg",
+    ],
+    description: "Bespoke Two & Three Piece Outfits",
+    longDescription: "Bespoke Two & Three Piece Outfits by Tómmy ló ràn consists of a creatively crafted two-piece attire or a three-piece attire.",
+    options: [
+      "Two-piece outfit",
+      "Three-piece outfit"
+    ],
+    features: [
+      "Full canvas construction",
+      "Hand-finished buttonholes",
+      "Surgeon's cuffs with working buttons",
+      "Pick-stitched lapels and edges",
+      "Interior monogram available",
+      "Professional embroidery designs",
+    ],
+    materials: [
+      "Super 150s Merino wool from Loro Piana",
+      "Bemberg silk lining",
+      "Mother-of-pearl buttons",
+      "Real horn buttons optional",
+    ],
+    deliveryTime: "8-10 weeks",
+    popularity: 95,
+  },
+  {
+    id: "ready-to-wear",
+    name: "Two-piece Outfits",
+    category: "READY-TO-WEAR",
+    price: "From NGN45,000 - NGN120,000",
+    priceValue: 45000,
+    image: "/assets/images/two-piece.png",
+    images: [
+      "/assets/images/two-piece.png",
+    ],
+    description: "Refined casual sophistication",
+    longDescription: "Our ready-to-wear outfits are carefully crafted with our primary goal in mind. Varieties are available for purchase.",
+    features: [
+      "Careful and neat stiches",
+      "Soft shoulder construction",
+      "Sewn to fit",
+      "Creative Embroidery designs",
+      "Complimentary first alteration",
+    ],
+    materials: [
+      "Senator material",
+      "Cupro lining for breathability",
+      "Corozo nut buttons",
+      "Melton undercollar",
+    ],
+    deliveryTime: "6-8 weeks",
+    popularity: 88,
+  },
+  {
+    id: "special-occasion-outfits",
+    name: "Special Occasion Outfits",
+    category: "WEDDING/EVENT PACKAGES",
+    price: "From NGN300,000 - NGN1,000,000+",
+    priceValue: 4200,
+    image: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&h=800&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1200&h=1600&fit=crop",
+      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=1200&h=1600&fit=crop",
+      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1200&h=1600&fit=crop",
+    ],
+    description: "Timeless winter luxury",
+    longDescription: "The Savile Overcoat is the definitive statement piece for colder months, crafted in the tradition of the finest British outerwear. Cut generously to layer over suits while maintaining an elegant silhouette, this coat features a fly front for clean lines and deep welt pockets for practicality. The peak lapels add a touch of formality befitting its heritage.",
+    features: [
+      "Full-length fly front closure",
+      "Deep welt pockets with flaps",
+      "Interior security pocket",
+      "Chain hanger loop",
+      "Center back vent",
+      "Hand-stitched pick stitching",
+    ],
+    materials: [
+      "100% cashmere from Colombo",
+      "Heavy silk twill lining",
+      "Horn buttons",
+      "Real melton undercollar",
+    ],
+    deliveryTime: "10-12 weeks",
+    popularity: 75,
+  },
+  {
+    id: "caps-scarves-addons",
+    name: "Caps, Scarves, Add-ons",
+    category: "ACCESSORIES",
+    price: "From NGN20,000 - NGN60,000",
+    priceValue: 450,
+    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=800&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1200&h=1600&fit=crop",
+      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=1200&h=1600&fit=crop",
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=1200&h=1600&fit=crop",
+    ],
+    description: "Impeccable detail",
+    longDescription: "The Kensington Shirt exemplifies the art of luxury shirtmaking with precision sizing ensuring a perfect fit. Each shirt features single-needle stitching throughout, hand-sewn buttonholes, and elegant collar styling. The shirts are cut from the finest two-fold cotton fabrics, offering both comfort and longevity.",
+    features: [
+      "Single-needle construction",
+      "Hand-sewn buttonholes",
+      "Mother-of-pearl buttons",
+      "Removable collar stays",
+      "Split back yoke",
+      "Gussetted side seams",
+    ],
+    materials: [
+      "Thomas Mason two-fold poplin",
+      "Sea Island cotton available",
+      "Swiss cotton options",
+      "Aluminium collar stays",
+    ],
+    deliveryTime: "3-4 weeks",
+    popularity: 82,
+  },
+];
 
 export const products: Product[] = [
   {
@@ -202,6 +349,14 @@ export const products: Product[] = [
     popularity: 91,
   },
 ];
+
+export function getServiceBySlug(slug: string): Product | undefined {
+  return services.find((service) => service.id === slug);
+}
+
+export function getAllServiceSlugs(): string[] {
+  return services.map((service) => service.id);
+}
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((product) => product.id === slug);
