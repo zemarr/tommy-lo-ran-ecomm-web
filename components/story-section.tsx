@@ -7,13 +7,13 @@ export function StorySection() {
     <section id="story" className="py-32 lg:py-48 bg-card">
       <div className="mx-auto max-w-10xl px-6 lg:px-14">
         {/* Full-width Image First */}
-        <div className="aspect-[21/9] overflow-hidden mb-24 lg:mb-32">
+        {/* <div className="aspect-[21/9] overflow-hidden mb-24 lg:mb-32">
           <img
             src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1600&h=700&fit=crop"
             alt="Tómmy ló ràn Atelier"
             className="w-full h-full object-cover"
           />
-        </div>
+        </div> */}
 
         {/* Two Column Text */}
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
