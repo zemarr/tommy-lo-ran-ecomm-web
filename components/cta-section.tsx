@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LucidePhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -33,12 +33,33 @@ export function CTASection() {
 
           {/* Right - Newsletter */}
           <div className="lg:border-l lg:border-cream/10 lg:pl-24">
+
             <h3 className="font-heading text-2xl font-light text-cream mb-4">
+              Contact Us
+            </h3>
+
+            <div className="flex gap-4 mb-3">
+              <LucidePhoneCall className="ml-3 h-4 w-4 text-gold/80" />
+              <div className="flex flex-col justify-start text-cream/60">
+                <a href="tel:+2347012071851">+2347012071851</a>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <LucidePhoneCall className="ml-3 h-4 w-4 text-gold/80" />
+              <div className="flex flex-col justify-start text-cream/60">
+                <a href="tel:+447399786398">+44-7399-786398</a>
+                <a href="tel:+2347012071851">+2347012071851</a>
+              </div>
+            </div>
+
+            <h3 className="font-heading text-2xl font-light text-cream mb-4 mt-8">
               Stay Connected
             </h3>
+
             <p className="text-cream/60 text-sm leading-loose mb-8">
               Receive stories from our atelier. New collections, cultural insights, and invitations to thoughtful moments.
             </p>
+
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
               <Input
                 type="email"

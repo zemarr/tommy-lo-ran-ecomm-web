@@ -6,23 +6,23 @@ const testimonials = [
   {
     id: 1,
     quote: "Each piece carries a quiet intention. It's not just clothing—it's a conversation with heritage.",
-    author: "James Chen",
-    title: "CEO, Meridian Capital",
-    location: "USA",
+    author: "Anonymous",
+    title: "",
+    location: "Abuja, Nigeria",
   },
   {
     id: 2,
     quote: "They understand that luxury is about meaning. Every fiber tells a story.",
-    author: "Michael Sterling",
-    title: "Managing Partner",
-    location: "Nigeria",
+    author: "Anonymous",
+    title: "",
+    location: "Lagos, Nigeria",
   },
   {
     id: 3,
     quote: "Wearing Tómmy ló ràn feels like wearing poetry. Refined. Intentional. Real.",
-    author: "David Tanaka",
-    title: "Creative Director",
-    location: "Nigeria",
+    author: "Anonymous",
+    title: "",
+    location: "Lagos, Nigeria",
   },
 ];
 
@@ -45,7 +45,7 @@ export function TestimonialsSection() {
             {testimonials[activeIndex].author}
           </p>
           <p className="text-sm text-muted-foreground mt-1">
-            {testimonials[activeIndex].title}, {testimonials[activeIndex].location}
+            {testimonials[activeIndex].title}{testimonials[activeIndex].title.length > 0 && ","} {testimonials[activeIndex].location}
           </p>
         </div>
 
