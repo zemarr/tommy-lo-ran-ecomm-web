@@ -16,14 +16,14 @@ export function HeroSection() {
             <p className="text-gold tracking-[0.4em] uppercase text-xs font-medium mb-5">
               Since 2010
             </p>
-            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-[1.1] text-foreground flex items-center flex-wrap">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light leading-[1.1] text-foreground flex items-center flex-wrap">
               Where Tradition
               <br />
               Meets Authority
               {/* <span className="italic font-normal">Culture</span> */}
             </h1>
             <p className="mt-6 text-muted-foreground leading-loose max-w-fit text-base">
-              Outfits for the modern African man, intentionally designed. Where heritage whispers through every stitch, and contemporary vision guides each thread.
+              Outfits for the modern African man, intentionally designed. Where heritage <br /> whispers through every stitch, and contemporary vision guides each thread.
             </p>
             <div className="mt-12">
               <Button
