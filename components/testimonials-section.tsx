@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     id: 3,
-    quote: "Wearing Tommy Lo Ran feels like wearing poetry. Refined. Intentional. Real.",
+    quote: "Wearing Tómmy ló ràn feels like wearing poetry. Refined. Intentional. Real.",
     author: "David Tanaka",
     title: "Creative Director",
     location: "Nigeria",

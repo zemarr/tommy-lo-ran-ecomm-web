@@ -20,12 +20,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   
   if (!product) {
     return {
-      title: "Product Not Found | Tommy Lo Ran",
+      title: "Product Not Found | Tómmy ló ràn",
     };
   }
 
   return {
-    title: `${product.name} | Tommy Lo Ran`,
+    title: `${product.name} | Tómmy ló ràn`,
     description: product.longDescription.slice(0, 160),
   };
 }

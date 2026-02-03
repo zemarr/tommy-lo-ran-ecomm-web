@@ -20,7 +20,7 @@ export function ShopProductGrid({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="animate-pulse">
-            <div className="aspect-[3/4] bg-muted rounded-sm mb-6" />
+            <div className="aspect-3/4 bg-muted rounded-sm mb-6" />
             <div className="h-4 bg-muted rounded mb-3 w-3/4" />
             <div className="h-3 bg-muted rounded mb-2 w-1/2" />
           </div>
@@ -55,7 +55,7 @@ export function ShopProductGrid({
               className="flex-1"
             >
               {/* Product Image */}
-              <div className="aspect-[3/4] overflow-hidden bg-muted mb-6 relative">
+              <div className="aspect-3/4 overflow-hidden bg-muted mb-6 relative">
                 <img
                   src={product.image || "/placeholder.svg"}
                   alt={product.name}
@@ -63,7 +63,7 @@ export function ShopProductGrid({
                   loading="lazy"
                 />
                 {/* Museum lighting effect */}
-                <div className="absolute inset-0 bg-gradient-to-b from-charcoal/0 via-transparent to-charcoal/5 pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-b from-charcoal/0 via-transparent to-charcoal/5 pointer-events-none" />
               </div>
 
               {/* Product Info */}

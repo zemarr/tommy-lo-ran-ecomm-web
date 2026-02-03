@@ -55,7 +55,7 @@ export function HeroSection() {
       {/* Bottom Bar - Minimal Stats */}
       <div className="border-t border-border">
         <div className="mx-auto max-w-10xl px-8 lg:px-16 h-[12vh]">
-          <div className="flex items-center justify-between py-8">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between py-8">
             <a
               href="#collections"
               className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
@@ -67,7 +67,7 @@ export function HeroSection() {
             </span>
             <a
               href="#collections"
-              className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors md:block hidden"
             >
               Scroll to discover
             </a>
