@@ -140,6 +140,7 @@
 /* Elegant scroll behavior */
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
 /* Custom selection color */
