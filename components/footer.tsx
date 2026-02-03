@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Instagram, Facebook, Linkedin } from "lucide-react";
+import TommyLoRanText from "./tommy-lo-ran-text";
 
 const footerLinks = {
   shop: [
@@ -31,12 +32,10 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="flex items-center mb-2">
-              <span className="font-cursive text-4xl tracking-tight text-cream">
-                Tommy lo ran
-              </span>
+              <TommyLoRanText classname="font-cursive text-4xl tracking-tight text-cream" />
             </Link>
             <p className="text-cream/50 text-sm leading-loose max-w-xs mb-8">
-              Rooted in culture. Tailored for now. Since 1987.
+              Rooted in culture. Tailored for now. Since 2010.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-4">
@@ -123,7 +122,7 @@ export function Footer() {
         {/* Bottom Bar - Minimal */}
         <div className="py-8 border-t border-cream/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-cream/30">
-            &copy; {new Date().getFullYear()} Tommy lo ran
+            &copy; {new Date().getFullYear()} <TommyLoRanText />
           </p>
           <div className="flex items-center gap-8 text-xs text-cream/30">
             <Link href="#" className="hover:text-cream transition-colors">

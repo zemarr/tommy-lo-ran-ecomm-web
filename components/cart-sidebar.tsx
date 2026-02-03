@@ -175,7 +175,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   Subtotal
                 </span>
                 <span className="font-heading text-lg font-light text-foreground">
-                  ${totalPrice.toFixed(2)}
+                  NGN{totalPrice.toFixed(2)}
                 </span>
               </div>
 

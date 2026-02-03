@@ -1,5 +1,7 @@
 "use client";
 
+import TommyLoRanText from "./tommy-lo-ran-text";
+
 export function StorySection() {
   return (
     <section id="story" className="py-32 lg:py-48 bg-card">
@@ -8,7 +10,7 @@ export function StorySection() {
         <div className="aspect-[21/9] overflow-hidden mb-24 lg:mb-32">
           <img
             src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1600&h=700&fit=crop"
-            alt="Tommy Lo Ran Atelier"
+            alt="Tómmy ló ràn Atelier"
             className="w-full h-full object-cover"
           />
         </div>
@@ -33,7 +35,7 @@ export function StorySection() {
           <div className="lg:pt-4">
             <div className="space-y-8 text-muted-foreground leading-loose">
               <p>
-                Born in 1987, Joey founded Tommy Lo Ran with a singular vision:
+                <TommyLoRanText /> was founded in 2010 with a singular vision:
                 to honor African cultural narratives through traditional and contemporary menswear. Each
                 piece is a quiet conversation between tradition and the present now.
               </p>

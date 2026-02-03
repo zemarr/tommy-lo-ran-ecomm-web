@@ -28,7 +28,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: 'Tommy Lo Ran | Modern African Menswear',
+  title: 'Tómmy ló ràn | Modern African Menswear',
   description: 'Rooted in culture. Tailored for now. Discover contemporary menswear inspired by African heritage, crafted with intentional artistry and timeless elegance.',
 }
 
