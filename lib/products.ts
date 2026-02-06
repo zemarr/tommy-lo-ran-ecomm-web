@@ -1,18 +1,30 @@
-export interface Service {
+export interface Collection {
   id: string;
   name: string;
-  category: string;
-  price: string;
-  priceValue: number;
   image: string;
   images: string[];
   description: string;
   longDescription: string;
-  options?: string[];
+  options?: {
+    id?: string;
+    name: string;
+    description: string;
+    products: {
+      name: string;
+      priceRange: any[]
+    }[]
+  }[];
   features: string[];
   materials: string[];
   deliveryTime: string;
   popularity?: number;
+}
+
+export enum Collections {
+  BESPOKE = "TLR Bespoke Collection",
+  RTW_NATIVE = "TLR RTW Native",
+  RTW_CASUAL = "TLR RTW Smart Casual",
+  ACCESSORIES = "Caps, Scarves, Add-ons",
 }
 
 export interface Product {
@@ -32,13 +44,10 @@ export interface Product {
   popularity?: number;
 }
 
-export const services: Service[] = [
+export const collections: Collection[] = [
   {
-    id: "two-three-piece-outfits",
-    name: "Two & Three Piece Outfits",
-    category: "BESPOKE NATIVE WEAR",
-    price: "From NGN80,000 - NGN250,000",
-    priceValue: 80000,
+    id: "tlr-bespoke-collection",
+    name: "TLR Bespoke Collection",
     image: "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
     images: [
       "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
@@ -47,10 +56,128 @@ export const services: Service[] = [
       "https://browninspiredluxury.com/wp-content/uploads/2023/04/8344C198-6E53-4F8B-9811-044796B46A66.jpeg",
     ],
     description: "Bespoke Two & Three Piece Outfits",
-    longDescription: "Bespoke Two & Three Piece Outfits by Tómmy ló ràn consists of a creatively crafted two-piece attire or a three-piece attire.",
+    longDescription: "Bespoke Two & Three Piece Outfits by Tómmy ló ràn consists of a creatively crafted two-piece or a three-piece outfits.",
     options: [
-      "Two-piece outfit",
-      "Three-piece outfit"
+      {
+        id: "",
+        name: "Bespoke Native Wear",
+        description: "Core Products",
+        products: [
+          {
+            name: "TLR Classic Senator Set",
+            priceRange: ["₦90,000 – ₦150,000 (standard)", "₦180,000 – ₦300,000+ (luxury fabrics /handwork)"]
+          },
+          {
+            name: "TLR Signature Kaftan",
+            priceRange: ["₦90,000 – ₦150,000 (standard)", "₦180,000 – ₦300,000+ (luxury fabrics /handwork)"]
+
+          },
+          {
+            name: "TLR Regal Agbada",
+            priceRange: ["₦90,000 – ₦150,000 (standard)", "₦180,000 – ₦300,000+ (luxury fabrics /handwork)"]
+
+          },
+          {
+            name: "TLR Two-Piece Native (Top & Trouser)",
+            priceRange: ["₦90,000 – ₦150,000 (standard)", "₦180,000 – ₦300,000+ (luxury fabrics /handwork)"]
+
+          },
+          {
+            name: "TLR Urban Native (modern cut)",
+            priceRange: ["₦90,000 – ₦150,000 (standard)", "₦180,000 – ₦300,000+ (luxury fabrics /handwork)"]
+
+          },
+        ]
+      },
+      {
+        id: "",
+        name: "Bespoke Formal & Smart",
+        description: "For corporate men and events.",
+        products: [
+          {
+            name: "TLR Tailored Suit (2-piece)",
+            priceRange: [
+              {
+                shirts: "₦35,000 – ₦60,000",
+                Suits: "₦150,000 – ₦350,000+"
+              }
+            ]
+
+          },
+          {
+            name: "TLR Three-Piece Suit",
+            priceRange: [
+              {
+                shirts: "₦35,000 – ₦60,000",
+                Suits: "₦150,000 – ₦350,000+"
+              }
+            ]
+
+          },
+          {
+            name: "TLR Tuxedo",
+            priceRange: [
+              {
+                shirts: "₦35,000 – ₦60,000",
+                Suits: "₦150,000 – ₦350,000+"
+              }
+            ]
+
+          },
+          {
+            name: "TLR Blazer",
+            priceRange: [
+              {
+                shirts: "₦35,000 – ₦60,000",
+                Suits: "₦150,000 – ₦350,000+"
+              }
+            ]
+
+          },
+          {
+            name: "TLR Custom Shirt",
+            priceRange: [
+              {
+                shirts: "₦35,000 – ₦60,000",
+                Suits: "₦150,000 – ₦350,000+"
+              }
+            ]
+
+          },
+        ]
+      },
+      {
+        id: "",
+        name: "Wedding & Event",
+        description: "",
+        products: [
+          {
+            name: "TLR Groom Set",
+            priceRange: ["₦200k – ₦600k+"]
+
+          },
+          {
+            name: "Traditional Wedding Outfit",
+            priceRange: ["₦200k – ₦600k+"]
+
+          },
+          {
+            name: "Pre-Wedding Shoot Look",
+            priceRange: ["₦200k – ₦600k+"]
+
+          },
+          {
+            name: "TLR Two-Piece Native (Top & Trouser)",
+            priceRange: ["₦200k – ₦600k+"]
+
+          },
+          {
+            name: "TLR Urban Native (modern cut)",
+            priceRange: ["₦200k – ₦600k+"]
+
+          },
+        ]
+      }
     ],
     features: [
       "Full canvas construction",
@@ -70,17 +197,86 @@ export const services: Service[] = [
     popularity: 95,
   },
   {
-    id: "ready-to-wear",
-    name: "Two-piece Outfits",
-    category: "READY-TO-WEAR",
-    price: "From NGN45,000 - NGN120,000",
-    priceValue: 45000,
+    id: "tlr-ready-to-wear",
+    name: "TLR Ready-To-Wear (RTW)",
     image: "/assets/images/two-piece.png",
     images: [
       "/assets/images/two-piece.png",
     ],
     description: "Refined casual sophistication",
     longDescription: "Our ready-to-wear outfits are carefully crafted with our primary goal in mind. Varieties are available for purchase.",
+    options: [
+      {
+        id: "",
+        name: "RTW Native",
+        description: "Limited pieces per drop",
+        products: [
+          {
+            name: "TLR RTW Senator",
+            priceRange: ["₦70,000 – ₦120,000"]
+
+          },
+          {
+            name: "TLR RTW Kaftan",
+            priceRange: ["₦70,000 – ₦120,000"]
+
+          },
+          {
+            name: "TLR Short Native Top",
+            priceRange: ["₦70,000 – ₦120,000"]
+
+          },
+          {
+            name: "TLR Two-Piece Set",
+            priceRange: ["₦70,000 – ₦120,000"]
+
+          },
+        ]
+      },
+      {
+        id: "",
+        name: "RTW Smart Casual",
+        description: "For everyday stylish men.",
+        products: [
+          {
+            name: "TLR Linen Shirt",
+            priceRange: [
+              {
+                range: "₦40,000 – ₦80,000",
+              }
+            ]
+
+          },
+          {
+            name: "TLR Cuban Shirt",
+            priceRange: [
+              {
+                range: "₦40,000 – ₦80,000",
+              }
+            ]
+
+          },
+          {
+            name: "TLR Tailored Trousers",
+            priceRange: [
+              {
+                range: "₦40,000 – ₦80,000",
+              }
+            ]
+
+          },
+          {
+            name: "TLR Casual Blazer",
+            priceRange: [
+              {
+                range: "₦40,000 – ₦80,000",
+              }
+            ]
+
+          },
+        ]
+      },
+    ],
     features: [
       "Careful and neat stiches",
       "Soft shoulder construction",
@@ -98,42 +294,8 @@ export const services: Service[] = [
     popularity: 88,
   },
   {
-    id: "special-occasion-outfits",
-    name: "Special Occasion Outfits",
-    category: "WEDDING/EVENT PACKAGES",
-    price: "From NGN300,000 - NGN1,000,000+",
-    priceValue: 4200,
-    image: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&h=800&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1200&h=1600&fit=crop",
-      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=1200&h=1600&fit=crop",
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1200&h=1600&fit=crop",
-    ],
-    description: "Timeless winter luxury",
-    longDescription: "The Savile Overcoat is the definitive statement piece for colder months, crafted in the tradition of the finest British outerwear. Cut generously to layer over suits while maintaining an elegant silhouette, this coat features a fly front for clean lines and deep welt pockets for practicality. The peak lapels add a touch of formality befitting its heritage.",
-    features: [
-      "Full-length fly front closure",
-      "Deep welt pockets with flaps",
-      "Interior security pocket",
-      "Chain hanger loop",
-      "Center back vent",
-      "Hand-stitched pick stitching",
-    ],
-    materials: [
-      "100% cashmere from Colombo",
-      "Heavy silk twill lining",
-      "Horn buttons",
-      "Real melton undercollar",
-    ],
-    deliveryTime: "10-12 weeks",
-    popularity: 75,
-  },
-  {
     id: "caps-scarves-addons",
     name: "Caps, Scarves, Add-ons",
-    category: "ACCESSORIES",
-    price: "From NGN20,000 - NGN60,000",
-    priceValue: 450,
     image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=800&fit=crop",
     images: [
       "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1200&h=1600&fit=crop",
@@ -165,7 +327,7 @@ export const products: Product[] = [
   {
     id: "windsor-suit",
     name: "The Windsor Suit",
-    category: "Traditional Attires",
+    category: Collections.RTW_CASUAL,
     price: "From NGN3,800",
     priceValue: 3800,
     image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop",
@@ -196,7 +358,7 @@ export const products: Product[] = [
   {
     id: "mayfair-blazer",
     name: "The Mayfair Blazer",
-    category: "Tailored Suits",
+    category: Collections.RTW_CASUAL,
     price: "From NGN1,950",
     priceValue: 1950,
     image: "https://images.unsplash.com/photo-1593030103066-0093718e3d49?w=600&h=800&fit=crop",
@@ -227,7 +389,7 @@ export const products: Product[] = [
   {
     id: "savile-overcoat",
     name: "The Savile Overcoat",
-    category: "Traditional Attires",
+    category: Collections.RTW_NATIVE,
     price: "From NGN4,200",
     priceValue: 4200,
     image: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&h=800&fit=crop",
@@ -258,7 +420,7 @@ export const products: Product[] = [
   {
     id: "kensington-shirt",
     name: "The Kensington Shirt",
-    category: "Traditional Attires",
+    category: Collections.RTW_NATIVE,
     price: "From NGN450",
     priceValue: 450,
     image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=800&fit=crop",
@@ -289,7 +451,7 @@ export const products: Product[] = [
   {
     id: "chelsea-trousers",
     name: "The Chelsea Trousers",
-    category: "Traditional Attires",
+    category: Collections.RTW_CASUAL,
     price: "From NGN680",
     priceValue: 680,
     image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&h=800&fit=crop",
@@ -320,7 +482,7 @@ export const products: Product[] = [
   {
     id: "belgravia-tuxedo",
     name: "The Belgravia Tuxedo",
-    category: "Tailored Suits",
+    category: Collections.RTW_CASUAL,
     price: "From NGN5,200",
     priceValue: 5200,
     image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=800&fit=crop",
@@ -350,12 +512,12 @@ export const products: Product[] = [
   },
 ];
 
-export function getServiceBySlug(slug: string): Product | undefined {
-  return services.find((service) => service.id === slug);
+export function getCollectionBySlug(slug: string): Collection | undefined {
+  return collections.find((collection) => collection.id === slug);
 }
 
-export function getAllServiceSlugs(): string[] {
-  return services.map((service) => service.id);
+export function getAllCollectionSlugs(): string[] {
+  return collections.map((collection) => collection.id);
 }
 
 export function getProductBySlug(slug: string): Product | undefined {

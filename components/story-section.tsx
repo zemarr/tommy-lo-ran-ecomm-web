@@ -51,7 +51,7 @@ export function StorySection() {
             <div className="mt-16 pt-16 border-t border-border">
               <div className="grid grid-cols-3 gap-8">
                 <div>
-                  <p className="font-heading text-4xl font-light text-foreground">5</p>
+                  <p className="font-heading text-4xl font-light text-foreground">15</p>
                   <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mt-2">Years</p>
                 </div>
                 <div>
