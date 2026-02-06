@@ -10,10 +10,10 @@ import { CartSidebar } from "@/components/cart-sidebar";
 import TommyLoRanText from "./tommy-lo-ran-text";
 
 const navigation = [
-  { name: "Collections", href: "/#collections" },
+  { name: "Our Story", href: "/#story" },
+  { name: "Our Collection", href: "/#collections" },
   { name: "Services", href: "/#services" },
   // { name: "Craftsmanship", href: "/#craftsmanship" },
-  { name: "Our Story", href: "/#story" },
 ];
 
 export function Header() {
