@@ -14,8 +14,8 @@ export default function HomePage() {
     <main className="">
       <Header />
       <HeroSection />
-      <CollectionsSection />
       <StorySection />
+      <CollectionsSection />
       <BespokeSection />
       {/* <CraftsmanshipSection /> */}
       <TestimonialsSection />
