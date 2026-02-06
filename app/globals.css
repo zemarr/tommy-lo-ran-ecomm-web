@@ -148,3 +148,27 @@ html {
   background-color: oklch(0.70 0.10 85 / 0.3);
   color: oklch(0.18 0.01 0);
 }
+
+/* .calendly-overlay {
+  z-index: 9998 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+}
+
+.calendly-popup {
+  z-index: 9999 !important;
+  width: 600px !important;
+  height: 600px !important;
+  position: absolute !important;
+  top: 20vh !important;
+  left: 55vh !important;
+}
+
+.calendly-popup-content {
+  width: 600px !important;
+  height: 600px !important;
+} */

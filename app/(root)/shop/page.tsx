@@ -81,8 +81,8 @@ export default function ShopPage() {
   return (
     <>
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <Header />
       <main className="min-h-screen pt-32 pb-24 lg:pb-32">
-        <Header />
         <div className="mx-auto max-w-10xl px-6 lg:px-16">
 
 
