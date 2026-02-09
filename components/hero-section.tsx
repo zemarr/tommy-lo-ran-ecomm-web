@@ -4,6 +4,7 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import HeroImage from "../public/assets/images/TLR_main.jpg"
+import Link from "next/link";
 
 export function HeroSection() {
   return (
@@ -26,13 +27,15 @@ export function HeroSection() {
               Outfits for the modern African man, intentionally designed. Where heritage <br /> whispers through every stitch, and contemporary vision guides each thread.
             </p>
             <div className="mt-12">
-              <Button
-                size="lg"
-                className="bg-charcoal text-cream hover:bg-espresso tracking-[0.2em] uppercase text-xs px-10 py-5 group"
-              >
-                Explore
-                <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <a href={"/#collections"} className="cursor-pointer">
+                <Button
+                  size="lg"
+                  className="bg-charcoal text-cream hover:bg-espresso tracking-[0.2em] uppercase text-xs px-10 py-6! group"
+                >
+                  Explore Collections
+                  <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </a>
             </div>
           </div>
         </div>
@@ -57,7 +60,7 @@ export function HeroSection() {
         <div className="mx-auto max-w-10xl px-8 lg:px-16 h-[12vh]">
           <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between py-8">
             <a
-              href="#collections"
+              href="/#collections"
               className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
             >
               Scroll to discover

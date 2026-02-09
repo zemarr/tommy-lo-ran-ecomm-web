@@ -1,0 +1,30 @@
+'use client'
+import React from 'react'
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts'
+
+const Charts = ({ data: { salesData } }: { data: { salesData: { month: string, totalSales: number }[] } }) => {
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={salesData}>
+        <XAxis
+          dataKey={'month'}
+          tickLine={false}
+          axisLine={false}
+          stroke={'#888'}
+          fontSize={12}
+        />
+        <YAxis
+          tickLine={false}
+          tickFormatter={(value) => `₦${ value }`}
+          axisLine={false}
+          stroke={'#888'}
+          fontWeight={600}
+          fontSize={12}
+        />
+        <Bar dataKey={'totalSales'} fill='currentColor' radius={[ 14, 14, 0, 0 ]} className='fill-primary' />
+      </BarChart>
+    </ResponsiveContainer>
+  )
+}
+
+export default Charts

@@ -89,7 +89,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                   {product.name}
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                  {product.price}
+                  ₦{product.price.toLocaleString()}
                 </p>
               </div>
 

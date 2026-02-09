@@ -35,8 +35,8 @@ export default function ShopPage() {
 
       // Price range filter
       if (
-        product.priceValue < priceRange[0] ||
-        product.priceValue > priceRange[1]
+        product.price < priceRange[0] ||
+        product.price > priceRange[1]
       ) {
         return false;
       }
@@ -61,10 +61,10 @@ export default function ShopPage() {
     const sorted = [...filtered];
     switch (sortBy) {
       case "price-asc":
-        sorted.sort((a, b) => a.priceValue - b.priceValue);
+        sorted.sort((a, b) => a.price - b.price);
         break;
       case "price-desc":
-        sorted.sort((a, b) => b.priceValue - a.priceValue);
+        sorted.sort((a, b) => b.price - a.price);
         break;
       case "popular":
         sorted.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
@@ -89,13 +89,13 @@ export default function ShopPage() {
           {/* Page Header */}
           <div className="mb-16 lg:mb-20">
             <p className="text-gold tracking-[0.4em] uppercase text-xs font-medium mb-4">
-              The Collection
+              {/* The Collection */}
             </p>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-light text-foreground mb-6">
-              Shop All
+              Shop
             </h1>
             <p className="text-muted-foreground leading-loose max-w-2xl">
-              Discover our curated selection of contemporary African menswear.
+              Shop our curated selection of contemporary African menswear.
               Each piece carries intentional storytelling, rooted in heritage and designed for today.
             </p>
           </div>

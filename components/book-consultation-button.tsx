@@ -20,7 +20,7 @@ export default function BookConsultationButton() {
       ) {
         calendlyContainerRef.current.innerHTML = ""; // reset
         (window as any).Calendly.initInlineWidget({
-          url: "https://calendly.com/chukwudaluay/30min?hide_event_type_details=1&primary_color=ba9951",
+          url: "https://calendly.com/enquiries-tommyloran/30min?primary_color=bb9a51",
           parentElement: calendlyContainerRef.current,
         });
       }
@@ -74,7 +74,7 @@ export default function BookConsultationButton() {
                   <Button
                     variant={"ghost"}
                     onClick={() => setIsOpen(false)}
-                    className="absolute top-2 left-2 z-9999 py-5 px-4 hover:cursor-pointer"
+                    className="absolute top-0 left-0 z-9999 py-5 px-4 hover:cursor-pointer"
                   >
                     <XIcon />
                   </Button>
