@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { ShoppingBag, X, Plus, Minus, Trash2 } from 'lucide-react';
-import { useCartStore } from '@/lib/cart-store';
+import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -95,7 +95,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               </div>
             ) : (
               <div className="p-6 space-y-6">
-                {items.map((item) => (
+                {items.map((item, itemIdx) => (
                   <div
                     key={item.id}
                     className="border-b border-border pb-6 last:border-b-0"
@@ -103,7 +103,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     {/* Product Info */}
                     <div className="flex gap-4 mb-4">
                       <img
-                        src={item.product.image || '/placeholder.svg'}
+                        src={item.product.images[itemIdx] || '/placeholder.svg'}
                         alt={item.product.name}
                         className="w-20 h-24 object-cover bg-muted"
                       />
@@ -115,7 +115,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                           {item.product.category}
                         </p>
                         <p className="text-sm font-medium text-foreground">
-                          {item.product.price}
+                          ₦{Number(item.product.price).toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -175,7 +175,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   Subtotal
                 </span>
                 <span className="font-heading text-lg font-light text-foreground">
-                  NGN{totalPrice.toFixed(2)}
+                  ₦{Number(totalPrice.toFixed(2)).toLocaleString()}
                 </span>
               </div>
 

@@ -1,0 +1,9 @@
+ignoredBuiltDependencies: null
+
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - bufferutil
+  - esbuild
+  - prisma
+  - sharp

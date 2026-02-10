@@ -31,8 +31,7 @@ export interface Product {
   id: string;
   name: string;
   category: string;
-  price: string;
-  priceValue: number;
+  price: number;
   image: string;
   images: string[];
   description: string;
@@ -48,15 +47,15 @@ export const collections: Collection[] = [
   {
     id: "tlr-bespoke-collection",
     name: "TLR Bespoke Collection",
-    image: "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
+    image: "/assets/images/specif-duo-9.jpg",
     images: [
-      "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
-      "https://i.etsystatic.com/46223954/r/il/defc7e/7502727542/il_fullxfull.7502727542_mxu0.jpg",
-      "https://d13k5xkmdqbhs.cloudfront.net/products/ECVDWU7/52HIIEHY-large.jpg",
-      "https://browninspiredluxury.com/wp-content/uploads/2023/04/8344C198-6E53-4F8B-9811-044796B46A66.jpeg",
+      "/assets/images/specif-duo-9.jpg",
+      "/assets/images/specif-duo-8.jpg",
+      "/assets/images/specif-duo-1.jpg",
+      "/assets/images/specif-duo-4.jpg",
     ],
     description: "Bespoke Two & Three Piece Outfits",
-    longDescription: "Bespoke Two & Three Piece Outfits by Tómmy ló ràn consists of a creatively crafted two-piece or a three-piece outfits.",
+    longDescription: "Bespoke Two & Three-piece outfits by Tómmy ló ràn feature creatively crafted ensembles.",
     options: [
       {
         id: "",
@@ -296,11 +295,11 @@ export const collections: Collection[] = [
   {
     id: "caps-scarves-addons",
     name: "Caps, Scarves, Add-ons",
-    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=800&fit=crop",
+    image: "/assets/images/scarf-cotton.jpeg",
     images: [
-      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1200&h=1600&fit=crop",
-      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=1200&h=1600&fit=crop",
-      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=1200&h=1600&fit=crop",
+      "/assets/images/scarf-cotton.jpeg",
+      // "/assets/images/scarf-cotton.jpeg",
+      // "/assets/images/scarf-cotton.jpeg",
     ],
     description: "Impeccable detail",
     longDescription: "The Kensington Shirt exemplifies the art of luxury shirtmaking with precision sizing ensuring a perfect fit. Each shirt features single-needle stitching throughout, hand-sewn buttonholes, and elegant collar styling. The shirts are cut from the finest two-fold cotton fabrics, offering both comfort and longevity.",
@@ -328,8 +327,7 @@ export const products: Product[] = [
     id: "windsor-suit",
     name: "The Windsor Suit",
     category: Collections.RTW_CASUAL,
-    price: "From NGN3,800",
-    priceValue: 3800,
+    price: 3800,
     image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop",
     images: [
       "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=1200&h=1600&fit=crop",
@@ -358,9 +356,8 @@ export const products: Product[] = [
   {
     id: "mayfair-blazer",
     name: "The Mayfair Blazer",
-    category: Collections.RTW_CASUAL,
-    price: "From NGN1,950",
-    priceValue: 1950,
+    category: Collections.RTW_NATIVE,
+    price: 1950,
     image: "https://images.unsplash.com/photo-1593030103066-0093718e3d49?w=600&h=800&fit=crop",
     images: [
       "https://images.unsplash.com/photo-1593030103066-0093718e3d49?w=1200&h=1600&fit=crop",
@@ -390,8 +387,7 @@ export const products: Product[] = [
     id: "savile-overcoat",
     name: "The Savile Overcoat",
     category: Collections.RTW_NATIVE,
-    price: "From NGN4,200",
-    priceValue: 4200,
+    price: 4200,
     image: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&h=800&fit=crop",
     images: [
       "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1200&h=1600&fit=crop",
@@ -420,9 +416,8 @@ export const products: Product[] = [
   {
     id: "kensington-shirt",
     name: "The Kensington Shirt",
-    category: Collections.RTW_NATIVE,
-    price: "From NGN450",
-    priceValue: 450,
+    category: Collections.ACCESSORIES,
+    price: 450,
     image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=800&fit=crop",
     images: [
       "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1200&h=1600&fit=crop",
@@ -451,9 +446,8 @@ export const products: Product[] = [
   {
     id: "chelsea-trousers",
     name: "The Chelsea Trousers",
-    category: Collections.RTW_CASUAL,
-    price: "From NGN680",
-    priceValue: 680,
+    category: Collections.ACCESSORIES,
+    price: 680,
     image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&h=800&fit=crop",
     images: [
       "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=1200&h=1600&fit=crop",
@@ -483,8 +477,7 @@ export const products: Product[] = [
     id: "belgravia-tuxedo",
     name: "The Belgravia Tuxedo",
     category: Collections.RTW_CASUAL,
-    price: "From NGN5,200",
-    priceValue: 5200,
+    price: 5200,
     image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=800&fit=crop",
     images: [
       "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&h=1600&fit=crop",
