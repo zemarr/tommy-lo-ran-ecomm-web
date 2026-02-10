@@ -27,7 +27,6 @@ export default function RootLayout({
           src="https://assets.calendly.com/assets/external/widget.js"
           strategy="afterInteractive"
         />
-        <Analytics />
       </body>
     </html>
   )

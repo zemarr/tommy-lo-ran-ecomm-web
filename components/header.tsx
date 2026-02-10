@@ -106,9 +106,10 @@ export function Header() {
                       ))}
                     </div>
                     <div className="pt-8 border-t border-border">
-                      <Link href="/shop" className="block" onClick={() => setIsOpen(false)}>
-                        <Button className="w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-6">
-                          Shop Now
+                      <Link href="/shop" className="block w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-6" onClick={() => setIsOpen(false)}>
+                        Shop Now
+                        <Button>
+
                         </Button>
                       </Link>
                     </div>

@@ -1,6 +1,5 @@
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
-import { ProductsSection } from "@/components/products-section";
 import { StorySection } from "@/components/story-section";
 import { BespokeSection } from "@/components/bespoke-section";
 // import { CraftsmanshipSection } from "@/components/craftsmanship-section";
