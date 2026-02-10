@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Instagram, Facebook, Linkedin } from "lucide-react";
+import TommyLoRanText from "./tommy-lo-ran-text";
 
 const footerLinks = {
   shop: [
@@ -31,31 +32,29 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="flex items-center mb-2">
-              <span className="font-cursive text-4xl tracking-tight text-cream">
-                Tommy lo ran
-              </span>
+              <TommyLoRanText classname="font-cursive text-4xl tracking-tight text-cream" />
             </Link>
             <p className="text-cream/50 text-sm leading-loose max-w-xs mb-8">
-              Rooted in culture. Tailored for now. Since 1987.
+              Rooted in culture. Tailored for now. Since 2010.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-4">
               <a
-                href="#"
+                href="https://www.instagram.com/tommy.loran?igsh=MTFhMWI5dnNqYWtlYQ%3D%3D&utm_source=qr"
                 className="w-10 h-10 flex items-center justify-center border border-cream/20 text-cream/50 hover:border-gold hover:text-gold transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="w-4 h-4" />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/share/1DkMVkFVE3/?mibextid=wwXIfr"
                 className="w-10 h-10 flex items-center justify-center border border-cream/20 text-cream/50 hover:border-gold hover:text-gold transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="w-4 h-4" />
               </a>
               <a
-                href="#"
+                href="https://www.tiktok.com/@tommyloran?_r=1&_t=ZS-93c2b2eYbbD"
                 className="w-10 h-10 flex items-center justify-center border border-cream/20 text-cream/50 hover:border-gold hover:text-gold transition-colors"
                 aria-label="LinkedIn"
               >
@@ -123,7 +122,7 @@ export function Footer() {
         {/* Bottom Bar - Minimal */}
         <div className="py-8 border-t border-cream/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-cream/30">
-            &copy; {new Date().getFullYear()} Tommy lo ran
+            &copy; {new Date().getFullYear()} <TommyLoRanText />
           </p>
           <div className="flex items-center gap-8 text-xs text-cream/30">
             <Link href="#" className="hover:text-cream transition-colors">

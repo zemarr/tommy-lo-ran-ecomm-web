@@ -4,6 +4,7 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import HeroImage from "../public/assets/images/TLR_main.jpg"
+import Link from "next/link";
 
 export function HeroSection() {
   return (
@@ -16,23 +17,25 @@ export function HeroSection() {
             <p className="text-gold tracking-[0.4em] uppercase text-xs font-medium mb-5">
               Since 2010
             </p>
-            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-[1.1] text-foreground flex items-center flex-wrap">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light leading-[1.1] text-foreground flex items-center flex-wrap">
               Where Tradition
               <br />
               Meets Authority
               {/* <span className="italic font-normal">Culture</span> */}
             </h1>
             <p className="mt-6 text-muted-foreground leading-loose max-w-fit text-base">
-              Outfits for the modern African man, intentionally designed. Where heritage whispers through every stitch, and contemporary vision guides each thread.
+              Outfits for the modern African man, intentionally designed. Where heritage <br /> whispers through every stitch, and contemporary vision guides each thread.
             </p>
             <div className="mt-12">
-              <Button
-                size="lg"
-                className="bg-charcoal text-cream hover:bg-espresso tracking-[0.2em] uppercase text-xs px-10 py-7 group"
-              >
-                Explore
-                <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <a href={"/#collections"} className="cursor-pointer">
+                <Button
+                  size="lg"
+                  className="bg-charcoal text-cream hover:bg-espresso tracking-[0.2em] uppercase text-xs px-10 py-6! group"
+                >
+                  Explore Collections
+                  <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </a>
             </div>
           </div>
         </div>
@@ -55,9 +58,9 @@ export function HeroSection() {
       {/* Bottom Bar - Minimal Stats */}
       <div className="border-t border-border">
         <div className="mx-auto max-w-10xl px-8 lg:px-16 h-[12vh]">
-          <div className="flex items-center justify-between py-8">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between py-8">
             <a
-              href="#collections"
+              href="/#collections"
               className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
             >
               Scroll to discover
@@ -67,7 +70,7 @@ export function HeroSection() {
             </span>
             <a
               href="#collections"
-              className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors md:block hidden"
             >
               Scroll to discover
             </a>

@@ -4,6 +4,7 @@ import { Playfair_Display, Inter, Cormorant_Garamond, Great_Vibes } from 'next/f
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import '@/styles/photography.css'
+import Script from "next/script"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -28,7 +29,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: 'Tommy Lo Ran | Modern African Menswear',
+  title: 'Tómmy ló ràn | Modern African Menswear',
   description: 'Rooted in culture. Tailored for now. Discover contemporary menswear inspired by African heritage, crafted with intentional artistry and timeless elegance.',
 }
 
@@ -41,6 +42,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true} className={`${playfair.variable} ${inter.variable} ${cormorant.variable} ${greatVibes.variable}`}>
       <body className="font-sans antialiased">
         {children}
+        <Script
+          src="https://assets.calendly.com/assets/external/widget.js"
+          strategy="afterInteractive"
+        />
         <Analytics />
       </body>
     </html>

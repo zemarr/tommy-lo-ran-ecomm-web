@@ -5,14 +5,15 @@ import Link from "next/link";
 import { Menu, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useCartStore } from "@/lib/cart-store";
+import { useCartStore } from "@/lib/store/cart-store";
 import { CartSidebar } from "@/components/cart-sidebar";
+import TommyLoRanText from "./tommy-lo-ran-text";
 
 const navigation = [
-  { name: "Collections", href: "/#collections" },
+  { name: "Our Story", href: "/#story" },
+  { name: "Our Collection", href: "/#collections" },
   { name: "Services", href: "/#services" },
   // { name: "Craftsmanship", href: "/#craftsmanship" },
-  { name: "Story", href: "/#story" },
 ];
 
 export function Header() {
@@ -33,9 +34,7 @@ export function Header() {
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center">
-              <span className="font-cursive text-4xl tracking-tight text-foreground">
-                Tommy lo ran
-              </span>
+              <TommyLoRanText classname="font-cursive text-2xl md:text-4xl tracking-tight text-foreground" />
             </Link>
 
             {/* Desktop Navigation - Centered */}

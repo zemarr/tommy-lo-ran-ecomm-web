@@ -6,8 +6,9 @@ import { ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { CartSidebar } from "@/components/cart-sidebar";
-import { useCartStore } from "@/lib/cart-store";
-import type { Product } from "@/lib/products";
+import { useCartStore } from "@/lib/store/cart-store";
+import Image from "next/image";
+import { Product } from "@/lib/generated/prisma";
 
 interface ProductDetailsProps {
   product: Product;
@@ -39,15 +40,17 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             {/* Editorial Image Gallery - Museum Quality */}
             <div className="space-y-8">
               {/* Main Image - High Resolution */}
-              <div className="aspect-[3/4] overflow-hidden bg-muted">
-                <img
+              <div className="aspect-11/12 overflow-hidden bg-muted">
+                <Image
                   src={product.images[selectedImage] || "/placeholder.svg"}
                   alt={`${product.name} - African menswear editorial photography`}
+                  width={100}
+                  height={300}
                   className="w-full h-full object-cover gallery-image"
                   loading="eager"
                 />
                 {/* Museum lighting gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-charcoal/10 pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-charcoal/10 pointer-events-none" />
               </div>
 
               {/* Thumbnails - Editorial Selection */}
@@ -62,9 +65,11 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                       }`}
                     aria-label={`View ${product.name} image ${index + 1}`}
                   >
-                    <img
+                    <Image
                       src={image || "/placeholder.svg"}
                       alt={`${product.name} view ${index + 1}`}
+                      width={40}
+                      height={100}
                       className="w-full h-full object-cover portrait-image"
                       loading="lazy"
                     />
@@ -84,7 +89,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                   {product.name}
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                  {product.price}
+                  ₦{Number(product.price).toLocaleString()}
                 </p>
               </div>
 

@@ -1,4 +1,4 @@
-# Tommy Lo Ran - Visual & Photography Guidelines
+# Tómmy ló ràn - Visual & Photography Guidelines
 
 ## Brand Essence
 "Rooted in culture. Tailored for now."

@@ -1,7 +1,7 @@
 # E-Commerce Interface Documentation
 
 ## Overview
-Tommy Lo Ran's e-commerce interface is built with a seamless, intuitive shopping experience using Zustand for client-side state management and Headless UI components for the cart sidebar.
+Tómmy ló ràn's e-commerce interface is built with a seamless, intuitive shopping experience using Zustand for client-side state management and Headless UI components for the cart sidebar.
 
 ## Components & Features
 
