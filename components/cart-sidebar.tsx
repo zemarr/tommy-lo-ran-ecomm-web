@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
+import { Transition } from '@headlessui/react';
 import { ShoppingBag, X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
