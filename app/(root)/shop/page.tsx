@@ -6,11 +6,21 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import ProductSearch, { SearchSkeleton } from "@/components/shared/product-search";
 import { Suspense } from "react";
-import { getLatestProducts } from "@/lib/actions/product.actions";
+import { getAllProducts } from "@/lib/actions/product.actions";
+import { ShopClient } from "./components/shop-client-wrapper";
 
-export default async function ShopPage() {
-  const latestProducts = await getLatestProducts();
-
+export default async function ShopPage(props: {
+  searchParams: Promise<{
+    query: string;
+    // page: string;
+    // category: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const searchText = searchParams.query || '';
+  const products = await getAllProducts({
+    query: searchText,
+  });
 
   return (
     <>
@@ -39,39 +49,9 @@ export default async function ShopPage() {
             <ProductSearch />
             {/* <ShopSearch onSearch={setSearchQuery} /> */}
           </Suspense>
-
           {/* Main Content - Filters + Products */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
-            {/* Sidebar Filters */}
-            <aside className="lg:col-span-1">
-              <div className="sticky top-32">
-                <h2 className="font-heading text-lg font-light text-foreground mb-8">
-                  Refine
-                </h2>
-                <ShopFilters
-                  products={latestProducts}
-                // categories={categories}
-                // onCategoryChange={setSelectedCategory}
-                // onPriceRangeChange={setPriceRange}
-                // onSortChange={setSortBy}
-                // selectedCategory={selectedCategory}
-                // selectedSort={sortBy}
-                />
-              </div>
-            </aside>
-
-            {/* Products Grid */}
-            <section className="lg:col-span-3">
-              <Suspense fallback={<div className="w-screen h-screen absolute top-0 left-0 bg-black/20 transition-all"></div>}>
-                <ShopProductGrid
-                  products={latestProducts}
-                  resultsCount={latestProducts.length}
-                />
-              </Suspense>
-            </section>
-          </div>
+          <ShopClient products={products.data} />
         </div>
-
       </main>
       <Footer />
     </>

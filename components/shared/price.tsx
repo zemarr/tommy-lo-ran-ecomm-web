@@ -16,9 +16,9 @@ const Price = ({
       style: 'currency',
       currency: currencyCode,
       currencyDisplay: 'narrowSymbol'
-    }).format(parseFloat(amount))}`}
+    }).format(Number(amount))}`}
     <span className={clsx('text-xs ml-1 inline', currencyCodeClassName)}>
-      {`${currencyCode}`}
+      {/* {`${currencyCode}`} */}
     </span>
   </p>
 );
