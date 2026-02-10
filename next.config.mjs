@@ -2,8 +2,6 @@
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
-    inlineCss: true,
-    useCache: true,
   },
   images: {
     unoptimized: true,
