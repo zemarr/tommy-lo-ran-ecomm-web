@@ -13,25 +13,20 @@ export default function ProductSearch() {
   const setSearchQuery = useShopStore((s) => s.setSearchQuery);
   const searchQuery = useShopStore((s) => s.searchQuery);
 
-  // Sync URL query → Zustand on mount
+  const [localValue, setLocalValue] = useState(initialQuery);
+
+  // Sync URL → Zustand once on mount
   useEffect(() => {
     if (initialQuery) {
       setSearchQuery(initialQuery);
+      setLocalValue(initialQuery);
     }
   }, [initialQuery, setSearchQuery]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchQuery(value);
-
-    // Optional: sync to URL without navigation
-    const params = new URLSearchParams(searchParams?.toString());
-    if (value) {
-      params.set('query', value);
-    } else {
-      params.delete('query');
-    }
-    router.replace(`/shop?${params.toString()}`, { scroll: false });
+    setLocalValue(value);      // UI state (instant)
+    setSearchQuery(value);    // Zustand state (instant filtering)
   };
 
   return (
@@ -44,7 +39,7 @@ export default function ProductSearch() {
         name="query"
         placeholder="Search Name, Brand or Category"
         autoComplete="off"
-        value={searchQuery}
+        value={localValue}
         onChange={handleChange}
         className="w-full pl-12 pr-4 py-4 bg-muted border border-border rounded-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-gold/50 transition-all"
       />

@@ -107,7 +107,7 @@ export function ShopFilters() {
               />
             </div>
             <div className="flex items-center justify-between gap-4 pt-0">
-              <span className="text-sm text-foreground">
+              <span className="text-sm font-medium text-foreground">
                 <Price
                   className="text-xs"
                   amount={priceRange[0].toString()}
@@ -116,7 +116,7 @@ export function ShopFilters() {
                 />
               </span>
               {/* <span className="text-sm text-muted-foreground w-2 h-px border-black border-[0.5px]"></span> */}
-              <span className="text-sm text-foreground">
+              <span className="text-sm font-medium text-foreground">
                 <Price
                   className="text-xs"
                   amount={priceRange[1].toString()}

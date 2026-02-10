@@ -26,10 +26,10 @@ export function ShopClient({ products }: ShopClientProps) {
       <aside className="lg:col-span-1">
         <div className="sticky top-32">
           <div className="flex items-center md:justify-start justify-end gap-4">
-            <button onClick={() => setfiltersOpen(!filtersOpen)} className="text-sm font-semibold text-sidebar bg-foreground rounded-sm mb-3 px-3 py-2">
+            <button onClick={() => setfiltersOpen(!filtersOpen)} className="text-sm font-normal text-sidebar bg-foreground rounded-sm mb-3 px-3 py-2">
               {`${!filtersOpen ? '' : 'Close'} Filter/Sort`}
             </button>
-            {filtersOpen && <button onClick={() => resetFilters()} className="text-sm font-semibold border-b mb-3 px-3 py-2">
+            {filtersOpen && <button onClick={() => resetFilters()} className="text-sm font-normal border-b mb-3 px-3 py-2">
               {`Clear all`}
             </button>}
           </div>
