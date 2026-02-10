@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { Product } from './products';
+import { Product } from '../generated/prisma/client';
+
 
 export interface CartItem {
   product: Product;
@@ -8,6 +9,7 @@ export interface CartItem {
 }
 
 interface CartStore {
+  isCartOpen: boolean;
   items: CartItem[];
   addItem: (product: Product, quantity?: number) => void;
   removeItem: (productId: string) => void;
@@ -19,6 +21,8 @@ interface CartStore {
 
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
+  isCartOpen: false,
+  setCartOpen: (open: boolean) => set({ isCartOpen: open }),
 
   addItem: (product, quantity = 1) => {
     set((state) => {
@@ -75,7 +79,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
   getTotalPrice: () => {
     const state = get();
     return state.items.reduce(
-      (total, item) => total + item.product.priceValue * item.quantity,
+      (total, item) => total + Number(item.product.price) * item.quantity,
       0
     );
   },

@@ -6,9 +6,9 @@ import { ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { CartSidebar } from "@/components/cart-sidebar";
-import { useCartStore } from "@/lib/cart-store";
-import type { Product } from "@/lib/products";
+import { useCartStore } from "@/lib/store/cart-store";
 import Image from "next/image";
+import { Product } from "@/lib/generated/prisma";
 
 interface ProductDetailsProps {
   product: Product;
@@ -89,7 +89,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                   {product.name}
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                  ₦{product.price.toLocaleString()}
+                  ₦{Number(product.price).toLocaleString()}
                 </p>
               </div>
 

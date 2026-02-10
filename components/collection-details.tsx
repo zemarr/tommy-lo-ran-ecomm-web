@@ -6,7 +6,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { CartSidebar } from "@/components/cart-sidebar";
-import { useCartStore } from "@/lib/cart-store";
+import { useCartStore } from "@/lib/store/cart-store";
 import type { Collection } from "@/lib/products";
 import Image from "next/image";
 import BookConsultationButton from "./book-consultation-button";

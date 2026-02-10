@@ -1,8 +1,9 @@
-import { PrismaClient } from '@/lib/generated/prisma/client'
+import { PrismaClient } from '@prisma/client'
 import sampleData from "./sample-data";
 
 const prisma = new PrismaClient();
 async function main() {
+  console.log("seeding")
   await prisma.product.deleteMany();
   await prisma.user.deleteMany();
 

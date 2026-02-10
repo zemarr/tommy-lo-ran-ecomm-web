@@ -1,86 +1,20 @@
-"use client";
 
-import { useState, useMemo } from "react";
-import { products, type Product } from "@/lib/products";
 import { ShopSearch } from "@/components/shop-search";
 import { ShopFilters } from "@/components/shop-filters";
 import { ShopProductGrid } from "@/components/shop-product-grid";
-import { CartSidebar } from "@/components/cart-sidebar";
-import { useCartStore } from "@/lib/cart-store";
-import { ShoppingBag } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import ProductSearch, { SearchSkeleton } from "@/components/shared/product-search";
+import { Suspense } from "react";
+import { getLatestProducts } from "@/lib/actions/product.actions";
 
-export default function ShopPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 6000]);
-  const [sortBy, setSortBy] = useState<string>("newest");
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const totalItems = useCartStore((state) => state.getTotalItems());
+export default async function ShopPage() {
+  const latestProducts = await getLatestProducts();
 
-  // Get unique categories
-  const categories = useMemo(() => {
-    const cats = [...new Set(products.map((p) => p.category))];
-    return cats.sort();
-  }, []);
-
-  // Filter, search, and sort products
-  const filteredProducts = useMemo(() => {
-    let filtered = products.filter((product) => {
-      // Category filter
-      if (selectedCategory && product.category !== selectedCategory) {
-        return false;
-      }
-
-      // Price range filter
-      if (
-        product.price < priceRange[0] ||
-        product.price > priceRange[1]
-      ) {
-        return false;
-      }
-
-      // Search filter
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
-        return (
-          product.name.toLowerCase().includes(query) ||
-          product.category.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
-          product.materials.some((m) =>
-            m.toLowerCase().includes(query)
-          )
-        );
-      }
-
-      return true;
-    });
-
-    // Apply sorting
-    const sorted = [...filtered];
-    switch (sortBy) {
-      case "price-asc":
-        sorted.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        sorted.sort((a, b) => b.price - a.price);
-        break;
-      case "popular":
-        sorted.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
-        break;
-      case "newest":
-      default:
-        sorted.sort((a, b) => (Number(b.id) || 0) - (Number(a.id) || 0)); // Remove the Number class if id is uuid format.
-        break;
-    }
-
-    return sorted;
-  }, [searchQuery, selectedCategory, priceRange, sortBy]);
 
   return (
     <>
-      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      {/* <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} /> */}
       <Header />
       <main className="min-h-screen pt-32 pb-24 lg:pb-32">
         <div className="mx-auto max-w-10xl px-6 lg:px-16">
@@ -101,7 +35,10 @@ export default function ShopPage() {
           </div>
 
           {/* Search Bar */}
-          <ShopSearch onSearch={setSearchQuery} />
+          <Suspense fallback={<SearchSkeleton />}>
+            <ProductSearch />
+            {/* <ShopSearch onSearch={setSearchQuery} /> */}
+          </Suspense>
 
           {/* Main Content - Filters + Products */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
@@ -112,22 +49,25 @@ export default function ShopPage() {
                   Refine
                 </h2>
                 <ShopFilters
-                  categories={categories}
-                  onCategoryChange={setSelectedCategory}
-                  onPriceRangeChange={setPriceRange}
-                  onSortChange={setSortBy}
-                  selectedCategory={selectedCategory}
-                  selectedSort={sortBy}
+                  products={latestProducts}
+                // categories={categories}
+                // onCategoryChange={setSelectedCategory}
+                // onPriceRangeChange={setPriceRange}
+                // onSortChange={setSortBy}
+                // selectedCategory={selectedCategory}
+                // selectedSort={sortBy}
                 />
               </div>
             </aside>
 
             {/* Products Grid */}
             <section className="lg:col-span-3">
-              <ShopProductGrid
-                products={filteredProducts}
-                resultsCount={products.length}
-              />
+              <Suspense fallback={<div className="w-screen h-screen absolute top-0 left-0 bg-black/20 transition-all"></div>}>
+                <ShopProductGrid
+                  products={latestProducts}
+                  resultsCount={latestProducts.length}
+                />
+              </Suspense>
             </section>
           </div>
         </div>

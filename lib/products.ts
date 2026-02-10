@@ -55,7 +55,7 @@ export const collections: Collection[] = [
       "https://browninspiredluxury.com/wp-content/uploads/2023/04/8344C198-6E53-4F8B-9811-044796B46A66.jpeg",
     ],
     description: "Bespoke Two & Three Piece Outfits",
-    longDescription: "Bespoke Two & Three Piece Outfits by Tómmy ló ràn consists of a creatively crafted two-piece or a three-piece outfits.",
+    longDescription: "Bespoke Two & Three-piece outfits by Tómmy ló ràn feature creatively crafted ensembles.",
     options: [
       {
         id: "",

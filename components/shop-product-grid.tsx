@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Product } from "@/lib/products";
 import { AddToCartButton } from "@/components/add-to-cart-button";
+import { Product } from "@/lib/generated/prisma";
 
 interface ShopProductGridProps {
   products: Product[];
@@ -51,13 +51,13 @@ export function ShopProductGrid({
           <article key={product.id} className="group flex flex-col">
             {/* Product Link */}
             <Link
-              href={`/shop/${product.id}`}
+              href={`/shop/${product.slug}`}
               className="flex-1"
             >
               {/* Product Image */}
               <div className="aspect-3/4 overflow-hidden bg-muted mb-6 relative">
                 <img
-                  src={product.image || "/placeholder.svg"}
+                  src={product.images[0] || "/placeholder.svg"}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.02]"
                   loading="lazy"
@@ -77,8 +77,8 @@ export function ShopProductGrid({
                 <p className="text-sm text-muted-foreground">
                   {product.description}
                 </p>
-                <p className="text-sm font-medium text-foreground pt-3">
-                  {product.price}
+                <p className="text-lg font-medium text-foreground pt-3">
+                  ₦{Number(product.price).toLocaleString()}
                 </p>
               </div>
             </Link>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Menu, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useCartStore } from "@/lib/cart-store";
+import { useCartStore } from "@/lib/store/cart-store";
 import { CartSidebar } from "@/components/cart-sidebar";
 import TommyLoRanText from "./tommy-lo-ran-text";
 

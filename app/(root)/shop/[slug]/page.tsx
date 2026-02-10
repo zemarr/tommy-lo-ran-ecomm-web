@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
-import { getProductBySlug, getAllProductSlugs } from "@/lib/products";
+import { getAllProductSlugs } from "@/lib/products";
 import { ProductDetails } from "@/components/product-details";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
+import { getProductBySlug } from "@/lib/actions/product.actions";
+import { Suspense } from "react";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -16,8 +18,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
-  
+  const product = await getProductBySlug(slug);
+
   if (!product) {
     return {
       title: "Product Not Found | Tómmy ló ràn",
@@ -32,7 +34,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -42,7 +44,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <Header />
       <main className="pt-20">
-        <ProductDetails product={product} />
+        <Suspense fallback={<div className="w-screen h-screen absolute top-0 left-0 bg-black/20 transition-all"></div>}>
+          <ProductDetails product={product} />
+        </Suspense>
       </main>
       <Footer />
     </>
