@@ -71,7 +71,7 @@ export function ShopProductGrid({
                 <p className="text-xs tracking-widest uppercase text-gold">
                   {product.category}
                 </p>
-                <h3 className="font-heading text-lg md:text-xl font-light text-foreground group-hover:text-gold transition-colors duration-300">
+                <h3 className="font-sans font-medium text-lg text-foreground group-hover:text-gold transition-colors duration-300">
                   {product.name}
                 </h3>
                 <p className="text-sm text-muted-foreground">

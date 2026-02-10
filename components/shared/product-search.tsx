@@ -11,7 +11,7 @@ export default function ProductSearch() {
   const initialQuery = searchParams?.get('query') || '';
 
   const setSearchQuery = useShopStore((s) => s.setSearchQuery);
-  const searchQuery = useShopStore((s) => s.searchQuery);
+  // const searchQuery = useShopStore((s) => s.searchQuery);
 
   const [localValue, setLocalValue] = useState(initialQuery);
 

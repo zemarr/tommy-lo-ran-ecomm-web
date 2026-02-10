@@ -37,7 +37,6 @@ export async function getProductBySlug(slug: string) {
   if (!product) {
     return null;
   }
-  console.log(convertToPlainObject(product))
 
   return convertToPlainObject(product);
 }

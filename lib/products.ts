@@ -47,12 +47,12 @@ export const collections: Collection[] = [
   {
     id: "tlr-bespoke-collection",
     name: "TLR Bespoke Collection",
-    image: "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
+    image: "/assets/images/specif-duo-9.jpg",
     images: [
-      "https://otunbastore.com/cdn/shop/products/il_fullxfull.5309513943_fflz.jpg?v=1698360162",
-      "https://i.etsystatic.com/46223954/r/il/defc7e/7502727542/il_fullxfull.7502727542_mxu0.jpg",
-      "https://d13k5xkmdqbhs.cloudfront.net/products/ECVDWU7/52HIIEHY-large.jpg",
-      "https://browninspiredluxury.com/wp-content/uploads/2023/04/8344C198-6E53-4F8B-9811-044796B46A66.jpeg",
+      "/assets/images/specif-duo-9.jpg",
+      "/assets/images/specif-duo-8.jpg",
+      "/assets/images/specif-duo-1.jpg",
+      "/assets/images/specif-duo-4.jpg",
     ],
     description: "Bespoke Two & Three Piece Outfits",
     longDescription: "Bespoke Two & Three-piece outfits by Tómmy ló ràn feature creatively crafted ensembles.",
@@ -295,11 +295,11 @@ export const collections: Collection[] = [
   {
     id: "caps-scarves-addons",
     name: "Caps, Scarves, Add-ons",
-    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=800&fit=crop",
+    image: "/assets/images/scarf-cotton.jpeg",
     images: [
-      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1200&h=1600&fit=crop",
-      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=1200&h=1600&fit=crop",
-      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=1200&h=1600&fit=crop",
+      "/assets/images/scarf-cotton.jpeg",
+      // "/assets/images/scarf-cotton.jpeg",
+      // "/assets/images/scarf-cotton.jpeg",
     ],
     description: "Impeccable detail",
     longDescription: "The Kensington Shirt exemplifies the art of luxury shirtmaking with precision sizing ensuring a perfect fit. Each shirt features single-needle stitching throughout, hand-sewn buttonholes, and elegant collar styling. The shirts are cut from the finest two-fold cotton fabrics, offering both comfort and longevity.",

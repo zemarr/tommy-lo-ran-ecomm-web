@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { getAllProductSlugs } from "@/lib/products";
 import { ProductDetails } from "@/components/product-details";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -11,10 +10,10 @@ interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const slugs = getAllProductSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+// export async function generateStaticParams() {
+//   const slugs = getAllProductSlugs();
+//   return slugs.map((slug) => ({ slug }));
+// }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
