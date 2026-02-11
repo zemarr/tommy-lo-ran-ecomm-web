@@ -3,7 +3,6 @@ import { prisma } from "@/db/prisma";
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "@/lib/constants";
 import { convertToPlainObject, formatError, normalizeProduct } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
-import { Prisma, Product } from "@/lib/generated/prisma/client"
 
 // get latest products
 export async function getLatestProducts() {

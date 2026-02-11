@@ -20,7 +20,7 @@ export const prisma = new PrismaClient({ adapter })
       product: {
         price: {
           compute(product) {
-            return product.price != null ? product.price.toString() : '0';
+            return product.price != null ? product.price.toString() : '0.00';
           },
         },
         rating: {
