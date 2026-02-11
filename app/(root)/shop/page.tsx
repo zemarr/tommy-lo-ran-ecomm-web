@@ -32,7 +32,7 @@ export default async function ShopPage() {
             {/* <ShopSearch onSearch={setSearchQuery} /> */}
           </Suspense>
           {/* Main Content - Filters + Products */}
-          <ShopClient products={products.data} />
+          <ShopClient products={(products.data)} />
         </div>
       </main>
       <Footer />

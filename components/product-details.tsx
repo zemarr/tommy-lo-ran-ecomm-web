@@ -8,7 +8,7 @@ import { AddToCartButton } from "@/components/add-to-cart-button";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { useCartStore } from "@/lib/store/cart-store";
 import Image from "next/image";
-import { Product } from "@/lib/generated/prisma";
+import { Product } from "@/types";
 
 interface ProductDetailsProps {
   product: Product;

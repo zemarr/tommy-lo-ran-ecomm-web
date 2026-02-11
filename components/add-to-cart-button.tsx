@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import { ShoppingBag, Plus, Minus } from 'lucide-react';
-import { Product } from '@/lib/generated/prisma/client';
+import { Product } from '@/types';
 
 interface AddToCartButtonProps {
   product: Product;

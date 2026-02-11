@@ -21,11 +21,14 @@ importers:
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.71.1(react@19.2.0))
       '@neondatabase/serverless':
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: 1.0.1
+        version: 1.0.1
       '@prisma/adapter-neon':
-        specifier: ^6.12.0
-        version: 6.19.2
+        specifier: 6.12.0
+        version: 6.12.0
+      '@prisma/driver-adapter-utils':
+        specifier: 6.12.0
+        version: 6.12.0
       '@radix-ui/react-accordion':
         specifier: 1.2.2
         version: 1.2.2(@types/react-dom@19.2.3(@types/react@19.2.13))(@types/react@19.2.13)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -133,7 +136,7 @@ importers:
         version: 8.5.1(react@19.2.0)
       immer:
         specifier: latest
-        version: 11.1.3
+        version: 11.1.4
       input-otp:
         specifier: 1.4.1
         version: 1.4.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -199,20 +202,20 @@ importers:
         version: 3.25.76
       zustand:
         specifier: 5.0.11
-        version: 5.0.11(@types/react@19.2.13)(immer@11.1.3)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0))
+        version: 5.0.11(@types/react@19.2.13)(immer@11.1.4)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0))
     devDependencies:
       '@prisma/adapter-pg':
         specifier: ^7.3.0
         version: 7.3.0
       '@prisma/client':
-        specifier: ^6.12.0
+        specifier: 6.12.0
         version: 6.12.0(prisma@6.12.0(typescript@5.9.3))(typescript@5.9.3)
       '@tailwindcss/postcss':
         specifier: ^4.1.9
         version: 4.1.18
       '@types/node':
         specifier: ^22
-        version: 22.19.10
+        version: 22.19.11
       '@types/pg':
         specifier: ^8.16.0
         version: 8.16.0
@@ -659,8 +662,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@neondatabase/serverless@1.0.2':
-    resolution: {integrity: sha512-I5sbpSIAHiB+b6UttofhrN/UJXII+4tZPAq1qugzwCwLIL8EZLV7F/JyHUrEIiGgQpEXzpnjlJ+zwcEhheGvCw==}
+  '@neondatabase/serverless@1.0.1':
+    resolution: {integrity: sha512-O6yC5TT0jbw86VZVkmnzCZJB0hfxBl0JJz6f+3KHoZabjb/X08r9eFA+vuY06z1/qaovykvdkrXYq3SPUuvogA==}
     engines: {node: '>=19.0.0'}
 
   '@next/env@16.0.10':
@@ -725,8 +728,8 @@ packages:
     resolution: {integrity: sha512-95/BkaJ61XTiL74k+x+3fp4NGDKHp4JZA9PXL+/DFd8gIPjI0TEA1ocHSjh1FRMIdpcfgpHLoTWMRvfBsQXstQ==}
     engines: {node: '>= 22.0.0'}
 
-  '@prisma/adapter-neon@6.19.2':
-    resolution: {integrity: sha512-LDDjem82zAPqMdFUyyHgdB5sUm/IHDqd3eNLOtiPaEqh+3hdWD8vARSwPzuzy6cvh/KHKiGhGXL8qHaduRqyaQ==}
+  '@prisma/adapter-neon@6.12.0':
+    resolution: {integrity: sha512-CF7lQN/1jzVooPji/HPMAtipira2oI9ESZ7Ee4e355MvNSKcQReRrwh8A6/FxSSP6q/Ef2BRyORxq63KQLJNWA==}
 
   '@prisma/adapter-pg@7.3.0':
     resolution: {integrity: sha512-iuYQMbIPO6i9O45Fv8TB7vWu00BXhCaNAShenqF7gLExGDbnGp5BfFB4yz1K59zQ59jF6tQ9YHrg0P6/J3OoLg==}
@@ -749,14 +752,11 @@ packages:
   '@prisma/debug@6.12.0':
     resolution: {integrity: sha512-plbz6z72orcqr0eeio7zgUrZj5EudZUpAeWkFTA/DDdXEj28YHDXuiakvR6S7sD6tZi+jiwQEJAPeV6J6m/tEQ==}
 
-  '@prisma/debug@6.19.2':
-    resolution: {integrity: sha512-lFnEZsLdFLmEVCVNdskLDCL8Uup41GDfU0LUfquw+ercJC8ODTuL0WNKgOKmYxCJVvFwf0OuZBzW99DuWmoH2A==}
-
   '@prisma/debug@7.3.0':
     resolution: {integrity: sha512-yh/tHhraCzYkffsI1/3a7SHX8tpgbJu1NPnuxS4rEpJdWAUDHUH25F1EDo6PPzirpyLNkgPPZdhojQK804BGtg==}
 
-  '@prisma/driver-adapter-utils@6.19.2':
-    resolution: {integrity: sha512-tkHsL3jhx81eXg2oqtJH/1IEs8uEeUb1RpqHtwYqdNb176u9D0mnHRZM1/cKca/XhLpq49Nnd9XDxdMfWcKAYA==}
+  '@prisma/driver-adapter-utils@6.12.0':
+    resolution: {integrity: sha512-uSUKB17Xs4pZB1UJZL6+PHV9Ab6vCWD20nXoimb5YG4vPqtBVdPKNYa35QbDgdUQbX321daUcgYTsLY/jxOG3w==}
 
   '@prisma/driver-adapter-utils@7.3.0':
     resolution: {integrity: sha512-Wdlezh1ck0Rq2dDINkfSkwbR53q53//Eo1vVqVLwtiZ0I6fuWDGNPxwq+SNAIHnsU+FD/m3aIJKevH3vF13U3w==}
@@ -1607,8 +1607,8 @@ packages:
   '@types/d3-timer@3.0.2':
     resolution: {integrity: sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw==}
 
-  '@types/node@22.19.10':
-    resolution: {integrity: sha512-tF5VOugLS/EuDlTBijk0MqABfP8UxgYazTLo3uIn3b4yJgg26QRbVYJYsDtHrjdDUIRfP70+VfhTTc+CE1yskw==}
+  '@types/node@22.19.11':
+    resolution: {integrity: sha512-BH7YwL6rA93ReqeQS1c4bsPpcfOmJasG+Fkr6Y59q83f9M1WcBRHR2vM+P9eOisYRcN3ujQoiZY8uk5W+1WL8w==}
 
   '@types/pg@8.16.0':
     resolution: {integrity: sha512-RmhMd/wD+CF8Dfo+cVIy3RR5cl8CyfXQ0tGgW6XBL8L4LM/UTEbNXYRbLwU6w+CgrKBNbrQWt4FUtTfaU5jSYQ==}
@@ -1835,8 +1835,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  immer@11.1.3:
-    resolution: {integrity: sha512-6jQTc5z0KJFtr1UgFpIL3N9XSC3saRaI9PwWtzM2pSqkNGtiNkYY2OSwkOGDK2XcTRcLb1pi/aNkKZz0nxVH4Q==}
+  immer@11.1.4:
+    resolution: {integrity: sha512-XREFCPo6ksxVzP4E0ekD5aMdf8WMwmdNaz6vuvxgI40UaEiu6q3p8X52aU6GdyvLY3XXX/8R7JOTXStz/nBbRw==}
 
   input-otp@1.4.1:
     resolution: {integrity: sha512-+yvpmKYKHi9jIGngxagY9oWiiblPB7+nEO75F2l2o4vs+6vpPZZmUl4tBNYuTCvQjhvEIbdNeJu70bhfYP2nbw==}
@@ -2690,9 +2690,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@neondatabase/serverless@1.0.2':
+  '@neondatabase/serverless@1.0.1':
     dependencies:
-      '@types/node': 22.19.10
+      '@types/node': 22.19.11
       '@types/pg': 8.16.0
 
   '@next/env@16.0.10': {}
@@ -2725,10 +2725,10 @@ snapshots:
 
   '@paystack/inline-js@2.22.7': {}
 
-  '@prisma/adapter-neon@6.19.2':
+  '@prisma/adapter-neon@6.12.0':
     dependencies:
-      '@neondatabase/serverless': 1.0.2
-      '@prisma/driver-adapter-utils': 6.19.2
+      '@neondatabase/serverless': 1.0.1
+      '@prisma/driver-adapter-utils': 6.12.0
       postgres-array: 3.0.4
 
   '@prisma/adapter-pg@7.3.0':
@@ -2750,13 +2750,11 @@ snapshots:
 
   '@prisma/debug@6.12.0': {}
 
-  '@prisma/debug@6.19.2': {}
-
   '@prisma/debug@7.3.0': {}
 
-  '@prisma/driver-adapter-utils@6.19.2':
+  '@prisma/driver-adapter-utils@6.12.0':
     dependencies:
-      '@prisma/debug': 6.19.2
+      '@prisma/debug': 6.12.0
 
   '@prisma/driver-adapter-utils@7.3.0':
     dependencies:
@@ -3644,13 +3642,13 @@ snapshots:
 
   '@types/d3-timer@3.0.2': {}
 
-  '@types/node@22.19.10':
+  '@types/node@22.19.11':
     dependencies:
       undici-types: 6.21.0
 
   '@types/pg@8.16.0':
     dependencies:
-      '@types/node': 22.19.10
+      '@types/node': 22.19.11
       pg-protocol: 1.11.0
       pg-types: 2.2.0
 
@@ -3664,7 +3662,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 22.19.10
+      '@types/node': 22.19.11
 
   '@vercel/analytics@1.3.1(next@16.0.10(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)':
     dependencies:
@@ -3866,7 +3864,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  immer@11.1.3: {}
+  immer@11.1.4: {}
 
   input-otp@1.4.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
@@ -4371,9 +4369,9 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zustand@5.0.11(@types/react@19.2.13)(immer@11.1.3)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0)):
+  zustand@5.0.11(@types/react@19.2.13)(immer@11.1.4)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0)):
     optionalDependencies:
       '@types/react': 19.2.13
-      immer: 11.1.3
+      immer: 11.1.4
       react: 19.2.0
       use-sync-external-store: 1.6.0(react@19.2.0)

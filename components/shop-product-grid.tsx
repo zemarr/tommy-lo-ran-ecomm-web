@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { AddToCartButton } from "@/components/add-to-cart-button";
-import { Product } from "@/lib/generated/prisma/client";
+import { Product } from "@/types";
 
 interface ShopProductGridProps {
   products: Product[];
