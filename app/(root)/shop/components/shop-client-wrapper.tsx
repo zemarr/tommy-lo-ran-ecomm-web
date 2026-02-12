@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
-import { Product } from '@/lib/generated/prisma/client';
+import { Product } from '@/types';
 import { useShopStore } from '@/lib/store/shop-store';
 import { ShopFilters } from '@/components/shop-filters';
 import { ShopProductGrid } from '@/components/shop-product-grid';

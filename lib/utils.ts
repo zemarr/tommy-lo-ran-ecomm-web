@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx"
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 import qs from 'query-string'
+import { DeliveryFee, Product } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -24,6 +25,21 @@ export const createUrl = (
 // convert a prisma object into a regular js object
 export function convertToPlainObject<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
+}
+
+export function normalizeProduct(product: Product) {
+  return {
+    ...product,
+    care: product.care ?? "",
+    fit: product.fit ?? "",
+    deliveryFee:
+      product.deliveryFee &&
+        typeof product.deliveryFee === "object" &&
+        "lag" in product.deliveryFee &&
+        "nationwide" in product.deliveryFee
+        ? (product.deliveryFee as DeliveryFee)
+        : null,
+  };
 }
 
 // format number with decimal places
