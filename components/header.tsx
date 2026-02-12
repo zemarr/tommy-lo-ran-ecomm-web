@@ -106,11 +106,8 @@ export function Header() {
                       ))}
                     </div>
                     <div className="pt-8 border-t border-border">
-                      <Link href="/shop" className="block w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-6" onClick={() => setIsOpen(false)}>
+                      <Link href="/shop" className="flex items-center justify-center w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-5" onClick={() => setIsOpen(false)}>
                         Shop Now
-                        <Button>
-
-                        </Button>
                       </Link>
                     </div>
                   </div>
