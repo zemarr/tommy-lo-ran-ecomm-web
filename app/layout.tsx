@@ -5,6 +5,8 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import '@/styles/photography.css'
 import Script from "next/script"
+import { auth } from "@/auth"
+import { SessionProvider } from "next-auth/react"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -33,21 +35,26 @@ export const metadata: Metadata = {
   description: 'Rooted in culture. Tailored for now. Discover contemporary menswear inspired by African heritage, crafted with intentional artistry and timeless elegance.',
 }
 
-export default function RootLayout({
+export const revalidate = 0;
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning={true} className={`${playfair.variable} ${inter.variable} ${cormorant.variable} ${greatVibes.variable}`}>
-      <body className="font-sans antialiased">
-        {children}
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="afterInteractive"
-        />
-        <Analytics />
-      </body>
+      <SessionProvider session={session}>
+        <body className="font-sans antialiased">
+          {children}
+          <Script
+            src="https://assets.calendly.com/assets/external/widget.js"
+            strategy="afterInteractive"
+          />
+          <Analytics />
+        </body>
+      </SessionProvider>
     </html>
   )
 }

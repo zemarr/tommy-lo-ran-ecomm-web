@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { ProductDetails } from "@/components/product-details";
-import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
-import { getProductBySlug } from "@/actions/product.actions";
+import { getProductBySlug } from "@/lib/server/actions/product.actions";
 import { Suspense } from "react";
+import Header from "@/components/shared/header/header";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;

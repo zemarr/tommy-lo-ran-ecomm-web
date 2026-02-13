@@ -1,64 +1,49 @@
 'use client'
 
-import { useState } from 'react'
+import { useActionState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
+import { useFormStatus } from 'react-dom'
+import { useSearchParams } from 'next/navigation'
+import { signInUserWithCredentials } from '@/lib/server/actions/user.actions'
 
-export default function SignIn() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false,
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+const SignInButton = () => {
+  const { pending } = useFormStatus();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
-  }
+  return (
+    <Button
+      type="submit"
+      size={"lg"}
+      variant={"default"}
+      className="w-full rounded-sm py-6"
+      disabled={pending}
+    >
+      {pending ? 'Signing in...' : 'Sign in'}
+    </Button>
+  );
+}
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError('')
+export default function SignInForm() {
+  const params = useSearchParams();
+  const callbackUrl = params.get('callbackUrl') || '/';
 
-    // Validation
-    if (!formData.email || !formData.password) {
-      setError('Email and password are required')
-      return
-    }
-
-    // Simulate sign in
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      // In a real app, you would call an API here
-      console.log('Sign in:', formData)
-      // Redirect or show success message
-    }, 1000)
-  }
+  const [data, action] = useActionState(signInUserWithCredentials, {
+    success: false,
+    message: '',
+  });
 
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h2 className="text-2xl font-medium tracking-tight">Welcome Back</h2>
+        <h2 className="text-2xl font-medium tracking-tight">Create Your Account</h2>
         <p className="text-muted-foreground text-sm">
-          Sign in to access your account and continue shopping
+          Join our community of fashion enthusiasts
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <div className="rounded-lg bg-destructive/10 p-4 text-sm text-destructive">
-            {error}
-          </div>
-        )}
-
+      <form action={action} className="space-y-4">
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium">
             Email Address
@@ -68,8 +53,7 @@ export default function SignIn() {
             name="email"
             type="email"
             placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange}
+            autoComplete="name"
             required
           />
         </div>
@@ -83,44 +67,23 @@ export default function SignIn() {
             name="password"
             type="password"
             placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
+            autoComplete="password"
             required
           />
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="rememberMe"
-              name="rememberMe"
-              checked={formData.rememberMe}
-              onCheckedChange={(checked) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  rememberMe: checked === true,
-                }))
-              }
-              className='border border-accent-foreground/30 rounded-sm'
-            />
-            <label htmlFor="rememberMe" className="text-sm font-normal cursor-pointer">
-              Remember me
-            </label>
+        <SignInButton />
+        {data && !data.success && (
+          <div className="text-destructive text-sm text-center">
+            {data.message}
           </div>
-          <Link href="#forgot" className="text-sm font-medium text-accent-foreground hover:text-accent/80">
-            Forgot password?
-          </Link>
-        </div>
-
-        <Button type="submit" disabled={loading} className="w-full rounded-sm py-6">
-          {loading ? 'Signing In...' : 'Sign In'}
-        </Button>
+        )}
       </form>
 
       <p className="text-center text-sm text-muted-foreground">
         Don't have an account?{' '}
         <Link href="/sign-up" className="font-medium text-accent-foreground hover:text-accent/80">
-          Create Account
+          Sign up
         </Link>
       </p>
     </div>
