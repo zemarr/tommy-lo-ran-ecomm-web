@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Product } from '../generated/prisma/client';
+import { Product } from '@/types';
 
 type SortBy = 'price-asc' | 'price-desc' | 'popular' | 'newest';
 

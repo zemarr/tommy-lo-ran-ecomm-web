@@ -1,15 +1,15 @@
-export interface Product {
+import { insertProductSchema } from "@/lib/validators";
+import { z } from "zod"
+
+export type Product = z.infer<typeof insertProductSchema> & {
   id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-  images: string[];
-  description: string;
-  longDescription: string;
-  options?: string[];
-  features: string[];
-  materials: string[];
-  deliveryTime: string;
-  popularity?: number;
+  rating: string;
+  numReviews: number;
+  popularity: number;
+  createdAt: string;
 }
+
+export type DeliveryFee = {
+  lag: number;
+  nationwide: number;
+};

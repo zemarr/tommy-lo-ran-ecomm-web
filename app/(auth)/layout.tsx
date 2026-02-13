@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Rooted in culture. Tailored for now. Discover contemporary menswear inspired by African heritage, crafted with intentional artistry and timeless elegance.',
 }
 
-export default function CollectionsRootLayout({
+export default function AuthRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -20,7 +20,7 @@ export default function CollectionsRootLayout({
       <body className="font-sans antialiased">
         <Header />
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   )

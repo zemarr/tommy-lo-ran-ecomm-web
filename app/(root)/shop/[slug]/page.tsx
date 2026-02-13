@@ -3,7 +3,7 @@ import { ProductDetails } from "@/components/product-details";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
-import { getProductBySlug } from "@/lib/actions/product.actions";
+import { getProductBySlug } from "@/actions/product.actions";
 import { Suspense } from "react";
 
 interface ProductPageProps {

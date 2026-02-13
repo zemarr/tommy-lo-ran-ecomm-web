@@ -1,18 +1,11 @@
 'use server';
 import { prisma } from "@/db/prisma";
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "@/lib/constants";
-import { convertToPlainObject, formatError } from "@/lib/utils";
+import { convertToPlainObject, formatError, normalizeProduct } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
-import {
-  // Product,
-  // InsertProductSchema,
-  // UpdateProductSchema
-} from "@/types";
-import { Prisma } from "@/lib/generated/prisma/client"
-import { Product } from "../generated/prisma/client";
 
 // get latest products
-export async function getLatestProducts(): Promise<Product[]> {
+export async function getLatestProducts() {
   try {
     const products = await prisma.product.findMany({
       orderBy: { createdAt: "desc" },
@@ -38,7 +31,15 @@ export async function getProductBySlug(slug: string) {
     return null;
   }
 
-  return convertToPlainObject(product);
+  const safeData = {
+    ...product,
+    care: product.care ?? "",
+    fit: product.fit ?? "",
+    deliveryFee: product.deliveryFee as { lag: number; nationwide: number } | null,
+    createdAt: product.createdAt.toDateString()
+  };
+
+  return convertToPlainObject(safeData);
 }
 
 // get product by id
@@ -48,6 +49,8 @@ export async function getProductById(productId: string) {
       id: productId,
     },
   });
+
+  if (!product) return null; // product not found
 
   return convertToPlainObject(product);
 }
@@ -115,7 +118,14 @@ export async function getAllProducts() {
       createdAt: 'desc'
     },
   });
-  const data = convertToPlainObject(queryData)
+  const safeData = queryData.map(product => ({
+    ...product,
+    care: product.care ?? "",
+    fit: product.fit ?? "",
+    deliveryFee: product.deliveryFee as { lag: number; nationwide: number } | null,
+    createdAt: product.createdAt.toDateString()
+  }));
+  const data = convertToPlainObject(safeData)
   // const dataCount = await prisma.product.count();
 
   return {
@@ -218,15 +228,15 @@ export async function getAllCategories() {
 }
 
 // get featured products
-export async function getFeaturedProducts() {
-  const data = await prisma.product.findMany({
-    where: {
-      isFeatured: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-    take: 4,
-  });
-  return convertToPlainObject(data);
-}
+// export async function getFeaturedProducts() {
+//   const data = await prisma.product.findMany({
+//     where: {
+//       isFeatured: true,
+//     },
+//     orderBy: {
+//       createdAt: 'desc',
+//     },
+//     take: 4,
+//   });
+//   return convertToPlainObject(data);
+// }

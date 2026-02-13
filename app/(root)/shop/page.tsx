@@ -2,7 +2,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import ProductSearch, { SearchSkeleton } from "@/components/shared/product-search";
 import { Suspense } from "react";
-import { getAllProducts } from "@/lib/actions/product.actions";
+import { getAllProducts } from "@/actions/product.actions";
 import { ShopClient } from "./components/shop-client-wrapper";
 
 export default async function ShopPage() {
@@ -32,7 +32,7 @@ export default async function ShopPage() {
             {/* <ShopSearch onSearch={setSearchQuery} /> */}
           </Suspense>
           {/* Main Content - Filters + Products */}
-          <ShopClient products={products.data} />
+          <ShopClient products={(products.data)} />
         </div>
       </main>
       <Footer />
