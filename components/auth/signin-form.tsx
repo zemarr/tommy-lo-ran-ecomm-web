@@ -53,7 +53,7 @@ export default function SignInForm() {
             name="email"
             type="email"
             placeholder="you@example.com"
-            autoComplete="name"
+            autoComplete="email"
             required
           />
         </div>

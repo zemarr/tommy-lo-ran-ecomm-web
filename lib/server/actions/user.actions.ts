@@ -4,7 +4,7 @@ import {
   // paymentMethodSchema,
   // shippingAddressSchema,
   signInFormSchema,
-  // signUpFormSchema,
+  signUpFormSchema,
   // updateUserSchema
 } from "@/lib/validators";
 import { auth, signIn, signOut } from "@/auth";
@@ -52,48 +52,48 @@ export async function signInUserWithCredentials(prevState: unknown, formData: Fo
     };
   }
 }
-// sign in user with credentials
-// export async function signUpUserWithCredentials(prevState: unknown, formData: FormData) {
-//   try {
-//     const user = signUpFormSchema.parse({
-//       name: formData.get('name'),
-//       email: formData.get('email'),
-//       password: formData.get('password'),
-//       confirmPassword: formData.get('confirmPassword'),
-//     })
+// sign up user with credentials
+export async function signUpUserWithCredentials(prevState: unknown, formData: FormData) {
+  try {
+    const user = signUpFormSchema.parse({
+      name: formData.get('name'),
+      email: formData.get('email'),
+      password: formData.get('password'),
+      confirmPassword: formData.get('confirmPassword'),
+    })
 
-//     const plainPassword = user.password
+    const plainPassword = user.password
 
-//     user.password = hashSync(user.password, 10);
+    user.password = hashSync(user.password, 10);
 
-//     await prisma.user.create({
-//       data: {
-//         name: user.name,
-//         email: user.email,
-//         password: user.password,
-//       }
-//     })
+    await prisma.user.create({
+      data: {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+      }
+    })
 
-//     await signIn('credentials', {
-//       email: user.email,
-//       password: plainPassword,
-//     });
+    await signIn('credentials', {
+      email: user.email,
+      password: plainPassword,
+    });
 
-//     return {
-//       success: true,
-//       message: 'User registered successfully',
-//     };
-//   } catch (error) {
-//     // handle validation error
-//     if (isRedirectError(error)) {
-//       throw error;
-//     }
-//     return {
-//       success: false,
-//       message: formatError(error),
-//     };
-//   }
-// }
+    return {
+      success: true,
+      message: 'User registered successfully',
+    };
+  } catch (error) {
+    // handle validation error
+    if (isRedirectError(error)) {
+      throw error;
+    }
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
 
 // get user by id
 export async function getUserById(userId: string) {

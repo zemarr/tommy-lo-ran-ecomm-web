@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useFormStatus } from 'react-dom'
 import { useSearchParams } from 'next/navigation'
+import { signUpUserWithCredentials } from '@/lib/server/actions/user.actions'
 
 const SignUpButton = () => {
   const { pending } = useFormStatus();
@@ -27,10 +28,10 @@ export default function SignUpForm() {
   const params = useSearchParams();
   const callbackUrl = params.get('callbackUrl') || '/';
 
-  // const [data, action] = useActionState(signUpUserWithCredentials, {
-  //   success: false,
-  //   message: '',
-  // });
+  const [data, action] = useActionState(signUpUserWithCredentials, {
+    success: false,
+    message: '',
+  });
 
 
   return (
@@ -42,7 +43,7 @@ export default function SignUpForm() {
         </p>
       </div>
 
-      <form className="space-y-4">
+      <form action={action} className="space-y-4">
         <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">
@@ -55,7 +56,6 @@ export default function SignUpForm() {
             placeholder="John Doe"
             autoComplete="name"
             required
-            defaultValue={""}
           />
         </div>
 
@@ -68,8 +68,8 @@ export default function SignUpForm() {
             name="email"
             type="email"
             placeholder="you@example.com"
+            autoComplete="email"
             required
-            autoComplete="name"
           />
         </div>
 
@@ -82,8 +82,8 @@ export default function SignUpForm() {
             name="password"
             type="password"
             placeholder="••••••••"
+            autoComplete="password"
             required
-            autoComplete="name"
           />
         </div>
 
@@ -96,7 +96,7 @@ export default function SignUpForm() {
             name="confirmPassword"
             type="password"
             placeholder="••••••••"
-            autoComplete="name"
+            autoComplete="confirmPassword"
             required
           />
         </div>
