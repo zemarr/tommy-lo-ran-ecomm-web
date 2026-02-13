@@ -1,9 +1,9 @@
-import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import ProductSearch, { SearchSkeleton } from "@/components/shared/product-search";
 import { Suspense } from "react";
-import { getAllProducts } from "@/actions/product.actions";
+import { getAllProducts } from "@/lib/server/actions/product.actions";
 import { ShopClient } from "./components/shop-client-wrapper";
+import Header from "@/components/shared/header/header";
 
 export default async function ShopPage() {
   const products = await getAllProducts();

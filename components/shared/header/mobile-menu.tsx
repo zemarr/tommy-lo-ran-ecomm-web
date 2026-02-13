@@ -1,0 +1,61 @@
+'use client'
+
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const navigation = [
+  { name: "Our Story", href: "/#story" },
+  { name: "Our Collection", href: "/#collections" },
+  { name: "Services", href: "/#services" },
+  // { name: "Craftsmanship", href: "/#craftsmanship" },
+];
+
+
+const MobileMenu = ({ user }: { user: any }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" aria-label="Open menu">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-full h-screen sm:w-80 bg-background border-l border-border px-8 py-16">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-col gap-3 pt-8 border-t border-border">
+              <Link href="/shop" className="flex items-center justify-center w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-5" onClick={() => setIsOpen(false)}>
+                Shop Now
+              </Link>
+              <div className="flex items-center justify-between gap-2">
+                {!user && (
+                  <Link href="/sign-in" className="flex items-center justify-center w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-5" onClick={() => setIsOpen(false)}>
+                    Sign in
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
+  )
+}
+
+export default MobileMenu
