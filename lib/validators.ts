@@ -23,3 +23,9 @@ export const insertProductSchema = z.object({
   stock: z.coerce.number(),
   deliveryTime: z.string().min(5, "Description must not be less than 5 characters"),
 });
+
+// schema for signing users in
+export const signInFormSchema = z.object({
+  email: z.string().email('Invalid email address').min(3, 'Email must be at least 3 characters').max(255),
+  password: z.string().min(6, 'Password must be at least 6 characters').max(255),
+});

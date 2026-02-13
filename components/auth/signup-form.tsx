@@ -1,57 +1,37 @@
 'use client'
 
-import { useState } from 'react'
+import { useActionState, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useFormStatus } from 'react-dom'
+import { useSearchParams } from 'next/navigation'
 
-export default function SignUp() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+const SignUpButton = () => {
+  const { pending } = useFormStatus();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
+  return (
+    <Button
+      type="submit"
+      size={"lg"}
+      variant={"default"}
+      className="w-full rounded-sm py-6"
+      disabled={pending}
+    >
+      {pending ? 'Signing up...' : 'Sign up'}
+    </Button>
+  );
+}
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError('')
+export default function SignUpForm() {
+  const params = useSearchParams();
+  const callbackUrl = params.get('callbackUrl') || '/';
 
-    // Validation
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      setError('All fields are required')
-      return
-    }
+  // const [data, action] = useActionState(signUpUserWithCredentials, {
+  //   success: false,
+  //   message: '',
+  // });
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match')
-      return
-    }
-
-    if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters')
-      return
-    }
-
-    // Simulate sign up
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      // In a real app, you would call an API here
-      console.log('Sign up:', formData)
-      // Redirect or show success message
-    }, 1000)
-  }
 
   return (
     <div className="space-y-6">
@@ -62,13 +42,8 @@ export default function SignUp() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <div className="rounded-lg bg-destructive/10 p-4 text-sm text-destructive">
-            {error}
-          </div>
-        )}
-
+      <form className="space-y-4">
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">
             Full Name
@@ -78,9 +53,9 @@ export default function SignUp() {
             name="name"
             type="text"
             placeholder="John Doe"
-            value={formData.name}
-            onChange={handleChange}
+            autoComplete="name"
             required
+            defaultValue={""}
           />
         </div>
 
@@ -93,9 +68,8 @@ export default function SignUp() {
             name="email"
             type="email"
             placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange}
             required
+            autoComplete="name"
           />
         </div>
 
@@ -108,9 +82,8 @@ export default function SignUp() {
             name="password"
             type="password"
             placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
             required
+            autoComplete="name"
           />
         </div>
 
@@ -123,15 +96,12 @@ export default function SignUp() {
             name="confirmPassword"
             type="password"
             placeholder="••••••••"
-            value={formData.confirmPassword}
-            onChange={handleChange}
+            autoComplete="name"
             required
           />
         </div>
 
-        <Button type="submit" disabled={loading} className="w-full rounded-sm py-6">
-          {loading ? 'Creating Account...' : 'Create Account'}
-        </Button>
+        <SignUpButton />
       </form>
 
       <p className="text-center text-sm text-muted-foreground">

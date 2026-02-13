@@ -42,7 +42,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         leaveTo="opacity-0"
       >
         <div
-          className="backdrop fixed inset-0 bg-charcoal/40 z-40"
+          className="backdrop fixed h-screen inset-0 bg-charcoal/40 z-9999"
           onClick={onClose}
         />
       </Transition>
@@ -57,12 +57,12 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         leaveFrom="translate-x-0"
         leaveTo="translate-x-full"
       >
-        <div className="fixed right-0 top-0 h-full w-full max-w-md bg-background z-100 flex flex-col shadow-2xl">
+        <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-background z-10000 flex flex-col shadow-2xl">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border">
             <div className="flex items-center gap-3">
               <ShoppingBag className="w-5 h-5 text-gold" />
-              <h2 className="text-sm tracking-[0.1em] uppercase text-foreground">
+              <h2 className="text-sm tracking-widest uppercase text-foreground">
                 Your Cart
               </h2>
               {totalItems > 0 && (
