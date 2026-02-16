@@ -19,7 +19,7 @@ const SignInPage = async (props: {
 
   if (session) {
     // If the user is already signed in, redirect them to the home page
-    return redirect(callbackUrl || '/');
+    return redirect(callbackUrl || '/shop');
   }
 
   return (

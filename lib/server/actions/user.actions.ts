@@ -18,6 +18,7 @@ import { refresh, revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "@/lib/constants";
 import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { getMyCart } from "./cart.actions";
 
 // sign in user with credentials
 export async function signInUserWithCredentials(prevState: unknown, formData: FormData) {
@@ -39,7 +40,6 @@ export async function signInUserWithCredentials(prevState: unknown, formData: Fo
       };
     }
 
-    redirect("/");
   } catch (error) {
     // handle validation error
     if (isRedirectError(error)) {
@@ -210,7 +210,15 @@ export async function updateProfile(user: { name: string; email: string }) {
 
 // sign user out
 export async function signOutUser() {
-  await signOut()
+  // const currentCart = await getMyCart();
+  // console.log('current cart', currentCart)
+  // if (currentCart) {
+  //   await prisma.cart.delete({
+  //     where: { id: currentCart?.id }
+  //   });
+  // }
+  await signOut();
+  revalidatePath('/shop');
 }
 
 // get all the users

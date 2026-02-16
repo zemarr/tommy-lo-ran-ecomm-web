@@ -20,7 +20,7 @@ export function AddToCartButton({
   const { addItem, updateQuantity, items } = useCartStore();
 
   const cartItem = useMemo(() => {
-    return items.find((item) => item.product.id === product.id);
+    return items?.find((item) => item.product.id === product.id);
   }, [items, product.id]);
 
   const handleAddToCart = () => {

@@ -1,6 +1,6 @@
 import { neonConfig, Pool } from '@neondatabase/serverless';
 import { PrismaNeon } from '@prisma/adapter-neon';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import ws from 'ws';
 
 // Sets up WebSocket connections, which enables Neon to use WebSocket communication.
@@ -29,32 +29,28 @@ export const prisma = new PrismaClient({ adapter })
           },
         },
       },
-      // cart: {
-      //   itemsPrice: {
-      //     needs: { itemsPrice: true },
-      //     compute(cart) {
-      //       return cart.itemsPrice != null ? cart.itemsPrice.toString() : '0';
-      //     }
-      //   },
-      //   shippingPrice: {
-      //     needs: { shippingPrice: true },
-      //     compute(cart) {
-      //       return cart.shippingPrice != null ? cart.shippingPrice.toString() : '0';
-      //     }
-      //   },
-      //   taxPrice: {
-      //     needs: { taxPrice: true },
-      //     compute(cart) {
-      //       return cart.taxPrice != null ? cart.taxPrice.toString() : '0';
-      //     }
-      //   },
-      //   totalPrice: {
-      //     needs: { totalPrice: true },
-      //     compute(cart) {
-      //       return cart.totalPrice != null ? cart.totalPrice.toString() : '0';
-      //     }
-      //   }
-      // },
+      cart: {
+        itemsPrice: {
+          compute(cart) {
+            return cart.itemsPrice != null ? cart.itemsPrice.toString() : '0.00';
+          },
+        },
+        shippingPrice: {
+          compute(cart) {
+            return cart.shippingPrice != null ? cart.shippingPrice.toString() : '0.00';
+          },
+        },
+        taxPrice: {
+          compute(cart) {
+            return cart.taxPrice != null ? cart.taxPrice.toString() : '0.00';
+          },
+        },
+        totalPrice: {
+          compute(cart) {
+            return cart.totalPrice != null ? cart.totalPrice.toString() : '0.00';
+          },
+        },
+      },
       // order: {
       //   itemsPrice: {
       //     needs: { itemsPrice: true },

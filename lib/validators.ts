@@ -41,3 +41,65 @@ export const signUpFormSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
+
+export const cartProductSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  category: z.string(),
+  price: z.string(),
+  rating: z.string(),
+  numReviews: z.number(),
+  stock: z.number(),
+  images: z.array(z.string()),
+  description: z.string(),
+  longDescription: z.string(),
+  features: z.array(z.string()),
+  materials: z.array(z.string()),
+  deliveryTime: z.string(),
+  popularity: z.number(),
+  createdAt: z.union([z.date(), z.string()]).transform(val =>
+    val instanceof Date ? val.toISOString() : val
+  ),
+  updatedAt: z.union([z.date(), z.string(), z.null()]).transform(val =>
+    val === null ? null : (val instanceof Date ? val.toISOString() : val)
+  ),
+  care: z.string().nullable(),
+  deliveryFee: z
+    .object({
+      lag: z.number(),
+      nationwide: z.number(),
+    })
+    .nullable(),
+  fit: z.string().nullable(),
+});
+
+/**
+ * Cart item schema — matches Zustand store
+ */
+export const cartItemSchema = z.object({
+  productId: z.string().min(1), // `${product.id}-${Date.now()}`
+  product: cartProductSchema,
+  quantity: z
+    .number()
+    .int()
+    .positive("Quantity must be greater than 0"),
+});
+
+/**
+ * Entire cart schema (for server validation)
+ */
+export const cartSchema = z.object({
+  id: z.string(),
+  items: z.array(cartItemSchema),
+});
+
+export const insertCartSchema = z.object({
+  userId: z.string().optional().nullable(),
+  sessionCartId: z.string().min(1),
+  items: z.array(cartItemSchema).default([]),
+  itemsPrice: z.string().regex(/^\d+(\.\d{2})?$/), // decimal with 2 places
+  taxPrice: z.string().regex(/^\d+(\.\d{2})?$/),
+  shippingPrice: z.string().regex(/^\d+(\.\d{2})?$/),
+  totalPrice: z.string().regex(/^\d+(\.\d{2})?$/),
+});
