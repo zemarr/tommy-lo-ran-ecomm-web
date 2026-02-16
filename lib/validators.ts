@@ -103,3 +103,14 @@ export const insertCartSchema = z.object({
   shippingPrice: z.string().regex(/^\d+(\.\d{2})?$/),
   totalPrice: z.string().regex(/^\d+(\.\d{2})?$/),
 });
+
+export const shippingAddressSchema = z.object({
+  fullName: z.string().min(3, "First name is required"),
+  streetAddress: z.string().min(3, "First name is required"),
+  city: z.string().min(3, "First name is required"),
+  state: z.string().min(3, "First name is required"),
+  postalCode: z.string().min(3, "First name is required"),
+  country: z.string().min(3, "First name is required"),
+  lng: z.string().optional(),
+  lat: z.string().optional(),
+})
