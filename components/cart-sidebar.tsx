@@ -6,6 +6,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -13,9 +14,16 @@ interface CartSidebarProps {
 }
 
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } = useCartStore();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, initializeCart } = useCartStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
+
+  useEffect(() => {
+    initializeCart();
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -82,12 +90,15 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
           {/* Items Container */}
           <div className="flex-1 overflow-y-auto">
-            {items.length === 0 ? (
+            {(items?.length === 0 || items === undefined) ? (
               <div className="flex flex-col items-center justify-center h-full p-6 text-center">
                 <ShoppingBag className="w-12 h-12 text-muted-foreground/30 mb-4" />
                 <p className="text-muted-foreground mb-4">Your cart is empty</p>
                 <Button
-                  onClick={onClose}
+                  onClick={() => {
+                    router.push("/shop");
+                    onClose()
+                  }}
                   className="bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs px-6 py-6"
                 >
                   Continue Shopping
@@ -95,9 +106,9 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               </div>
             ) : (
               <div className="p-6 space-y-6">
-                {items.map((item, itemIdx) => (
+                {items?.map((item, itemIdx) => (
                   <div
-                    key={item.id}
+                    key={item.productId}
                     className="border-b border-border pb-6 last:border-b-0"
                   >
                     {/* Product Info */}
@@ -167,7 +178,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
           </div>
 
           {/* Footer */}
-          {items.length > 0 && (
+          {items?.length > 0 && (
             <div className="border-t border-border p-6 space-y-3">
               {/* Total */}
               <div className="flex items-center justify-between pb-4 border-b border-border">
@@ -180,7 +191,9 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               </div>
 
               {/* Checkout */}
-              <Link href="/checkout" onClick={onClose} className="block">
+              <Link href={`/checkout`}
+                onClick={onClose}
+                className="block">
                 <Button className="w-full py-6 bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs">
                   Proceed to Checkout
                 </Button>

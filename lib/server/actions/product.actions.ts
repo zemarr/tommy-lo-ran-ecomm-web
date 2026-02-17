@@ -36,7 +36,8 @@ export async function getProductBySlug(slug: string) {
     care: product.care ?? "",
     fit: product.fit ?? "",
     deliveryFee: product.deliveryFee as { lag: number; nationwide: number } | null,
-    createdAt: product.createdAt.toDateString()
+    createdAt: product.createdAt.toDateString(),
+    // updatedAt: product.updatedAt.toDateString()
   };
 
   return convertToPlainObject(safeData);
@@ -123,7 +124,8 @@ export async function getAllProducts() {
     care: product.care ?? "",
     fit: product.fit ?? "",
     deliveryFee: product.deliveryFee as { lag: number; nationwide: number } | null,
-    createdAt: product.createdAt.toDateString()
+    createdAt: product.createdAt,
+    // updatedAt: product.updatedAt.toDateString()
   }));
   const data = convertToPlainObject(safeData)
   // const dataCount = await prisma.product.count();

@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   title: 'Sign In',
   description: 'Sign in to your account',
 }
+
 // This is the main entry point for the sign-in page
+
 const SignInPage = async (props: {
   searchParams: Promise<{
     callbackUrl: string
