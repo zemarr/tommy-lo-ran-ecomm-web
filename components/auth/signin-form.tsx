@@ -27,6 +27,7 @@ const SignInButton = () => {
 export default function SignInForm() {
   const params = useSearchParams();
   const callbackUrl = params.get('callbackUrl') || '/';
+  // console.log(callbackUrl)
 
   const [data, action] = useActionState(signInUserWithCredentials, {
     success: false,
@@ -36,9 +37,9 @@ export default function SignInForm() {
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h2 className="text-2xl font-medium tracking-tight">Create Your Account</h2>
+        <h2 className="text-2xl font-medium tracking-tight">Welcome back</h2>
         <p className="text-muted-foreground text-sm">
-          Join our community of fashion enthusiasts
+          Log in to your account
         </p>
       </div>
 
@@ -53,7 +54,7 @@ export default function SignInForm() {
             name="email"
             type="email"
             placeholder="you@example.com"
-            autoComplete="name"
+            autoComplete="email"
             required
           />
         </div>
@@ -82,7 +83,7 @@ export default function SignInForm() {
 
       <p className="text-center text-sm text-muted-foreground">
         Don't have an account?{' '}
-        <Link href="/sign-up" className="font-medium text-accent-foreground hover:text-accent/80">
+        <Link href={`/sign-up${callbackUrl.length >= 2 ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`} target='_self' className="font-medium text-accent-foreground hover:text-accent/80">
           Sign up
         </Link>
       </p>

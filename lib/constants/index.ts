@@ -75,16 +75,17 @@ export const DEFAULT_SIGNUP_VALUES = {
 export const NAIRA_SIGN = `&#8358;`
 export const DOLLAR_SIGN = `$`
 export const shippingAddressDefaultValues = {
-  fullName: "",
+  fullname: "",
   streetAddress: "",
   city: "",
+  state: "",
   postalCode: "",
   country: "",
-  lng: "",
-  lat: "7"
+  // lng: "",
+  // lat: "7"
 };
 export const PROTECTED_ROUTES = [
-  /\/shipping-address/,
+  /\/checkout/,
   /\/payment-method/,
   /\/place-order/,
   /\/profile/,
@@ -92,7 +93,7 @@ export const PROTECTED_ROUTES = [
   /\/order\/(.*)/,
   /\/admin/,
 ];
-export const PAYMENT_METHODS = process.env.PAYMENT_METHODS ? process.env.PAYMENT_METHODS.split(', ') : [ "Paystack", "Paypal", "Stripe", "PayOnDelivery" ]
+export const PAYMENT_METHODS = process.env.PAYMENT_METHODS ? process.env.PAYMENT_METHODS.split(', ') : ["Paystack", "Paypal", "Stripe", "PayOnDelivery"]
 export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD || "Paypal"
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10;
 export const PRODUCT_DEFAULT_VALUES = {
@@ -109,7 +110,7 @@ export const PRODUCT_DEFAULT_VALUES = {
   isFeatured: false,
   banner: null,
 }
-export const USER_ROLES = process.env.USER_ROLES ? process.env.USER_ROLES.split(', ') : [ "admin", "user" ]
+export const USER_ROLES = process.env.USER_ROLES ? process.env.USER_ROLES.split(', ') : ["admin", "user"]
 export const REVIEW_FORM_DEFAULT_VALUES = {
   title: "",
   comment: "",

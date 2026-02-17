@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx"
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 import qs from 'query-string'
-import { DeliveryFee, Product } from "@/types";
+import { CartItem, DeliveryFee, Product } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -189,8 +189,8 @@ export function koboToNaira(kobo: number): number {
   return kobo / 100;
 }
 
-export function calculateCartPricesClient(items: { price: number | string, quantity: number }[]) {
-  const itemsPrice = Math.round(items.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0) * 100) / 100,
+export function calculateCartPricesClient(items: CartItem[]) {
+  const itemsPrice = Math.round(items.reduce((acc, item) => acc + Number(item.product.price) * item.quantity, 0) * 100) / 100,
     shippingPrice = Math.round((itemsPrice > 100 ? 0 : 10) * 100) / 100,
     taxPrice = Math.round((0.075 * itemsPrice) * 100) / 100,
     totalPrice = Math.round((itemsPrice + shippingPrice + taxPrice) * 100) / 100;
