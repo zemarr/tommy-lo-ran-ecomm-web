@@ -3,7 +3,7 @@ import CheckoutForm from "@/components/checkout/checkout-form";
 import OrderSummary from "@/components/checkout/order-summary";
 import { getMyCart } from "@/lib/server/actions/cart.actions";
 import { getUserById } from "@/lib/server/actions/user.actions";
-import { ShippingAddress } from "@/types";
+import { baseUrl } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
@@ -11,7 +11,7 @@ import { Suspense } from "react";
 export default async function CheckoutPage() {
   const cart = await getMyCart();
 
-  if (!cart || cart.items.length === 0) redirect('/cart');
+  if (!cart || cart.items.length === 0) redirect('/shop');
 
   const session = await auth();
 
@@ -21,7 +21,7 @@ export default async function CheckoutPage() {
 
   if (!userId) throw new Error('No user id');
 
-  const user = await getUserById(userId);
+  const user = await getUserById(userId)
 
   return (
     <div className="min-h-screen bg-background">

@@ -31,7 +31,9 @@ export const useCartStore = create<CartStore>((set, get) => ({
     // set({ loading: true, error: null });
     try {
       const cart = await getMyCart();
-      set({ items: cart?.items });
+      console.log(cart)
+
+      set({ items: cart?.items ?? [] });
     } catch (error) {
       // set({ error: 'Failed to load cart', loading: false });
     }
@@ -47,6 +49,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   addItem: async (product: Product, quantity = 1) => {
     const { items, getProductStock } = get();
+    const previousItems = items ? [...items] : []; // snapshot
+
     set({ pendingProductId: product.id });
 
     // 1. Check current stock
@@ -82,7 +86,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
     set({ items: updatedItems, pendingProductId: null });
 
     // 3. Schedule server sync
-    scheduleCartUpdateSyncToServer(product.id);
+    scheduleCartUpdateSyncToServer(product.id, previousItems);
   },
 
   removeItem: (productId: string) => {
@@ -138,7 +142,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
  * Schedule a sync for a specific product after a short debounce.
  * Cancels any pending sync for the same product.
  */
-async function scheduleCartUpdateSyncToServer(productId: string) {
+async function scheduleCartUpdateSyncToServer(productId: string, previousItems?: CartItem[]) {
+  const store = useCartStore.getState();
   // Clear existing timer
   if (syncTimers.has(productId)) {
     clearTimeout(syncTimers.get(productId)!);
@@ -147,27 +152,25 @@ async function scheduleCartUpdateSyncToServer(productId: string) {
 
   const timeout = setTimeout(async () => {
     try {
-      const latestItems = useCartStore.getState().items;
-      const latestItem = latestItems?.find(i => i.productId === productId);
+      const { items } = useCartStore.getState();
+      const latestItem = items?.find(i => i.productId === productId);
+
+      let result;
 
       if (latestItem) {
-        // Item still exists → sync its current quantity (addToCart sets exact quantity)
-        const result = await addToCart(latestItem.productId, latestItem.quantity);
-        if (!result.success) {
-          console.error('Sync failed:', result.message);
-          await refreshCartFromServer();
-        }
+        result = await addToCart(latestItem.productId, latestItem.quantity);
       } else {
-        // Item removed from client → remove from server
-        const result = await removeFromCart(productId);
-        if (!result.success) {
-          console.error('Remove failed:', result.message);
-          // await refreshCartFromServer();
-        }
+        result = await removeFromCart(productId);
+      }
+
+      if (!result.success) {
+        console.error("Sync failed:", result.message);
+
+        // 🔥 Rollback
+        useCartStore.setState({ items: previousItems });
       }
     } catch (error) {
       console.error('Sync error:', error);
-      // await refreshCartFromServer();
     } finally {
       syncTimers.delete(productId);
     }

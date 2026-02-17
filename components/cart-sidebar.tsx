@@ -6,6 +6,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -13,6 +14,8 @@ interface CartSidebarProps {
 }
 
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, initializeCart } = useCartStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
@@ -92,7 +95,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                 <ShoppingBag className="w-12 h-12 text-muted-foreground/30 mb-4" />
                 <p className="text-muted-foreground mb-4">Your cart is empty</p>
                 <Button
-                  onClick={onClose}
+                  onClick={() => {
+                    router.push("/shop");
+                    onClose()
+                  }}
                   className="bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs px-6 py-6"
                 >
                   Continue Shopping
@@ -185,7 +191,9 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               </div>
 
               {/* Checkout */}
-              <Link href="/checkout" onClick={onClose} className="block">
+              <Link href={`/checkout`}
+                onClick={onClose}
+                className="block">
                 <Button className="w-full py-6 bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs">
                   Proceed to Checkout
                 </Button>

@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   title: 'Sign In',
   description: 'Sign in to your account',
 }
+
 // This is the main entry point for the sign-in page
+
 const SignInPage = async (props: {
   searchParams: Promise<{
     callbackUrl: string
@@ -19,7 +21,7 @@ const SignInPage = async (props: {
 
   if (session) {
     // If the user is already signed in, redirect them to the home page
-    return redirect(callbackUrl || '/shop');
+    return redirect(callbackUrl || '/');
   }
 
   return (

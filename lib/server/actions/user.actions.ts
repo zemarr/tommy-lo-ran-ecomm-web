@@ -13,45 +13,35 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "../../../db/prisma";
 import { formatError } from "@/lib/utils";
-// import { ShippingAddress } from "../../../types";
-import { z } from "zod";
-import { refresh, revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "@/lib/constants";
 import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { getMyCart } from "./cart.actions";
 import { ShippingAddress } from "@/types";
+import { AuthError } from "next-auth";
 
 // sign in user with credentials
 export async function signInUserWithCredentials(prevState: unknown, formData: FormData) {
   try {
     const user = signInFormSchema.parse({
-      email: formData.get('email'),
-      password: formData.get('password'),
-    })
-
-    const res = await signIn("credentials", {
-      ...user,
-      redirect: false, // 🔥 More Control
+      email: formData.get("email"),
+      password: formData.get("password"),
     });
 
-    if (!res || res.error) {
+    await signIn("credentials", {
+      ...user
+    });
+
+    return { success: true, message: "Log in successful." };
+  } catch (error) {
+    if (error instanceof AuthError) {
       return {
         success: false,
-        message: "Invalid credentials",
+        message: "Invalid email or password.",
       };
     }
 
-  } catch (error) {
-    // handle validation error
-    if (isRedirectError(error)) {
-      throw error;
-    }
-    console.error('Error signing in:', error);
-    return {
-      success: false,
-      message: 'Something went wrong',
-    };
+    throw error; // rethrow redirect errors
   }
 }
 // sign up user with credentials

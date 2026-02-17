@@ -8,7 +8,6 @@ import { Cart, CartItem } from '@/types';
 import { convertToPlainObject, roundToTwoDecimalPlaces } from '@/lib/utils';
 import { cookies } from 'next/headers';
 import { prisma } from '@/db/prisma';
-import { randomUUID } from 'crypto';
 
 // calculate cart prices
 export async function calculateCartPrices(items: CartItem[]) {
@@ -46,7 +45,7 @@ export async function getSessionCartId() {
   let sessionCartId = cookieStore.get('sessionCartId')?.value;
 
   if (!sessionCartId) {
-    sessionCartId = randomUUID();
+    sessionCartId = crypto.randomUUID();
     cookieStore.set('sessionCartId', sessionCartId, {
       httpOnly: true,
       sameSite: 'lax',
@@ -61,6 +60,10 @@ export async function getSessionCartId() {
 export async function addToCart(productId: string, quantity: number) {
   try {
     const sessionCartId = await getSessionCartId();
+
+    // if there is no cart cookie, create a new one
+    if (!sessionCartId) throw new Error('Cart session not found');
+
     const session = await auth();
     const userId = session?.user?.id;
 
@@ -69,13 +72,12 @@ export async function addToCart(productId: string, quantity: number) {
     const product = await prisma.product.findUnique({
       where: { id: productId },
     });
+
     if (!product) throw new Error('Product not found');
     if (product.stock < quantity) throw new Error('Not enough stock');
 
-    // Find existing cart
-    let cart = await prisma.cart.findFirst({
-      where: { sessionCartId },
-    });
+    // get cart from db
+    const cart = await getMyCart();
 
     // Prepare the new item (full product object snapshot – optional, but we'll use current product)
     const newItem = {
@@ -108,7 +110,6 @@ export async function addToCart(productId: string, quantity: number) {
         items: updatedItems,
         ...prices,
       });
-      console.log(newCart, 'new cat')
       await prisma.cart.create({ data: newCart });
     } else {
       // Update existing cart
@@ -127,10 +128,11 @@ export async function addToCart(productId: string, quantity: number) {
 
       updatedItems = currentItems;
       const prices = await calculateCartPrices(updatedItems);
+      // save cart to db
       await prisma.cart.update({
         where: { id: cart.id },
         data: {
-          items: convertToPlainObject(updatedItems) as CartItem[], // Prisma.JsonValue
+          items: convertToPlainObject(updatedItems) as CartItem[],
           ...prices,
         },
       });
@@ -154,9 +156,11 @@ export async function updateCartItemQuantity(productId: string, quantity: number
     const userId = session?.user?.id;
 
     if (quantity < 0) throw new Error('Quantity cannot be negative');
+    // get user cart from db
     const cart = await prisma.cart.findFirst({
       where: { sessionCartId },
     });
+
     if (!cart) throw new Error('Cart not found');
 
     const items = cart.items as CartItem[];
@@ -206,17 +210,21 @@ export async function getMyCart() {
   // get session and user id
   const session = await auth();
   const userId = session?.user?.id ? (session.user.id as string) : undefined;
-  const cartId = { sessionCartId: sessionCartId };
-  // console.log({ sessionCartId: sessionCartId }, { userId: userId })
+
   const cart = await prisma.cart.findFirst({
-    where: cartId,
+    where: {
+      OR: [
+        userId ? { userId } : undefined,
+        { sessionCartId }
+      ].filter(Boolean) as any,
+    },
   });
 
   if (!cart) return null;
 
   // Optionally refresh product data in items (to ensure latest prices)
   const items = cart.items;
-  // You could refresh each product's current data here
+  // We could refresh each product's current data here
   // For simplicity, we return stored items; client can refresh if needed
 
   return convertToPlainObject({

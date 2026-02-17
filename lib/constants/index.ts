@@ -75,17 +75,17 @@ export const DEFAULT_SIGNUP_VALUES = {
 export const NAIRA_SIGN = `&#8358;`
 export const DOLLAR_SIGN = `$`
 export const shippingAddressDefaultValues = {
-  fullname: "Jean Dea",
-  streetAddress: "8394 Millyway Drive",
-  city: "New York",
-  state: "New York",
-  postalCode: "949402",
-  country: "United States",
+  fullname: "",
+  streetAddress: "",
+  city: "",
+  state: "",
+  postalCode: "",
+  country: "",
   // lng: "",
   // lat: "7"
 };
 export const PROTECTED_ROUTES = [
-  /\/shipping-address/,
+  /\/checkout/,
   /\/payment-method/,
   /\/place-order/,
   /\/profile/,

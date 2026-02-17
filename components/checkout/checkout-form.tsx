@@ -23,8 +23,6 @@ export default function CheckoutForm({ user }: { user: User }) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  console.log(user)
-
   const [isPending, startTransition] = useTransition();
 
   const stepParam = searchParams.get('step')
