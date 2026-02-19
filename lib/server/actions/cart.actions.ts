@@ -228,6 +228,7 @@ export async function getMyCart() {
   // For simplicity, we return stored items; client can refresh if needed
 
   return convertToPlainObject({
+    ...cart,
     items: items as CartItem[],
     id: cart?.id,
   });

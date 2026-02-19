@@ -1,6 +1,6 @@
 'use server';
-// import { prisma } from "@/../db/prisma";
 import {
+  paymentMethodSchema,
   shippingAddressSchema,
   // paymentMethodSchema,
   // shippingAddressSchema,
@@ -19,6 +19,7 @@ import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { ShippingAddress } from "@/types";
 import { AuthError } from "next-auth";
+import z from "zod";
 
 // sign in user with credentials
 export async function signInUserWithCredentials(prevState: unknown, formData: FormData) {
@@ -131,41 +132,41 @@ export async function updateUserAddress(data: ShippingAddress) {
 }
 
 // update user's payment method
-// export async function updateUserPaymentMethod(data: z.infer<typeof paymentMethodSchema>) {
-//   try {
+export async function updateUserPaymentMethod(data: z.infer<typeof paymentMethodSchema>) {
+  try {
 
-//     const session = await auth();
-//     const currentUser = await prisma.user.findFirst({
-//       where: {
-//         id: session?.user?.id
-//       }
-//     })
+    const session = await auth();
+    const currentUser = await prisma.user.findFirst({
+      where: {
+        id: session?.user?.id
+      }
+    })
 
-//     if (!currentUser) throw new Error('User not found');
-//     const paymentMethod = paymentMethodSchema.parse(data);
+    if (!currentUser) throw new Error('User not found');
+    const paymentMethod = paymentMethodSchema
+      .parse(data);
 
-//     await prisma.user.update({
-//       where: {
-//         id: currentUser?.id
-//       },
-//       data: { paymentMethod: paymentMethod?.type }
-//     })
+    await prisma.user.update({
+      where: {
+        id: currentUser?.id
+      },
+      data: { paymentMethod: paymentMethod?.type }
+    })
 
-//     return {
-//       success: true,
-//       message: 'User updated successfully'
-//     }
+    return {
+      success: true,
+      message: 'User updated successfully'
+    }
 
-//   } catch (error) {
-//     return {
-//       success: false,
-//       message: formatError(error),
-//     };
-//   }
-// }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
 
 // update user profile
-
 export async function updateProfile(user: { name: string; email: string }) {
   try {
     const session = await auth();

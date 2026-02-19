@@ -21,7 +21,7 @@ export default async function CheckoutPage() {
 
   if (!userId) throw new Error('No user id');
 
-  const user = await getUserById(userId)
+  const user = await getUserById(userId);
 
   return (
     <div className="min-h-screen bg-background">

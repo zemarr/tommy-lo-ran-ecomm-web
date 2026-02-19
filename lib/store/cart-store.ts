@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { CartItem, Product } from '@/types';
-import { addToCart, getMyCart, removeFromCart } from '../server/actions/cart.actions';
+import { addToCart, clearCart, getMyCart, removeFromCart } from '../server/actions/cart.actions';
 import { getProductById } from '../server/actions/product.actions';
 
 // Timer map for debounced sync (per product)
@@ -28,10 +28,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
   productStock: {},
 
   initializeCart: async () => {
-    // set({ loading: true, error: null });
     try {
       const cart = await getMyCart();
-      console.log(cart)
 
       set({ items: cart?.items ?? [] });
     } catch (error) {
@@ -114,7 +112,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
     scheduleCartUpdateSyncToServer(productId);
   },
 
-  clearCart: () => {
+  clearCart: async () => {
     // Cancel all pending timers
     for (const [id, timer] of syncTimers) {
       clearTimeout(timer);
@@ -122,6 +120,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
     }
     set({ items: [] });
     // Optionally call server clearCart action here
+    await clearCart();
   },
 
   getTotalPrice: () => {
