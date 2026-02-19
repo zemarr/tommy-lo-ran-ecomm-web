@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { formatNumberToDecimal } from "./utils";
+import { PAYMENT_METHODS } from "./constants";
 
 const currency = z.string()
   .refine((value) => /^\d+(\.\d{2})?$/.test(formatNumberToDecimal(Number(value))), "Price is required and must have 2 decimal places (i.e 5000.00)")
@@ -113,4 +114,51 @@ export const shippingAddressSchema = z.object({
   country: z.string().min(3, "First name is required"),
   lng: z.string().optional(),
   lat: z.string().optional(),
-})
+});
+
+// schema for payment method
+export const paymentMethodSchema = z.object({
+  type: z.string().min(1, 'Payment method is required'),
+}).refine((data) => PAYMENT_METHODS.includes(data.type), {
+  path: [ 'type' ],
+  message: 'Invalid payment method',
+});
+
+// Schema for an OrderItem
+export const insertOrderItemSchema = z.object({
+  productId: z.string().uuid(),
+  quantity: z.number().int().min(1),
+  price: currency,
+  name: z.string().min(1),
+  slug: z.string().min(1),
+  image: z.string().url(),
+});
+
+// Schema for an Order
+export const insertOrderSchema = z.object({
+  userId: z.string().uuid(),
+  shippingAddress: shippingAddressSchema,
+  paymentMethod: z.string().min(1),
+  paymentResult: z.any().optional(),
+
+  itemsPrice: currency,
+  shippingPrice: currency,
+  taxPrice: currency,
+  totalPrice: currency,
+
+  isPaid: z.boolean().optional(),
+  paidAt: z.date().optional(),
+  isDelivered: z.boolean().optional(),
+  deliveredAt: z.date().optional(),
+
+  orderItems: z.array(insertOrderItemSchema).optional(),
+});
+
+// schema for payment
+export const paymentResultSchema = z.object({
+  id: z.string(),
+  status: z.string(),
+  // update_time: z.string(),
+  email_address: z.string(),
+  pricePaid: z.string(),
+});

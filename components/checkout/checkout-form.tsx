@@ -1,87 +1,21 @@
 'use client'
 
-import { useState, useTransition } from 'react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import Link from 'next/link'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { useCartStore } from '@/lib/store/cart-store'
-import { ShippingAddress, User } from '@/types'
-import { ControllerRenderProps, SubmitHandler, useForm } from 'react-hook-form'
-import z from 'zod'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { shippingAddressSchema } from '@/lib/validators'
-import { shippingAddressDefaultValues } from '@/lib/constants'
-import { updateUserAddress } from '@/lib/server/actions/user.actions'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { useSearchParams } from 'next/navigation'
+import PaymentForm from './payment-form'
+import ShippingForm from './shipping-form'
 
 const steps = ['shipping', 'payment', 'confirmation'] as const
 type Step = typeof steps[number]
 
-export default function CheckoutForm({ user }: { user: User }) {
-  const { clearCart } = useCartStore()
-  const router = useRouter()
+export default function CheckoutForm({ user }: { user: any }) {
   const searchParams = useSearchParams()
-
-  const [isPending, startTransition] = useTransition();
 
   const stepParam = searchParams.get('step')
   const step: Step = steps.includes(stepParam as Step)
     ? (stepParam as Step)
     : 'shipping'
-
-  const [formData, setFormData] = useState({
-    // Payment
-    cardName: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvc: '',
-  })
-
-  const [loading, setLoading] = useState(false)
-
-  const form = useForm<z.infer<typeof shippingAddressSchema>>({
-    resolver: zodResolver(shippingAddressSchema),
-    defaultValues: user?.address || shippingAddressDefaultValues,
-  })
-
-  const goToStep = (step: Step) => {
-    router.push(`?step=${step}`)
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  const handleShippingSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (values: any) => {
-    startTransition(async () => {
-      const res = await updateUserAddress(values);
-
-      if (!res.success) {
-        console.log(res.message);
-        // toast(res.message)
-        return;
-      }
-
-      // router.push("/payment-method");
-      goToStep('payment')
-    })
-  }
-
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    // Simulate payment processing
-    setTimeout(() => {
-      setLoading(false)
-      goToStep('confirmation')
-      clearCart()
-    }, 2000)
-  }
 
   const isActive = (target: Step) =>
     steps.indexOf(step) >= steps.indexOf(target)
@@ -149,241 +83,12 @@ export default function CheckoutForm({ user }: { user: User }) {
 
       {/* Shipping Form */}
       {step === 'shipping' && (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleShippingSubmit)} className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-1">
-              {/* <div className="space-y-2">
-                <label className="text-sm font-medium">Full Name</label>
-                <Input
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  required
-                  className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-                />
-              </div> */}
-              <div className="flex flex-col md:flex-row  gap-5">
-                <FormField
-                  control={form.control}
-                  name="fullName"
-                  render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'fullName'> }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter full name" {...field} className='py-6 shadow-sm rounded-sm md:text-base text-sm' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            {/* <div className="space-y-2">
-              <label className="text-sm font-medium">Address</label>
-              <Input
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-                className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-              />
-            </div> */}
-            <div className="flex flex-col md:flex-row  gap-5">
-              <FormField
-                control={form.control}
-                name="streetAddress"
-                render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'streetAddress'> }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>Street Address</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your street address" {...field} className='py-6 shadow-sm rounded-sm md:text-base text-sm' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              {/* <div className="space-y-2">
-                <label className="text-sm font-medium">City</label>
-                <Input
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                  className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-                />
-              </div> */}
-              <div className="flex flex-col md:flex-row  gap-5">
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'city'> }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel>City</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter your city" {...field} className='py-6 shadow-sm rounded-sm md:text-base text-sm' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              {/* <div className="space-y-2">
-                <label className="text-sm font-medium">State/Province</label>
-                <Input
-                  name="state"
-                  value={formData.state}
-                  onChange={handleChange}
-                  required
-                  className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-                />
-              </div> */}
-              <div className="flex flex-col md:flex-row  gap-5">
-                <FormField
-                  control={form.control}
-                  name="state"
-                  render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'state'> }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel>State/Province</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter your state" {...field} className='py-6 shadow-sm rounded-sm md:text-base text-sm' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              {/* <div className="space-y-2">
-                <label className="text-sm font-medium">ZIP/Postal Code</label>
-                <Input
-                  name="zipCode"
-                  value={formData.zipCode}
-                  onChange={handleChange}
-                  required
-                  className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-                />
-              </div> */}
-              <div className="flex flex-col md:flex-row  gap-5">
-                <FormField
-                  control={form.control}
-                  name="postalCode"
-                  render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'postalCode'> }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel>Zip/Postal Code</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter zip/postal code" {...field} className='py-6 shadow-sm rounded-sm md:text-base text-sm' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              {/* <div className="space-y-2">
-                <label className="text-sm font-medium">Country</label>
-                <Input
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                  required
-                  className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-                />
-              </div> */}
-              <div className="flex flex-col md:flex-row  gap-5">
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'country'> }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel>Country</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter country" {...field} className='py-6 shadow-sm rounded-sm md:text-base text-sm' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <Button type="submit" className="w-full text-xs rounded-sm py-6 mt-4 uppercase tracking-widest">
-              Continue to Payment
-            </Button>
-          </form>
-        </Form>
+        <ShippingForm user={user} />
       )}
 
       {/* Payment Form */}
       {step === 'payment' && (
-        <form onSubmit={handlePaymentSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Cardholder Name</label>
-            <Input
-              name="cardName"
-              value={formData.cardName}
-              onChange={handleChange}
-              placeholder="John Doe"
-              required
-              className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Card Number</label>
-            <Input
-              name="cardNumber"
-              value={formData.cardNumber}
-              onChange={handleChange}
-              placeholder="4242 4242 4242 4242"
-              required
-              className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-            />
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Expiry Date</label>
-              <Input
-                name="expiryDate"
-                value={formData.expiryDate}
-                onChange={handleChange}
-                placeholder="MM/YY"
-                required
-                className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">CVC</label>
-              <Input
-                name="cvc"
-                value={formData.cvc}
-                onChange={handleChange}
-                placeholder="123"
-                required
-                className="py-6 shadow-sm rounded-sm md:text-base text-sm"
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1 text-xs rounded-sm py-6 mt-4 uppercase tracking-widest"
-              onClick={() => goToStep('shipping')}
-            >
-              Back
-            </Button>
-            <Button type="submit" disabled={loading} className="flex-1 text-xs rounded-sm py-6 mt-4 uppercase tracking-widest">
-              {loading ? 'Processing...' : 'Place Order'}
-            </Button>
-          </div>
-        </form>
+        <PaymentForm user={user} />
       )}
     </div>
   )

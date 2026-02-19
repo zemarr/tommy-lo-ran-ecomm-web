@@ -93,8 +93,8 @@ export const PROTECTED_ROUTES = [
   /\/order\/(.*)/,
   /\/admin/,
 ];
-export const PAYMENT_METHODS = process.env.PAYMENT_METHODS ? process.env.PAYMENT_METHODS.split(', ') : ["Paystack", "Paypal", "Stripe", "PayOnDelivery"]
-export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD || "Paypal"
+export const PAYMENT_METHODS = process.env.PAYMENT_METHODS ? process.env.PAYMENT_METHODS.split(', ') : ["Paystack", "Paypal", "PayOnDelivery"]
+export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD || "Paystack"
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10;
 export const PRODUCT_DEFAULT_VALUES = {
   name: "",

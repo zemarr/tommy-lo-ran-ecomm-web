@@ -9,17 +9,10 @@ import { cookies } from "next/headers";
 import { PROTECTED_ROUTES } from "./lib/constants";
 import { calculateCartPrices } from "./lib/server/actions/cart.actions";
 import { CartItem } from "./types";
+import { authConfig } from "./auth.config";
 
 export const config = {
-  pages: {
-    signIn: '/sign-in',
-    error: '/sign-in'
-  },
-  session: {
-    strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
-  },
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentiialsProvider({
@@ -102,7 +95,7 @@ export const config = {
 
           if (!sessionCart) return token;
 
-          const userCart = await prisma.cart.findFirst({
+          let userCart = await prisma.cart.findFirst({
             where: { userId: user.id },
           });
 
@@ -182,42 +175,6 @@ export const config = {
         token.name = session.user.name
       }
       return token;
-    },
-    authorized({
-      request,
-      auth
-    }: any) {
-      // Array of regex patterns for paths we want to protect
-      const protectedPaths = PROTECTED_ROUTES;
-
-      // get path name from the request url object
-      const { pathname } = request.nextUrl;
-
-      // if user is not authenticated and accessing a protected path
-      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false; //this would send the user to '/sign-in
-
-      // check for session cart cookie
-      if (!request.cookies.get("sessionCartId")) {
-
-        // generate neew session cart id cookie
-        const sessionCartId = crypto.randomUUID();
-
-        // create new response and add the new headers containing the session cart id
-        // and set the cookie
-        const newRequestHeaders = new Headers(request.headers);
-        const response = NextResponse.next({
-          request: {
-            headers: newRequestHeaders,
-          },
-        });
-
-        // generate a new session cart id and store in the response cookie
-        response.cookies.set("sessionCartId", sessionCartId);
-
-        return response;
-      } else {
-        return true
-      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
