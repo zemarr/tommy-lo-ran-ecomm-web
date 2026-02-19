@@ -27,7 +27,6 @@ const SignInButton = () => {
 export default function SignInForm() {
   const params = useSearchParams();
   const callbackUrl = params.get('callbackUrl') || '/';
-  // console.log(callbackUrl)
 
   const [data, action] = useActionState(signInUserWithCredentials, {
     success: false,
