@@ -18,8 +18,13 @@ import {
 } from '@/lib/server/actions/order.actions'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { PaystackButton } from 'react-paystack'
 import { CheckCircle } from 'lucide-react'
+import dynamic from 'next/dynamic'
+
+const PaystackButton = dynamic(
+  () => import('react-paystack').then(mod => mod.PaystackButton),
+  { ssr: false }
+)
 
 
 const OrderDetailsTable = ({ order, paypalClientId, paystackPublicKey, isAdmin }: { order: Omit<Order, 'paymentResult'>; paypalClientId: string; paystackPublicKey: string | null; isAdmin: boolean; }) => {
@@ -236,7 +241,7 @@ const OrderDetailsTable = ({ order, paypalClientId, paystackPublicKey, isAdmin }
             </CardContent>
           </Card>
         </div>
-        <div className={"col-span-2"}>
+        <div className={"md:col-span-1 col-span-2"}>
           <Card className="rounded-sm">
             <CardContent className='px-4 gap-4 space-y-4 text-sm'>
               <div className="flex justify-between px-3 rounded-sm w-full">
