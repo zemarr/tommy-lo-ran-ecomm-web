@@ -3,6 +3,8 @@ import { prisma } from "@/db/prisma";
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "@/lib/constants";
 import { convertToPlainObject, formatError, normalizeProduct } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@prisma/client";
+import type { Product } from "@/types";
 
 // get latest products
 export async function getLatestProducts() {
@@ -74,65 +76,81 @@ export async function getProductById(productId: string) {
 //     rating?: string;
 //     sort?: string;
 //   }) {
-export async function getAllProducts() {
+// get all products
+export async function getAllProducts({
+  query,
+  limit = PAGE_SIZE,
+  page,
+  category,
+  price,
+  rating,
+  sort
+}: {
+  query?: string;
+  limit?: number;
+  page: number;
+  category?: string;
+  price?: string;
+  rating?: string;
+  sort?: string;
+}): Promise<{ data: Product[]; totalPages: number }> {
   // query filter
-  // const queryFilter: Prisma.ProductWhereInput = query && query !== '' ? {
-  //   name: {
-  //     contains: query,
-  //     mode: 'insensitive'
-  //   } as Prisma.StringFilter,
-  // } : {};
+  const queryFilter: Prisma.ProductWhereInput = query && query !== 'all' ? {
+    name: {
+      contains: query,
+      mode: 'insensitive'
+    } as Prisma.StringFilter,
+  } : {};
   // category filter
-  // const categoryFilter = category && category !== 'all' ? { category } : {};
+  const categoryFilter = category && category !== 'all' ? { category } : {};
   // price filter
-  // const priceFilter: Prisma.ProductWhereInput = price && price !== 'all' ? {
-  //   price: {
-  //     gte: Number(price.split('-')[0]),
-  //     lte: Number(price.split('-')[1])
-  //   }
-  // } : {};
+  const priceFilter: Prisma.ProductWhereInput = price && price !== 'all' ? {
+    price: {
+      gte: Number(price.split('-')[ 0 ]),
+      lte: Number(price.split('-')[ 1 ])
+    }
+  } : {};
   // rating filter
-  // const ratingFilter = rating && rating !== 'all' ? {
-  //   rating: {
-  //     gte: Number(rating)
-  //   }
-  // } : {};
+  const ratingFilter = rating && rating !== 'all' ? {
+    rating: {
+      gte: Number(rating)
+    }
+  } : {};
 
-  const queryData = await prisma.product.findMany({
-    // where: {
-    //   ...queryFilter,
-    //   ...categoryFilter,
-    //   ...priceFilter,
-    //   ...ratingFilter
-    // },
-    // orderBy: sort === 'lowest' ? {
-    //   price: 'asc'
-    // } : sort === 'highest' ? {
-    //   price: 'desc'
-    // } : sort === 'rating' ? {
-    //   rating: 'desc'
-    // } : {
-    //   createdAt: 'desc'
-    // },
-    // skip: (page - 1) * limit,
-    orderBy: {
+  const products = await prisma.product.findMany({
+    where: {
+      ...queryFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter
+    },
+    orderBy: sort === 'lowest' ? {
+      price: 'asc'
+    } : sort === 'highest' ? {
+      price: 'desc'
+    } : sort === 'rating' ? {
+      rating: 'desc'
+    } : {
       createdAt: 'desc'
     },
+    skip: (page - 1) * limit,
+    take: limit,
   });
-  const safeData = queryData.map(product => ({
-    ...product,
-    care: product.care ?? "",
-    fit: product.fit ?? "",
-    deliveryFee: product.deliveryFee as { lag: number; nationwide: number } | null,
-    createdAt: product.createdAt,
-    // updatedAt: product.updatedAt.toDateString()
-  }));
-  const data = convertToPlainObject(safeData)
-  // const dataCount = await prisma.product.count();
+  const dataCount = await prisma.product.count();
 
   return {
-    data,
-    // totalPages: Math.ceil(dataCount / limit),
+    data: convertToPlainObject(
+      products.map((product) =>
+        normalizeProduct({
+          ...product,
+          price: product.price.toString(),
+          rating: product.rating.toString(),
+          createdAt: product.createdAt.toISOString(),
+          updatedAt: product.updatedAt ? product.updatedAt.toISOString() : "",
+        }),
+      ),
+    ),
+    totalPages: Math.ceil(dataCount / limit),
   };
 }
 

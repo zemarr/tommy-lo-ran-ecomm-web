@@ -220,7 +220,7 @@ export async function getMyCart() {
     },
   });
 
-  if (!cart) return null;
+  if (!cart) return undefined;
 
   // Optionally refresh product data in items (to ensure latest prices)
   const items = cart.items;

@@ -1,15 +1,12 @@
-'use client'
-
-import { useCartStore } from '@/lib/store/cart-store'
-import Image from 'next/image'
 import Price from '../shared/price'
+import { Cart, Order, User } from '@prisma/client'
+import { Button } from '../ui/button'
+import OrderItemsComponent from './order-items-component'
+import { getOrderById } from '../../lib/server/actions/order.actions';
 
-export default function OrderSummary() {
-  const { items, getTotalPrice } = useCartStore()
-  const total = getTotalPrice()
-  const shipping = total > 0 ? 0 : 0 // Free shipping for demo
-  const tax = Math.round(total * 0.1 * 100) / 100 // 10% tax
-  const finalTotal = total + shipping + tax
+export default async function OrderSummary({ cart, user, callbackUrl, orderId }: { cart?: Cart | null, user?: User | null, callbackUrl?: string; orderId?: string; }) {
+
+  const order = await getOrderById(orderId as string);
 
   return (
     <div className="space-y-6">
@@ -17,33 +14,7 @@ export default function OrderSummary() {
         <h3 className="mb-4 font-semibold">Order Summary</h3>
 
         {/* Items */}
-        <div className="space-y-4 border-b border-border pb-4">
-          {items.map((item) => (
-            <div key={item.productId} className="flex gap-4">
-              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary">
-                <Image
-                  src={item.product.images[0]}
-                  alt={item.product.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold text-sm">{item.product.name}</p>
-                <p className="text-xs font-medium text-muted-foreground">Qty: {item.quantity}</p>
-                <div className="text-sm font-semibold text-accent">
-                  {/* {(Number(item.product.price) * item.quantity).toLocaleString()} */}
-                  <Price
-                    className="text-xs"
-                    amount={(Number(item.product.price) * item.quantity).toString()}
-                    currencyCode={"NGN"}
-                    currencyCodeClassName="hidden @[275px]/label:inline"
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <OrderItemsComponent />
 
         {/* Totals */}
         <div className="space-y-3 pt-4">
@@ -51,7 +22,7 @@ export default function OrderSummary() {
             <span className="text-muted-foreground">Subtotal</span>
             <Price
               className="text-sm font-medium"
-              amount={total.toString()}
+              amount={cart?.itemsPrice?.toString() || '0.00'}
               currencyCode={"NGN"}
               currencyCodeClassName="hidden @[275px]/label:inline"
             />
@@ -67,7 +38,7 @@ export default function OrderSummary() {
             {/* <span>${tax.toLocaleString()}</span> */}
             <Price
               className="text-sm font-medium"
-              amount={tax.toString()}
+              amount={cart?.taxPrice?.toString() || '0.00'}
               currencyCode={"NGN"}
               currencyCodeClassName="hidden @[275px]/label:inline"
             />
@@ -77,7 +48,7 @@ export default function OrderSummary() {
             {/* <span className="text-lg text-accent">${finalTotal.toLocaleString()}</span> */}
             <Price
               className="text-sm font-medium"
-              amount={finalTotal.toString()}
+              amount={cart?.totalPrice?.toString() || '0.00'}
               currencyCode={"NGN"}
               currencyCodeClassName="hidden @[275px]/label:inline"
             />

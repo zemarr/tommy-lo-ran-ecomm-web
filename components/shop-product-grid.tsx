@@ -42,7 +42,7 @@ export function ShopProductGrid({
   return (
     <>
       {resultsCount !== undefined && (
-        <p className="text-sm text-muted-foreground mb-8">
+        <p className="text-sm text-muted-foreground my-8">
           Showing {products.length} of {resultsCount} products
         </p>
       )}

@@ -16,7 +16,6 @@ export function ShopSearch({ onSearch }: ShopSearchProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(value)
     setSearchQuery(value);
     onSearch(value);
   };

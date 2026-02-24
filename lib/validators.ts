@@ -107,11 +107,12 @@ export const insertCartSchema = z.object({
 
 export const shippingAddressSchema = z.object({
   fullName: z.string().min(3, "First name is required"),
-  streetAddress: z.string().min(3, "First name is required"),
-  city: z.string().min(3, "First name is required"),
-  state: z.string().min(3, "First name is required"),
-  postalCode: z.string().min(3, "First name is required"),
-  country: z.string().min(3, "First name is required"),
+  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
+  streetAddress: z.string().min(3, "Street address is required"),
+  city: z.string().min(3, "City is required"),
+  state: z.string().min(3, "State is required"),
+  postalCode: z.string().min(3, "Postal code is required"),
+  country: z.string().min(3, "Country is required"),
   lng: z.string().optional(),
   lat: z.string().optional(),
 });
@@ -147,9 +148,9 @@ export const insertOrderSchema = z.object({
   totalPrice: currency,
 
   isPaid: z.boolean().optional(),
-  paidAt: z.date().optional(),
+  paidAt: z.date().optional() || z.string(),
   isDelivered: z.boolean().optional(),
-  deliveredAt: z.date().optional(),
+  deliveredAt: z.date().optional() || z.string(),
 
   orderItems: z.array(insertOrderItemSchema).optional(),
 });
