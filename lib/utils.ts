@@ -27,7 +27,7 @@ export function convertToPlainObject<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
 
-export function normalizeProduct(product: Product) {
+export function normalizeProduct(product: any): Product {
   return {
     ...product,
     care: product.care ?? "",

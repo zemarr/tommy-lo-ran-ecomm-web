@@ -52,7 +52,7 @@ export default async function RootLayout({
             src="https://assets.calendly.com/assets/external/widget.js"
             strategy="afterInteractive"
           />
-          <Analytics />
+          {/* <Analytics /> */}
         </body>
       </SessionProvider>
     </html>

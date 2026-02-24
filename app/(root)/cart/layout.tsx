@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export const revalidate = 0;
 
-export default function CheckoutRootLayout({
+export default function CartRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -18,7 +18,9 @@ export default function CheckoutRootLayout({
   return (
     <div className="font-sans antialiased">
       <Header />
-      {children}
+      <div className={"flex-1 space-y-4 p-4 container mx-auto"}>
+        {children}
+      </div>
       {/* <Footer /> */}
     </div>
   )

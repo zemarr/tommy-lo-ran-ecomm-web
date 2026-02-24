@@ -1,12 +1,30 @@
 import { Footer } from "@/components/footer";
-import ProductSearch, { SearchSkeleton } from "@/components/shared/product-search";
+import ProductSearch from "@/components/shared/product-search";
 import { Suspense } from "react";
 import { getAllProducts } from "@/lib/server/actions/product.actions";
 import { ShopClient } from "./components/shop-client-wrapper";
 import Header from "@/components/shared/header/header";
+import { ShopProductGrid } from "../../../components/shop-product-grid";
 
-export default async function ShopPage() {
-  const products = await getAllProducts();
+export default async function ShopPage(props: {
+  searchParams: Promise<{
+    page: string;
+    query: string;
+    category: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+
+  const page = Number(searchParams.page) || 1;
+  const searchText = searchParams.query || '';
+  const category = searchParams.category || '';
+
+  const products = await getAllProducts({
+    query: searchText,
+    // limit: 2,
+    page,
+    category
+  });
 
   return (
     <>
@@ -27,12 +45,16 @@ export default async function ShopPage() {
           </div>
 
           {/* Search Bar */}
-          <Suspense fallback={<SearchSkeleton />}>
-            <ProductSearch />
-            {/* <ShopSearch onSearch={setSearchQuery} /> */}
-          </Suspense>
+          <ProductSearch />
           {/* Main Content - Filters + Products */}
-          <ShopClient products={(products.data)} />
+          <section className="lg:col-span-3">
+            <Suspense fallback={<div className="w-screen h-screen absolute top-0 left-0 bg-black/20 transition-all"></div>}>
+              <ShopProductGrid
+                products={products.data}
+                resultsCount={products.data.length}
+              />
+            </Suspense>
+          </section>
         </div>
       </main>
       <Footer />
