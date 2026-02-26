@@ -53,6 +53,18 @@ export const TAGS = {
   cart: 'cart'
 };
 
+export const CATEGORIES = [
+  {
+    name: 'RTW Native'
+  },
+  {
+    name: 'RTW Smart Casual'
+  },
+  {
+    name: 'RTW Accessories'
+  },
+]
+
 export const HIDDEN_PRODUCT_TAG = 'nextjs-aevum-hidden';
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Bart Store";

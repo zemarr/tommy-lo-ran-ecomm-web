@@ -1,19 +1,17 @@
 'use client'
-
-// import DeleteDialog from '@/components/shared/action-components/delete-option/delete-dialog'
-// import ProductTableActions from '@/components/shared/action-components/delete-option/product-table-actions'
-// import { useActionComponentStore } from '@/components/shared/action-components/store/action-components-store'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-// import { formatCurrency, formatUUID } from '@/lib/utils'
-// import { deleteProduct } from '@/lib/server/actions/product.actions'
-import React from 'react'
+import { formatCurrency, formatUUID } from '../../../../lib/utils'
+import ProductTableActions from '../../../../components/shared/action-components/delete-option/product-table-actions'
+import { useActionComponentStore } from '../../../../components/shared/action-components/store/action-components-store'
+import DeleteDialog from '../../../../components/shared/action-components/delete-option/delete-dialog'
+import { deleteProduct } from '../../../../lib/server/actions/product.actions'
 
 const ProductsTable = ({ products, page }: { products: any, page: number }) => {
-  // const { deleting, confirmDelete } = useActionComponentStore();
+  const { deleting, confirmDelete } = useActionComponentStore();
 
   return (
     <>
-      {/* <div>
+      <div>
         <Table className='mb-4'>
           <TableHeader>
             <TableRow>
@@ -48,7 +46,7 @@ const ProductsTable = ({ products, page }: { products: any, page: number }) => {
           (deleting?.id && confirmDelete) && (
             <DeleteDialog key={deleting?.id} id={deleting?.id} action={deleteProduct} />)
         }
-      </div> */}
+      </div>
     </>
   )
 }

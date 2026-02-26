@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function CollectionsPage() {
   return (
     <section id="collections" className="py-32 lg:py-48">
-      <div className="mx-auto max-w-10xl px-6 lg:px-14">
+      <div className="">
         {/* Section Header - Minimal */}
         <div className="mb-24 lg:mb-32">
           <p className="text-gold tracking-[0.4em] uppercase text-xs font-medium mb-6">

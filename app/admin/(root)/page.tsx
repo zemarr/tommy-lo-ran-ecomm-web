@@ -1,27 +1,27 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-// import { formatCurrency, formatDateTime, formatNumber } from '@/lib/utils'
-// import { getOrderSummary } from '@/lib/server/actions/order.actions'
+import { formatCurrency, formatDateTime, formatNumber } from '@/lib/utils'
+import { getOrderSummary } from '@/lib/server/actions/order.actions'
 import { BadgeDollarSign, Barcode, CreditCard, Users } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import React from 'react'
 import Charts from '../components/charts'
-// import { requireAdmin } from '@/lib/auth-guard';
+import { requireAdmin } from '@/lib/auth-guard';
 
 export const metadata: Metadata = {
   title: 'Admin dashboard'
 }
 
 const AdminOverviewPage = async () => {
-  // await requireAdmin();
+  await requireAdmin();
 
-  // const summary = await getOrderSummary();
+  const summary = await getOrderSummary();
 
   return (
     <>
-      {/* <div className='space-y-4'>
-        <h1 className='h2-bold'>Dashboard</h1>
+      <div className='space-y-4 mt-30'>
+        <h1 className='mb-2 font-semibold text-xl uppercase!'>Dashboard</h1>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className='gap-0'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -29,7 +29,7 @@ const AdminOverviewPage = async () => {
               <BadgeDollarSign />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-medium">
                 {formatCurrency(summary.totalSales.toString() || 0)}
               </div>
             </CardContent>
@@ -40,7 +40,7 @@ const AdminOverviewPage = async () => {
               <CreditCard />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-medium">
                 {formatNumber(summary.ordersCount)}
               </div>
             </CardContent>
@@ -51,7 +51,7 @@ const AdminOverviewPage = async () => {
               <Users />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-medium">
                 {formatNumber(summary.usersCount)}
               </div>
             </CardContent>
@@ -62,7 +62,7 @@ const AdminOverviewPage = async () => {
               <Barcode />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-medium">
                 {formatNumber(summary.productsCount)}
               </div>
             </CardContent>
@@ -94,7 +94,7 @@ const AdminOverviewPage = async () => {
                     <TableRow key={order.id}>
                       <TableCell>{order?.user?.name ? order.user.name : 'Deleted user'}</TableCell>
                       <TableCell>{formatDateTime(order.createdAt).dateOnly}</TableCell>
-                      <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
+                      <TableCell>{formatCurrency(order.totalPrice.toString())}</TableCell>
                       <TableCell>
                         <Link href={`/order/${order.id}`} className='px-2'>View</Link>
                       </TableCell>
@@ -105,7 +105,7 @@ const AdminOverviewPage = async () => {
             </CardContent>
           </Card>
         </div>
-      </div> */}
+      </div>
     </>
   )
 }

@@ -4,7 +4,8 @@ import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "@/lib/constants";
 import { convertToPlainObject, formatError, normalizeProduct } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
-import type { Product } from "@/types";
+import type { InsertProductSchema, Product, UpdateProductSchema } from "@/types";
+import { insertProductSchema } from "../../validators";
 
 // get latest products
 export async function getLatestProducts() {
@@ -183,28 +184,32 @@ export async function deleteProduct(id: string) {
 }
 
 // create a product
-// export async function createProduct(data: InsertProductSchema) {
-//   try {
-//     const product = {
-//       ...data,
-//       // rating: '0',
-//     };
+export async function createProduct(data: InsertProductSchema) {
+  try {
+    const { deliveryFee, ...product } = data;
 
-//     await prisma.product.create({ data: product as Product });
+    await prisma.product.create({
+      data: {
+        ...product,
+        deliveryFee: deliveryFee
+          ? (deliveryFee as Prisma.InputJsonValue)
+          : Prisma.JsonNull,
+      },
+    });
 
-//     revalidatePath('/admin/products');
+    revalidatePath('/admin/products');
 
-//     return {
-//       success: true,
-//       message: 'Product added successfully',
-//     };
-//   } catch (error) {
-//     return {
-//       success: false,
-//       message: formatError(error),
-//     };
-//   }
-// }
+    return {
+      success: true,
+      message: 'Product added successfully',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
 
 // // update a product
 // export async function updateProduct(data: UpdateProductSchema) {
@@ -247,16 +252,38 @@ export async function getAllCategories() {
   return data;
 }
 
-// get featured products
-// export async function getFeaturedProducts() {
-//   const data = await prisma.product.findMany({
-//     where: {
-//       isFeatured: true,
-//     },
-//     orderBy: {
-//       createdAt: 'desc',
-//     },
-//     take: 4,
-//   });
-//   return convertToPlainObject(data);
-// }
+// update a product
+export async function updateProduct(data: UpdateProductSchema) {
+  try {
+    const product = {
+      ...data,
+      // rating: 0,
+    };
+    const existingProduct = await prisma.product.findFirst({
+      where: { id: product.id },
+    });
+
+    if (!existingProduct) throw new Error('Product not found');
+
+    await prisma.product.update({
+      where: { id: product.id },
+      data: {
+        ...product,
+        popularity: 0,
+        deliveryFee: {}
+      },
+    });
+
+    revalidatePath('/admin/products');
+
+    return {
+      success: true,
+      message: 'Product updated successfully',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}

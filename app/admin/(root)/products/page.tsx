@@ -1,11 +1,12 @@
 // import Pagination from '@/components/shared/pagination/pagination';
 import { Button } from '@/components/ui/button';
 // import { requireAdmin } from '@/lib/auth-guard';
-// import { convertToPlainObject } from '@/lib/utils';
-// import { getAllProducts } from '@/lib/server/actions/product.actions';
+import { convertToPlainObject } from '@/lib/utils';
+import { getAllProducts } from '@/lib/server/actions/product.actions';
 import Link from 'next/link';
 import React from 'react'
 import ProductsTable from '../../components/tables/products-table';
+import Pagination from '../../../../components/shared/pagination/pagination';
 
 const AdminProductsPage = async (props: {
   searchParams: Promise<{
@@ -22,20 +23,20 @@ const AdminProductsPage = async (props: {
   const searchText = searchParams.query || '';
   const category = searchParams.category || '';
 
-  // const products = await getAllProducts({
-  //   query: searchText,
-  //   page,
-  //   category
-  // });
-  // const plainProductObject = products.data.map((product) => convertToPlainObject(product));
+  const products = await getAllProducts({
+    query: searchText,
+    page,
+    category
+  });
+  const plainProductObject = products.data.map((product) => convertToPlainObject(product));
 
 
   return (
     <>
-      {/* <div className='space-y-2'>
-        <div className="flex-between">
+      <div className='space-y-2 mt-30'>
+        <div className="flex items-center justify-between w-full">
           <div className="flex items-end gap-3">
-            <h1 className="h2-bold">Products</h1>
+            <h1 className="mb-2 font-semibold text-xl uppercase!">Products</h1>
             {searchText && (
               <div className='px-2 text-sm text-gray-500'>
                 Filtered by <i>&quot;{searchText}&quot;</i>{" "}
@@ -45,8 +46,8 @@ const AdminProductsPage = async (props: {
               </div>
             )}
           </div>
-          <Button asChild variant={"default"}>
-            <Link href={'/admin/products/create'}>+ Create Product</Link>
+          <Button asChild variant={"outline"} size={"lg"}>
+            <Link href={'/admin/products/create'}>+ Create a product</Link>
           </Button>
 
         </div>
@@ -56,7 +57,7 @@ const AdminProductsPage = async (props: {
             <Pagination page={Number(page) || 1} totalPages={products.totalPages} />
           )
         }
-      </div> */}
+      </div>
     </>
   )
 }

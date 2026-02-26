@@ -17,7 +17,7 @@ export default function CheckoutRootLayout({
   return (
     <div className="font-sans antialiased">
       <Header />
-      <div className={"flex-1 space-y-4 p-4 container mx-auto"}>
+      <div className={"flex-1 space-y-4 mx-auto max-w-10xl px-6 lg:px-14"}>
         {children}
       </div>
       {/* <Footer /> */}

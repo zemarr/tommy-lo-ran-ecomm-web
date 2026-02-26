@@ -37,17 +37,17 @@ export default async function UserMenu() {
 
           <DropdownMenuItem>
             <Link href="/user/profile" className="w-full text-foreground/80">
-              User Profile
+              My Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link href="/user/orders" className="w-full text-foreground/80">
-              Order history
+              My Orders
             </Link>
           </DropdownMenuItem>
           {session?.user?.role === "admin" && (
             <DropdownMenuItem>
-              <Link href="/admin/overview" className="w-full text-foreground/80">
+              <Link href="/admin" className="w-full text-foreground/80">
                 Admin
               </Link>
             </DropdownMenuItem>

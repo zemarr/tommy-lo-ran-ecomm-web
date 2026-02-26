@@ -11,8 +11,8 @@ export const insertProductSchema = z.object({
   category: z.string().min(3, "Category must be at least 3 characters"),
   price: currency,
   images: z.array(z.string()).min(1, "Product must have at least 1 image"),
-  description: z.string().min(150, "Description must not be less than 150 characters"),
-  longDescription: z.string().min(350, "Description must not be less than 350 characters"),
+  description: z.string().min(10, "Description must not be less than 10 characters"),
+  longDescription: z.string().min(30, "Description must not be less than 30 characters"),
   features: z.array(z.string()).min(1, "Product must have at least 1 feature"),
   materials: z.array(z.string()).min(1, "Product must have at least 1 material used"),
   care: z.string().nullable(),
@@ -23,6 +23,7 @@ export const insertProductSchema = z.object({
   }).nullable(),
   stock: z.coerce.number(),
   deliveryTime: z.string().min(5, "Description must not be less than 5 characters"),
+  // popularity: z.coerce.number().default(0)
 });
 
 // schema for signing users in
@@ -162,4 +163,22 @@ export const paymentResultSchema = z.object({
   // update_time: z.string(),
   email_address: z.string(),
   pricePaid: z.string(),
+});
+
+// schema for updating user profile
+export const updateUserProfileSchema = z.object({
+  name: z.string().min(3, 'Name must be at least 3 characters').max(255),
+  email: z.string().email('Invalid email address').min(3, 'Email must be at least 3 characters').max(255),
+  // image: z.string().nullable(),
+});
+
+// update user schema
+export const updateUserSchema = updateUserProfileSchema.extend({
+  id: z.string().min(1, 'User ID is required'),
+  role: z.string().min(1, 'Role is required'),
+});
+
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, 'Product ID is required'),
 });

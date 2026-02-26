@@ -11,9 +11,9 @@ import TommyLoRanText from "./tommy-lo-ran-text";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Shop Products", href: "/admin/shop" },
-  { name: "Analytics", href: "/admin/analytics" },
-  { name: "Edit Contents", href: "/admin/edit-content" },
+  { name: "Shop Products", href: "/admin/products" },
+  // { name: "Analytics", href: "/admin/analytics" },
+  // { name: "Edit Contents", href: "/admin/edit-content" },
 ];
 
 export function AdminHeader() {
