@@ -9,7 +9,9 @@ import { CartItem, PaymentResult } from "../../../types";
 import { insertOrderSchema } from "../../validators";
 import { paystack } from "../../paystack";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_cache } from "next/cache";
+import { PAGE_SIZE } from "../../constants";
+import { Prisma } from "@prisma/client";
 
 export async function createOrder() {
   try {
@@ -333,4 +335,113 @@ export async function deliverOrder(orderId: string) {
       success: false, message: formatError(error)
     }
   }
+}
+
+// GET USER'S ORDERS
+export async function getMyOrders({
+  limit = PAGE_SIZE || 10,
+  page
+}: {
+  limit?: number;
+  page: number
+}) {
+  const session = await auth();
+
+  if (!session) throw new Error('User not authorized');
+
+  const data = await prisma.order.findMany({
+    where: { userId: session.user?.id },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: limit,
+    skip: (page - 1) * limit,
+    // include: {
+    //   orderitems: true,
+    //   user: {
+    //     select: {
+    //       name: true,
+    //       email: true
+    //     }
+    //   }
+    // }
+  });
+
+  const dataCount = await prisma.order.count({
+    where: { userId: session?.user?.id }
+  })
+
+  return {
+    data: convertToPlainObject(data),
+    totalPages: Math.ceil(dataCount / limit)
+  };
+}
+
+// get sales data and order summary
+type SalesDataType = {
+  month: string;
+  totalSales: number;
+}[];
+export async function getOrderSummary() {
+  // get the counts for each resource
+  // Get the total number of orders in the database
+
+  // get cached ordersCount
+  const cachedOrdersCount = unstable_cache(
+    async () => {
+      const ordersCount = await prisma.order.count();
+      return ordersCount;
+    },
+    [ 'cache:orders-count' ], // Cache key
+    // {
+    //   revalidate: 60, // Optional: Revalidate every 60 seconds
+    //   // You can add tags here if you need to revalidate on-demand
+    //   // tags: ['orders'],
+    // }
+  );
+  const ordersCount = await cachedOrdersCount();
+
+  // Get the total number of products in the database
+  const productsCount = await prisma.product.count();
+
+  // Get the total number of users in the database
+  const usersCount = await prisma.user.count();
+  // get the total sales
+  const totalSales = await prisma.order.aggregate({
+    _sum: {
+      totalPrice: true,
+    }
+  });
+
+  // get the total orders by mm/yy from the db
+  const rawSalesData = await prisma.$queryRaw<Array<{ month: string, totalSales: Prisma.Decimal }>>`
+  SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales" FROM "Order" GROUP BY to_char("createdAt", 'MM/YY')
+  `;
+
+  const salesData: SalesDataType = rawSalesData.map(entry => ({
+    month: entry.month,
+    totalSales: Number(entry.totalSales ?? 0), // Fallback to 0 if totalSales is null or undefined
+  }));
+
+  // get latest 5 orders/sales
+  const latestSales = await prisma.order.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      user: {
+        select: { name: true }
+      }
+    },
+    take: 6,
+  });
+
+  return {
+    ordersCount,
+    productsCount,
+    usersCount,
+    totalSales: Number(totalSales._sum.totalPrice),
+    salesData,
+    latestSales
+  };
 }

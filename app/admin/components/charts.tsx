@@ -11,15 +11,15 @@ const Charts = ({ data: { salesData } }: { data: { salesData: { month: string, t
           tickLine={false}
           axisLine={false}
           stroke={'#888'}
-          fontSize={12}
+          fontSize={10}
         />
         <YAxis
           tickLine={false}
-          tickFormatter={(value) => `₦${ value }`}
+          tickFormatter={(value) => `₦${ value.toLocaleString() }`}
           axisLine={false}
           stroke={'#888'}
           fontWeight={600}
-          fontSize={12}
+          fontSize={10}
         />
         <Bar dataKey={'totalSales'} fill='currentColor' radius={[ 14, 14, 0, 0 ]} className='fill-primary' />
       </BarChart>

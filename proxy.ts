@@ -1,21 +1,42 @@
-// proxy.ts
-import { NextRequest, NextResponse } from "next/server"
-import NextAuth from "next-auth"
-import { authConfig } from "./auth.config"
-import { auth } from "./auth"
+// proxy (middleware)
 
-export async function proxy(req: NextRequest) {
-  const session = await auth()
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
-  if (!session && req.nextUrl.pathname.startsWith("/checkout")) {
-    const signInUrl = new URL("/sign-in", req.url)
-    signInUrl.searchParams.set("callbackUrl", "/checkout")
-    return NextResponse.redirect(signInUrl)
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
+  const isAuthenticated = !!req.auth;
+
+  // 🔐 1️⃣ Protect routes using regex patterns
+  if (
+    !isAuthenticated &&
+    PROTECTED_ROUTES.some((pattern) => pattern.test(pathname))
+  ) {
+    const signInUrl = new URL("/sign-in", req.nextUrl.origin);
+    signInUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(signInUrl);
   }
 
-  return NextResponse.next()
-}
+  // 🛒 2️⃣ Ensure sessionCartId cookie exists
+  const sessionCartId = req.cookies.get("sessionCartId");
+
+  if (!sessionCartId) {
+    const response = NextResponse.next();
+
+    response.cookies.set("sessionCartId", crypto.randomUUID(), {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+    });
+
+    return response;
+  }
+
+  return NextResponse.next();
+});
 
 export const config = {
-  matcher: ["/checkout/:path*"],
-}
+  matcher: [ "/((?!api|_next|favicon.ico).*)" ],
+};

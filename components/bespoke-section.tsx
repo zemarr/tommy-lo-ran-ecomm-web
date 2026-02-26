@@ -34,7 +34,7 @@ export function BespokeSection() {
           {/* Left - Image */}
           <div className="aspect-[3/4] overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&h=1100&fit=crop"
+              src="https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7uHJxNpnPQ9n1WNj4TrzSpZbDLevfmcoaUBRs"
               alt="Luxury suit details"
               className="w-full h-full object-cover"
             />

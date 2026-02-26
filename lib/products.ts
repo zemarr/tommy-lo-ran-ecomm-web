@@ -50,7 +50,6 @@ export const collections: Collection[] = [
     image: "/assets/images/specif-duo-9.jpg",
     images: [
       "/assets/images/specif-duo-9.jpg",
-      "/assets/images/specif-duo-8.jpg",
       "/assets/images/specif-duo-1.jpg",
       "/assets/images/specif-duo-4.jpg",
     ],
@@ -198,9 +197,9 @@ export const collections: Collection[] = [
   {
     id: "tlr-ready-to-wear",
     name: "TLR Ready-To-Wear (RTW)",
-    image: "/assets/images/two-piece.png",
+    image: "https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7NMsW90XKmOgtliQehLPkSJqX28RuynxYob6v",
     images: [
-      "/assets/images/two-piece.png",
+      "https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7NMsW90XKmOgtliQehLPkSJqX28RuynxYob6v",
     ],
     description: "Refined casual sophistication",
     longDescription: "Our ready-to-wear outfits are carefully crafted with our primary goal in mind. Varieties are available for purchase.",
@@ -295,11 +294,10 @@ export const collections: Collection[] = [
   {
     id: "caps-scarves-addons",
     name: "Caps, Scarves, Add-ons",
-    image: "/assets/images/scarf-cotton.jpeg",
+    image: "https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7RW43iqY4H9LOfxBy7850VtbgoqaYPNcklzsw",
     images: [
+      "https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7RW43iqY4H9LOfxBy7850VtbgoqaYPNcklzsw",
       "/assets/images/scarf-cotton.jpeg",
-      // "/assets/images/scarf-cotton.jpeg",
-      // "/assets/images/scarf-cotton.jpeg",
     ],
     description: "Impeccable detail",
     longDescription: "The Kensington Shirt exemplifies the art of luxury shirtmaking with precision sizing ensuring a perfect fit. Each shirt features single-needle stitching throughout, hand-sewn buttonholes, and elegant collar styling. The shirts are cut from the finest two-fold cotton fabrics, offering both comfort and longevity.",
