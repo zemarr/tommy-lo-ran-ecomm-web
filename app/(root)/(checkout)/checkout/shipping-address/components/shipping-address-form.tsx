@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Loader } from 'lucide-react'
 import { updateUserAddress } from '@/lib/server/actions/user.actions'
 import { toast } from 'sonner'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../../../components/ui/select'
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const router = useRouter();
@@ -45,7 +46,41 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
       </div>
       <Form {...form}>
         <form method='post' className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-col md:flex-row  gap-5">
+          <div className="flex flex-col md:flex-row gap-5">
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem className="form-item w-full">
+                  <FormLabel>Country</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className={"w-full py-6 text-base"}>
+                        <SelectValue placeholder="Select a country" />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {[ { name: 'Nigeria' }, { name: 'United Kingdom' } ].map((country) => (
+                        <SelectItem
+                          className={"text-base"}
+                          key={country.name}
+                          value={country.name}
+                        >
+                          {country.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex flex-col md:flex-row gap-5">
             <FormField
               control={form.control}
               name="fullName"
@@ -90,7 +125,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
               )}
             />
           </div>
-          <div className="flex flex-col md:flex-row  gap-5">
+          {/* <div className="flex flex-col md:flex-row  gap-5">
             <FormField
               control={form.control}
               name="city"
@@ -134,22 +169,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
                 </FormItem>
               )}
             />
-          </div>
-          <div className="flex flex-col md:flex-row  gap-5">
-            <FormField
-              control={form.control}
-              name="country"
-              render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'country'> }) => (
-                <FormItem className='w-full'>
-                  <FormLabel>Country</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter country" {...field} className={"py-6"} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          </div> */}
           <div className="flex-1 gap-2">
             <Button type='submit' variant={"default"} size={"default"} disabled={isPending} className={"w-full py-6 text-xs tracking-[1] uppercase!"}>{isPending ? (<Loader className='animate-spin h-4 w-4' />) : (<ArrowRight className='w-4 h-4 animate-pulse' />)}{" "}Continue</Button>
           </div>
