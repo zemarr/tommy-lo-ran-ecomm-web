@@ -43,12 +43,16 @@ const MobileMenu = ({ user }: { user: any }) => {
                   {item.name}
                 </Link>
               ))}
-              <Link href="/user/profile" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
-                My Profile
-              </Link>
-              <Link href="/user/orders" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
-                My Orders
-              </Link>
+              {user?.name && (
+                <>
+                  <Link href="/user/profile" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
+                    My Profile
+                  </Link>
+                  <Link href="/user/orders" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
+                    My Orders
+                  </Link>
+                </>
+              )}
               {user?.role === "admin" && <Link href="/admin" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
                 Admin
               </Link>}
