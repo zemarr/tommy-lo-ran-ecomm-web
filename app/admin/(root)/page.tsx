@@ -21,9 +21,9 @@ const AdminOverviewPage = async () => {
   return (
     <>
       <div className='space-y-4 mt-30'>
-        <h1 className='mb-2 font-semibold text-xl uppercase!'>Dashboard</h1>
+        <h1 className='mb-6 font-semibold text-xl uppercase!'>Dashboard</h1>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className='gap-0'>
+          <Card className='gap-0 rounded-md! shadow-sm'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <CardTitle className='text-sm font-medium'>Total Revenue</CardTitle>
               <BadgeDollarSign />
@@ -34,7 +34,7 @@ const AdminOverviewPage = async () => {
               </div>
             </CardContent>
           </Card>
-          <Card className='gap-0'>
+          <Card className='gap-0 rounded-md! shadow-sm'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <CardTitle className='text-sm font-medium'>Total Sales</CardTitle>
               <CreditCard />
@@ -45,7 +45,7 @@ const AdminOverviewPage = async () => {
               </div>
             </CardContent>
           </Card>
-          <Card className='gap-0'>
+          <Card className='gap-0 rounded-md! shadow-sm'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <CardTitle className='text-sm font-medium'>Total Customers</CardTitle>
               <Users />
@@ -56,7 +56,7 @@ const AdminOverviewPage = async () => {
               </div>
             </CardContent>
           </Card>
-          <Card className='gap-0'>
+          <Card className='gap-0 rounded-md! shadow-sm'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <CardTitle className='text-sm font-medium'>Products</CardTitle>
               <Barcode />
@@ -69,7 +69,7 @@ const AdminOverviewPage = async () => {
           </Card>
         </div>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-          <Card className='lg:col-span-4 col-span-3'>
+          <Card className='lg:col-span-4 col-span-3 rounded-md! shadow-sm'>
             <CardHeader>Overview</CardHeader>
             <CardContent>
               <Charts data={{
@@ -77,7 +77,7 @@ const AdminOverviewPage = async () => {
               }} />
             </CardContent>
           </Card>
-          <Card className='col-span-3'>
+          <Card className='col-span-3 rounded-md! shadow-sm'>
             <CardHeader>Recent sales</CardHeader>
             <CardContent className='w-full border! border-espresso/15! overflow-hidden px-2 py-2'>
               <Table>
