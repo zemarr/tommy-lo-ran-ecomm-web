@@ -49,6 +49,9 @@ const AdminMobileMenu = ({ user }: { user: any }) => {
               <Link href="/user/orders" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
                 My Orders
               </Link>
+              <Link href="/admin/orders" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
+                All Orders
+              </Link>
             </div>
             <div className="flex flex-col gap-4 pt-8 border-t border-border">
               <Link href="/shop" className="block" onClick={() => setIsOpen(false)}>

@@ -79,14 +79,14 @@ const AdminOverviewPage = async () => {
           </Card>
           <Card className='col-span-3'>
             <CardHeader>Recent sales</CardHeader>
-            <CardContent className='w-full'>
+            <CardContent className='w-full border! border-espresso/15! overflow-hidden px-2 py-2'>
               <Table>
-                <TableHeader>
+                <TableHeader className={"bg-espresso/10 rounded-md!"}>
                   <TableRow>
                     <TableHead>BUYER</TableHead>
                     <TableHead>DATE</TableHead>
                     <TableHead>TOTAL</TableHead>
-                    <TableHead>ACTIONS</TableHead>
+                    <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -96,7 +96,7 @@ const AdminOverviewPage = async () => {
                       <TableCell>{formatDateTime(order.createdAt).dateOnly}</TableCell>
                       <TableCell>{formatCurrency(order.totalPrice.toString())}</TableCell>
                       <TableCell>
-                        <Link href={`/order/${order.id}`} className='px-2'>View</Link>
+                        <Link href={`/order/${ order.id }`} className='px-2'>View sale</Link>
                       </TableCell>
                     </TableRow>
                   ))}

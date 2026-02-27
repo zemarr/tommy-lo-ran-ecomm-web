@@ -445,3 +445,59 @@ export async function getOrderSummary() {
     latestSales
   };
 }
+
+export async function getAllOrders({
+  query,
+  limit = PAGE_SIZE,
+  page
+}: {
+  query: string;
+  limit?: number;
+  page: number;
+}) {
+
+  const queryFilter: Prisma.OrderWhereInput = query && query !== 'all' ? {
+    user: {
+      name: {
+        contains: query,
+        mode: 'insensitive'
+      } as Prisma.StringFilter
+    }
+  } : {};
+
+  const data = await prisma.order.findMany({
+    where: { ...queryFilter },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    skip: (page - 1) * limit,
+    include: { user: { select: { name: true } }, orderItems: { select: { product: { select: { name: true } } } } }
+  });
+
+  const dataCount = await prisma.order.count();
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit)
+  };
+}
+// delete an order
+export async function deleteOrder(id: string) {
+  try {
+    await prisma.order.delete({
+      where: { id }
+    });
+
+    revalidatePath('/admin/orders');
+
+    return {
+      success: true,
+      message: 'Order deleted successfully',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+
+  }
+}

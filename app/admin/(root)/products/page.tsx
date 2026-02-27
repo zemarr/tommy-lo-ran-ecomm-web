@@ -36,7 +36,7 @@ const AdminProductsPage = async (props: {
       <div className='space-y-2 mt-30'>
         <div className="flex items-center justify-between w-full">
           <div className="flex items-end gap-3">
-            <h1 className="mb-2 font-semibold text-xl uppercase!">Products</h1>
+            <h1 className="mb-2 font-semibold md:text-xl text-lg uppercase!">manage products</h1>
             {searchText && (
               <div className='px-2 text-sm text-gray-500'>
                 Filtered by <i>&quot;{searchText}&quot;</i>{" "}
@@ -47,7 +47,7 @@ const AdminProductsPage = async (props: {
             )}
           </div>
           <Button asChild variant={"outline"} size={"lg"}>
-            <Link href={'/admin/products/create'}>+ Create a product</Link>
+            <Link href={'/admin/products/create'}>+ Create product</Link>
           </Button>
 
         </div>

@@ -4,18 +4,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Ellipsis } from 'lucide-react';
 import Link from 'next/link';
 
-const OrderActions = ({ order }: { order: { id: string; orderitems: [] }; }) => {
+const OrderActions = ({ order }: { order: { id: string; orderItems: any[] }; }) => {
   const { setDeleting, setConfirmDelete } = useActionComponentStore();
 
   const handleDeleteOrder = () => {
     setConfirmDelete(true)
-    setDeleting(order.id, order.orderitems)
+    setDeleting(order.id, order.orderItems)
   }
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger className={"flex items-center justify-center"}>
           <Ellipsis />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
