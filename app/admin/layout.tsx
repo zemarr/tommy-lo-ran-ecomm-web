@@ -1,11 +1,14 @@
-import { AdminHeader } from "@/components/admin-header";
+import { AdminHeader } from "@/components/admin/admin-header";
+import { auth } from "../../auth";
+import { Session } from "next-auth";
 
 
-export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const session = await auth();
   return (
     <>
       <div className="flex flex-col">
-        <AdminHeader />
+        <AdminHeader userSession={session as Session} />
 
         <div className="flex-1 space-y-4 max-w-10xl px-6 lg:px-14">
           {children}

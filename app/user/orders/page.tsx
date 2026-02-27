@@ -22,16 +22,16 @@ const UserOrdersPage = async (props: {
   return (
     <div className='space-y-2 mt-30'>
       <h2 className="mb-2 font-semibold text-xl uppercase!">My Orders</h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto border! border-espresso/15! rounded-md overflow-hidden px-2 py-2">
         <Table className='mb-4'>
-          <TableHeader>
+          <TableHeader className={"bg-espresso/10 rounded-md!"}>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>DATE</TableHead>
-              <TableHead>TOTAL</TableHead>
-              <TableHead>PAID</TableHead>
-              <TableHead>DELIVERED</TableHead>
-              <TableHead>ACTIONS</TableHead>
+              <TableHead className={"font-semibold"}>ID</TableHead>
+              <TableHead className={"font-semibold"}>DATE</TableHead>
+              <TableHead className={"font-semibold"}>TOTAL</TableHead>
+              <TableHead className={"font-semibold"}>PAID</TableHead>
+              <TableHead className={"font-semibold"}>DELIVERED</TableHead>
+              <TableHead className={"flex items-center justify-center font-semibold min-w-[100px]"}></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -42,9 +42,9 @@ const UserOrdersPage = async (props: {
                 <TableCell>{formatCurrency(order.totalPrice.toString())}</TableCell>
                 <TableCell>{order.isPaid && order.paidAt ? formatDateTime(order.paidAt).dateTime : 'Unpaid'}</TableCell>
                 <TableCell>{order.isDelivered && order.deliveredAt ? formatDateTime(order.deliveredAt).dateTime : 'Not delivered'}</TableCell>
-                <TableCell>
+                <TableCell className={"flex items-center justify-center"}>
                   <Link href={`/order/${ order.id }`}>
-                    <span className="px-2">Details</span>
+                    <span className="px-2">View details</span>
                   </Link>
                 </TableCell>
               </TableRow>

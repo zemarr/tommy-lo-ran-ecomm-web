@@ -67,9 +67,9 @@ export const config = {
         token.role = user.role
 
         // if use has no name use the name part of their email
-        if (user.name === "NO_NAME") {
+        if (user.name = "NO_NAME") {
           const email = user.email as string
-          const name = email!.split("@")[0];
+          const name = email!.split("@")[ 0 ];
           token.name = name.charAt(0).toUpperCase() + name.slice(1)
           // update db to refelct tooken name
           await prisma.user.update({
@@ -82,89 +82,31 @@ export const config = {
           })
         }
 
-        // check if trigger is sign in or sign up and get the user's session cart from the users' cookies
+        // check if trigger is sign in or sign up and get  the user's session cart from the users' cookies
         if (trigger === "signIn" || trigger === "signUp") {
-          const cookieStore = await cookies();
-          const sessionCartId = cookieStore.get("sessionCartId")?.value;
+          const cookiesObject = await cookies();
+          const sessionCartId = cookiesObject.get('sessionCartId')?.value;
 
-          if (!sessionCartId) return token;
-
-          const sessionCart = await prisma.cart.findFirst({
-            where: { sessionCartId },
-          });
-
-          if (!sessionCart) return token;
-
-          let userCart = await prisma.cart.findFirst({
-            where: { userId: user.id },
-          });
-
-          if (!userCart) {
-            // 🔥 No existing user cart → assign session cart
-            await prisma.cart.update({
-              where: { id: sessionCart.id },
-              data: { userId: user.id },
-            });
-          } else {
-            // 🔥 Merge carts
-            // 1️⃣ Start with existing user cart items
-            const mergedItems: CartItem[] = [
-              ...(userCart.items as CartItem[]),
-            ];
-
-            // 2️⃣ Normalize session items
-            const sessionItems = sessionCart.items as CartItem[];
-
-            // 3️⃣ Collect all product IDs from session cart
-            const sessionProductIds = sessionItems.map(
-              item => item.productId
-            );
-
-            // 4️⃣ Fetch stock for ALL products in one query
-            const products = await prisma.product.findMany({
-              where: { id: { in: sessionProductIds } },
-              select: { id: true, stock: true },
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: { sessionCartId }
             });
 
-            // 5️⃣ Build quick lookup map
-            const stockMap = new Map(products.map(p => [p.id, p.stock]));
+            if (sessionCart) {
+              // delete current cart for user
+              await prisma.cart.deleteMany({
+                where: {
+                  userId: user.id
+                }
+              })
 
-            // 6️⃣ Merge safely using stockMap
-            for (const sessionItem of sessionItems) {
-              const existingIndex = mergedItems.findIndex(
-                i => i.productId === sessionItem.productId
-              );
-
-              const maxAllowed = stockMap.get(sessionItem.productId) ?? 0;
-
-              if (existingIndex > -1) {
-                const newQty =
-                  mergedItems[existingIndex].quantity + sessionItem.quantity;
-
-                mergedItems[existingIndex].quantity = Math.min(newQty, maxAllowed);
-              } else {
-                mergedItems.push({
-                  ...sessionItem,
-                  quantity: Math.min(sessionItem.quantity, maxAllowed),
-                });
-              }
-            }
-
-            // 7️⃣ Recalculate totals
-            const prices = await calculateCartPrices(mergedItems);
-
-            // 8️⃣ Update user cart
-            await prisma.cart.update({
-              where: { id: userCart.id },
-              data: {
-                items: mergedItems,
-                ...prices,
-              },
-            });
-
-            // 9️⃣ Delete session cart
-            if (sessionCart?.id) {
-              await prisma.cart.delete({ where: { id: sessionCart.id } });
+              // assign new cart
+              await prisma.cart.update({
+                where: {
+                  id: sessionCart.id
+                },
+                data: { userId: user.id },
+              })
             }
           }
         }

@@ -113,7 +113,7 @@ export function formatNumber(number: number) {
 
 // shorten uuid
 export function formatUUID(id: string) {
-  return `..${id.substring(id.length - 6)}`
+  return `${ id.substring(id.length - 6) }..`
 }
 
 // format the date and time string

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import React from 'react'
 import ProductsTable from '../../components/tables/products-table';
 import Pagination from '../../../../components/shared/pagination/pagination';
+import { PlusCircle } from 'lucide-react';
 
 const AdminProductsPage = async (props: {
   searchParams: Promise<{
@@ -34,9 +35,9 @@ const AdminProductsPage = async (props: {
   return (
     <>
       <div className='space-y-2 mt-30'>
-        <div className="flex items-center justify-between w-full">
+        <div className="flex justify-between w-full mb-6">
           <div className="flex items-end gap-3">
-            <h1 className="mb-2 font-semibold text-xl uppercase!">Products</h1>
+            <h1 className="font-semibold md:text-xl text-lg uppercase!">manage products</h1>
             {searchText && (
               <div className='px-2 text-sm text-gray-500'>
                 Filtered by <i>&quot;{searchText}&quot;</i>{" "}
@@ -46,8 +47,8 @@ const AdminProductsPage = async (props: {
               </div>
             )}
           </div>
-          <Button asChild variant={"outline"} size={"lg"}>
-            <Link href={'/admin/products/create'}>+ Create a product</Link>
+          <Button asChild className="bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs px-6 py-5">
+            <Link href={'/admin/products/create'}><PlusCircle size={16} /> Add product</Link>
           </Button>
 
         </div>

@@ -1,7 +1,7 @@
 'use server'
 
 import { auth } from '@/auth';
-import { cartItemSchema, insertCartSchema } from '@/lib/validators';
+import { cartItemSchema, cartProductSchema, insertCartSchema } from '@/lib/validators';
 import { revalidatePath } from 'next/cache';
 import { formatError } from '@/lib/utils';
 import { Cart, CartItem } from '@/types';
@@ -40,95 +40,99 @@ export async function calculateCartPrices(items: CartItem[]) {
   };
 }
 
-export async function getSessionCartId() {
-  const cookieStore = await cookies();
-  let sessionCartId = cookieStore.get('sessionCartId')?.value;
-
-  if (!sessionCartId) {
-    sessionCartId = crypto.randomUUID();
-    cookieStore.set('sessionCartId', sessionCartId, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-    });
-  }
-
-  return sessionCartId;
-}
-
 export async function addToCart(productId: string, quantity: number) {
   try {
-    const sessionCartId = await getSessionCartId();
-
-    // if there is no cart cookie, create a new one
-    if (!sessionCartId) throw new Error('Cart session not found');
+    // 1️⃣ Get cart session
+    const sessionCartId = (await cookies()).get("sessionCartId")?.value;
+    if (!sessionCartId) throw new Error("Cart session not found");
 
     const session = await auth();
-    const userId = session?.user?.id;
+    const userId = session?.user?.id ?? undefined;
 
-    // Validate input
-    if (quantity <= 0) throw new Error('Quantity must be positive');
+    if (quantity <= 0) {
+      throw new Error("Quantity must be greater than zero");
+    }
+
+    // 2️⃣ Fetch product
     const product = await prisma.product.findUnique({
       where: { id: productId },
     });
 
-    if (!product) throw new Error('Product not found');
-    if (product.stock < quantity) throw new Error('Not enough stock');
+    if (!product) throw new Error("Product not found");
 
-    // get cart from db
+    // 3️⃣ Clamp quantity to available stock
+    const finalQuantity = Math.min(quantity, product.stock);
+
+    if (finalQuantity <= 0) {
+      throw new Error("Product out of stock");
+    }
+
+    // 4️⃣ Get existing cart
     const cart = await getMyCart();
-
-    // Prepare the new item (full product object snapshot – optional, but we'll use current product)
-    const newItem = {
-      productId: product.id,
-      product: {
-        ...product, // careful: product has Decimal price, convert to string if needed
-        id: product.id,
-        name: product.name,
-        slug: product.slug,
-        price: product.price.toString(),
-        images: product.images,
-        stock: product.stock,
-        // include other fields as needed by cartProductSchema
-      },
-      quantity,
-    };
-
-    // Validate item structure
-    const validatedItem = cartItemSchema.parse(newItem);
 
     let updatedItems: CartItem[];
 
+    // 5️⃣ Shape minimal cart snapshot (NEVER spread full product)
+    const cartProductSnapshot = {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      price: product.price.toString(),
+      images: product.images ?? [],
+      stock: product.stock,
+    };
+
+    const parsedProduct = cartProductSchema.safeParse(cartProductSnapshot);
+    if (!parsedProduct.success) {
+      console.error(parsedProduct.error.flatten());
+      throw new Error("Cart product validation failed");
+    }
+
+    const parsedItem = cartItemSchema.safeParse({
+      productId: product.id,
+      product: parsedProduct.data,
+      quantity: finalQuantity,
+    });
+
+    if (!parsedItem.success) {
+      console.error(parsedItem.error.flatten());
+      throw new Error("Cart item validation failed");
+    }
+
+    const validatedItem = parsedItem.data;
+
+    // 6️⃣ If no cart → create one
     if (!cart) {
-      // Create new cart
-      updatedItems = [validatedItem];
+      updatedItems = [ validatedItem ];
+
       const prices = await calculateCartPrices(updatedItems);
+
       const newCart = insertCartSchema.parse({
         userId,
         sessionCartId,
         items: updatedItems,
         ...prices,
       });
+
       await prisma.cart.create({ data: newCart });
     } else {
-      // Update existing cart
       const currentItems = cart.items as CartItem[];
-      const existingIndex = currentItems?.findIndex(i => i.productId === productId);
+
+      const existingIndex = currentItems.findIndex(
+        (item) => item.productId === productId
+      );
 
       if (existingIndex > -1) {
-        // Update quantity
-        const newQty = quantity;
-        if (newQty > product.stock) throw new Error('Not enough stock');
-        currentItems[existingIndex].quantity = newQty;
+        // Update quantity (clamped)
+        currentItems[ existingIndex ].quantity = finalQuantity;
       } else {
-        // Add new item
         currentItems.push(validatedItem);
       }
 
       updatedItems = currentItems;
+
       const prices = await calculateCartPrices(updatedItems);
-      // save cart to db
+
       await prisma.cart.update({
         where: { id: cart.id },
         data: {
@@ -138,20 +142,31 @@ export async function addToCart(productId: string, quantity: number) {
       });
     }
 
-    revalidatePath(`/shop/${product.slug}`);
+    revalidatePath(`/shop/${ product.slug }`);
+
     return {
       success: true,
-      message: `${product.name} added to cart`,
-      cart: updatedItems, // send back updated items for client sync
+      message:
+        finalQuantity < quantity
+          ? `Only ${ finalQuantity } items available — cart adjusted`
+          : `${ product.name } added to cart`,
+      cart: updatedItems,
     };
   } catch (error) {
-    return { success: false, message: formatError(error) };
+    return {
+      success: false,
+      message: formatError(error),
+    };
   }
 }
 
 export async function updateCartItemQuantity(productId: string, quantity: number) {
   try {
-    const sessionCartId = await getSessionCartId();
+    // check for the cart cookie
+    const sessionCartId = (await cookies()).get('sessionCartId')?.value;
+
+    // if there is no cart cookie, create a new one
+    if (!sessionCartId) throw new Error('Cart session not found');
     const session = await auth();
     const userId = session?.user?.id;
 
@@ -240,7 +255,11 @@ export async function removeFromCart(productId: string) {
 
 export async function clearCart() {
   try {
-    const sessionCartId = await getSessionCartId();
+    // check for the cart cookie
+    const sessionCartId = (await cookies()).get('sessionCartId')?.value;
+
+    // if there is no cart cookie, create a new one
+    if (!sessionCartId) throw new Error('Cart session not found');
     const session = await auth();
     const userId = session?.user?.id;
 
