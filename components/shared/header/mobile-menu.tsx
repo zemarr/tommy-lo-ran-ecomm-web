@@ -49,9 +49,9 @@ const MobileMenu = ({ user }: { user: any }) => {
               <Link href="/user/orders" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
                 My Orders
               </Link>
-              <Link href="/admin" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
+              {user?.role === "admin" && <Link href="/admin" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
                 Admin
-              </Link>
+              </Link>}
             </div>
             <div className="flex flex-col gap-3 pt-8 border-t border-border">
               <Link href="/shop" className="flex items-center justify-center w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-5" onClick={() => setIsOpen(false)}>
