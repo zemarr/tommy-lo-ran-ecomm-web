@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { signOutUser } from "../../../lib/server/actions/user.actions";
 
 const navigation = [
   { name: "Our Story", href: "/#story" },
@@ -27,6 +28,10 @@ const MobileMenu = ({ user }: { user: any }) => {
         </SheetTrigger>
         <SheetContent side="right" className="w-full h-screen sm:w-80 bg-background border-l border-border px-8 py-16">
           <div className="flex flex-col gap-8">
+            <div className="flex flex-col space-y-1">
+              <div className="text-sm font-medium leading-none text-foreground">{user?.name}</div>
+              <div className="text-xs text-muted-foreground tracking-wide">{user?.email}</div>
+            </div>
             <div className="flex flex-col gap-6">
               {navigation.map((item) => (
                 <Link
@@ -38,16 +43,33 @@ const MobileMenu = ({ user }: { user: any }) => {
                   {item.name}
                 </Link>
               ))}
+              <Link href="/user/profile" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
+                My Profile
+              </Link>
+              <Link href="/user/orders" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
+                My Orders
+              </Link>
+              <Link href="/admin" className="font-serif text-2xl font-light text-foreground hover:text-gold transition-colors">
+                Admin
+              </Link>
             </div>
             <div className="flex flex-col gap-3 pt-8 border-t border-border">
               <Link href="/shop" className="flex items-center justify-center w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-5" onClick={() => setIsOpen(false)}>
                 Shop Now
               </Link>
               <div className="flex items-center justify-between gap-2">
-                {!user && (
+                {!user ? (
                   <Link href="/sign-in" className="flex items-center justify-center w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-5" onClick={() => setIsOpen(false)}>
                     Sign in
                   </Link>
+                ) : (
+                  <Button
+                    className="w-full flex items-center justify-center tracking-[0.15em] uppercase text-xs py-6"
+                    variant="outline"
+                    onClick={signOutUser}
+                  >
+                    Sign out
+                  </Button>
                 )}
               </div>
             </div>

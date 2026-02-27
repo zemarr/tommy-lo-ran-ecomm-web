@@ -1,26 +1,27 @@
 
-import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import TommyLoRanText from "../../tommy-lo-ran-text";
-import UserMenu from "./user-menu";
-import CartButton from "./cart-button";
-import MobileMenu from "./mobile-menu";
-import { auth } from "@/auth";
+import { useCartStore } from "@/lib/store/cart-store";
+import { CartSidebar } from "@/components/cart-sidebar";
+import TommyLoRanText from "../tommy-lo-ran-text";
+import { signOutUser } from "../../lib/server/actions/user.actions";
+import { Session } from "next-auth";
+import UserMenu from "../shared/header/user-menu";
+import AdminMobileMenu from "./admin-mobile-menu";
 import Image from "next/image";
 
 const navigation = [
-  { name: "Our Story", href: "/#story" },
-  { name: "Our Collection", href: "/#collections" },
-  { name: "Services", href: "/#services" },
-  // { name: "Craftsmanship", href: "/#craftsmanship" },
+  { name: "Home", href: "/" },
+  { name: "Shop Products", href: "/admin/products" },
+  // { name: "Analytics", href: "/admin/analytics" },
+  // { name: "Edit Contents", href: "/admin/edit-content" },
 ];
 
-export default async function Header() {
-  const session = await auth();
+export function AdminHeader({ userSession }: { userSession: Session }) {
+  const user = userSession?.user;
 
   return (
-    <React.Fragment>
+    <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
         <nav className="mx-auto max-w-10xl px-6 lg:px-14">
           <div className="flex h-20 items-center justify-between">
@@ -47,16 +48,13 @@ export default async function Header() {
 
             {/* Desktop Actions */}
             <div className="hidden lg:flex lg:items-center lg:gap-6">
-              <CartButton />
-
-
               <Link href="/shop">
                 <Button className="bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs px-6 py-5">
                   Shop
                 </Button>
               </Link>
               {/* User menu */}
-              {session?.user?.name ? (
+              {userSession?.user?.name ? (
                 <UserMenu />
               ) : (
                 <Link
@@ -71,12 +69,11 @@ export default async function Header() {
 
             {/* Mobile Menu */}
             <div className="lg:hidden flex items-center gap-4">
-              <CartButton />
-              <MobileMenu user={session?.user} />
+              <AdminMobileMenu user={user} />
             </div>
           </div>
         </nav>
       </header>
-    </React.Fragment>
+    </>
   );
 }
