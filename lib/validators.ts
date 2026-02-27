@@ -48,32 +48,9 @@ export const cartProductSchema = z.object({
   id: z.string(),
   name: z.string(),
   slug: z.string(),
-  category: z.string(),
   price: z.string(),
-  rating: z.string(),
-  numReviews: z.number(),
+  images: z.array(z.string()).default([]),
   stock: z.number(),
-  images: z.array(z.string()),
-  description: z.string(),
-  longDescription: z.string(),
-  features: z.array(z.string()),
-  materials: z.array(z.string()),
-  deliveryTime: z.string(),
-  popularity: z.number(),
-  createdAt: z.union([z.date(), z.string()]).transform(val =>
-    val instanceof Date ? val.toISOString() : val
-  ),
-  updatedAt: z.union([z.date(), z.string(), z.null()]).transform(val =>
-    val === null ? null : (val instanceof Date ? val.toISOString() : val)
-  ),
-  care: z.string().nullable(),
-  deliveryFee: z
-    .object({
-      lag: z.number(),
-      nationwide: z.number(),
-    })
-    .nullable(),
-  fit: z.string().nullable(),
 });
 
 /**
