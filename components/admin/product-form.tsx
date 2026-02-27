@@ -108,7 +108,7 @@ const ProductForm = ({ type, product, productId }: {
                 <FormLabel htmlFor="slug">Slug</FormLabel>
                 <FormControl>
                   <div className="relative flex items-center gap-5">
-                    <Input placeholder="Enter slug" {...field} />
+                    <Input placeholder="Click 'Generate slug'" {...field} />
                     <Button
                       type="button"
                       variant={"outline"}
@@ -367,7 +367,7 @@ const ProductForm = ({ type, product, productId }: {
               <FormItem className="form-item w-full">
                 <FormLabel htmlFor="price">Price</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product price"  {...field} />
+                  <Input placeholder="Enter product price" type="number"  {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -383,7 +383,7 @@ const ProductForm = ({ type, product, productId }: {
               <FormItem className="form-item w-full">
                 <FormLabel htmlFor="stock">Stock</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product stock"  {...field} />
+                  <Input placeholder="Enter product stock" type="number"  {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -406,6 +406,7 @@ const ProductForm = ({ type, product, productId }: {
                 <FormControl>
                   <Input
                     placeholder="Enter delivery cost within Lagos"
+                    type="number"
                     {...field}
                   />
                 </FormControl>
@@ -424,6 +425,7 @@ const ProductForm = ({ type, product, productId }: {
                 <FormControl>
                   <Input
                     placeholder="Enter delivery cost nationwide"
+                    type="number"
                     {...field}
                   />
                 </FormControl>
@@ -438,7 +440,7 @@ const ProductForm = ({ type, product, productId }: {
             type="submit"
             size={'lg'}
             disabled={form.formState.isSubmitting}
-            className="button col-span-2 w-full"
+            className="button col-span-2 flex items-center justify-center w-full bg-charcoal text-cream hover:bg-espresso tracking-[0.15em] uppercase text-xs py-6"
           >
             {form.formState.isSubmitting ? 'Submitting...' : `${ type } Product`}
           </Button>

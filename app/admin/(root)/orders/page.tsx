@@ -32,7 +32,7 @@ const AdminOrdersPage = async (props: {
   return (
     <div className='space-y-2 mt-30'>
       <div className="flex items-end gap-3">
-        <h1 className="mb-4 font-semibold text-xl uppercase!">All Orders</h1>
+        <h1 className="mb-4 font-semibold text-xl uppercase!">All Sales</h1>
         {searchText && (
           <div className='px-2 text-sm text-gray-500 flex items-center gap-2'>
             Filtered by <i>&quot;{searchText}&quot;</i>{" "}
