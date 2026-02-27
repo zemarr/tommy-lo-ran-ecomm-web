@@ -145,6 +145,18 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                   </ul>
                 </div>
 
+                {/* Fit tips */}
+                <div className="border-t border-border pt-8">
+                  <h3 className="text-xs tracking-[0.2em] uppercase text-gold mb-6">
+                    Fit tips / size chart
+                  </h3>
+                  <ul className="space-y-3">
+                    <li className="text-sm text-muted-foreground">
+                      {product.fit}
+                    </li>
+                  </ul>
+                </div>
+
                 {/* Delivery */}
                 <div className="border-t border-border pt-8">
                   <h3 className="text-xs tracking-[0.2em] uppercase text-gold mb-4">

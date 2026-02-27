@@ -44,7 +44,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <Header />
       <main className="pt-20">
         <Suspense fallback={<div className="w-screen h-screen absolute top-0 left-0 bg-black/20 transition-all"></div>}>
-          <ProductDetails product={product} />
+          <ProductDetails product={{
+            ...product,
+            updatedAt: product.updatedAt?.toString() ?? ""
+
+          }} />
         </Suspense>
       </main>
       <Footer />

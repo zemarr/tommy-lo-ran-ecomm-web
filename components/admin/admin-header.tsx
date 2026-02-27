@@ -12,9 +12,9 @@ import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/" },
+  { name: "Analytics", href: "/admin" },
   { name: "Shop Products", href: "/admin/products" },
-  { name: "Shop Orders", href: "/admin/orders" },
-  // { name: "Analytics", href: "/admin/analytics" },
+  { name: "Shop Sales", href: "/admin/orders" },
   // { name: "Edit Contents", href: "/admin/edit-content" },
 ];
 
