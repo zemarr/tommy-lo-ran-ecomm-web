@@ -33,9 +33,9 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
   return (
     <>
-      <main className="pt-20">
+      <div className="pt-20">
         <CollectionDetails collection={collection} />
-      </main>
+      </div>
     </>
   );
 }

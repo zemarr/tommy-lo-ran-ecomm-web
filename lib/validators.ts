@@ -11,8 +11,8 @@ export const insertProductSchema = z.object({
   category: z.string().min(3, "Category must be at least 3 characters"),
   price: currency,
   images: z.array(z.string()).min(1, "Product must have at least 1 image"),
-  description: z.string().min(150, "Description must not be less than 150 characters"),
-  longDescription: z.string().min(350, "Description must not be less than 350 characters"),
+  description: z.string().min(10, "Description must not be less than 10 characters"),
+  longDescription: z.string().min(30, "Description must not be less than 30 characters"),
   features: z.array(z.string()).min(1, "Product must have at least 1 feature"),
   materials: z.array(z.string()).min(1, "Product must have at least 1 material used"),
   care: z.string().nullable(),
@@ -23,6 +23,7 @@ export const insertProductSchema = z.object({
   }).nullable(),
   stock: z.coerce.number(),
   deliveryTime: z.string().min(5, "Description must not be less than 5 characters"),
+  // popularity: z.coerce.number().default(0)
 });
 
 // schema for signing users in
@@ -47,32 +48,9 @@ export const cartProductSchema = z.object({
   id: z.string(),
   name: z.string(),
   slug: z.string(),
-  category: z.string(),
   price: z.string(),
-  rating: z.string(),
-  numReviews: z.number(),
+  images: z.array(z.string()).default([]),
   stock: z.number(),
-  images: z.array(z.string()),
-  description: z.string(),
-  longDescription: z.string(),
-  features: z.array(z.string()),
-  materials: z.array(z.string()),
-  deliveryTime: z.string(),
-  popularity: z.number(),
-  createdAt: z.union([z.date(), z.string()]).transform(val =>
-    val instanceof Date ? val.toISOString() : val
-  ),
-  updatedAt: z.union([z.date(), z.string(), z.null()]).transform(val =>
-    val === null ? null : (val instanceof Date ? val.toISOString() : val)
-  ),
-  care: z.string().nullable(),
-  deliveryFee: z
-    .object({
-      lag: z.number(),
-      nationwide: z.number(),
-    })
-    .nullable(),
-  fit: z.string().nullable(),
 });
 
 /**
@@ -107,11 +85,12 @@ export const insertCartSchema = z.object({
 
 export const shippingAddressSchema = z.object({
   fullName: z.string().min(3, "First name is required"),
-  streetAddress: z.string().min(3, "First name is required"),
-  city: z.string().min(3, "First name is required"),
-  state: z.string().min(3, "First name is required"),
-  postalCode: z.string().min(3, "First name is required"),
-  country: z.string().min(3, "First name is required"),
+  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
+  streetAddress: z.string().min(3, "Street address is required"),
+  city: z.string().min(3, "City is required").optional(),
+  state: z.string().min(3, "State is required").optional(),
+  postalCode: z.string().min(3, "Postal code is required").optional(),
+  country: z.string().min(3, "Country is required"),
   lng: z.string().optional(),
   lat: z.string().optional(),
 });
@@ -147,9 +126,9 @@ export const insertOrderSchema = z.object({
   totalPrice: currency,
 
   isPaid: z.boolean().optional(),
-  paidAt: z.date().optional(),
+  paidAt: z.date().optional() || z.string(),
   isDelivered: z.boolean().optional(),
-  deliveredAt: z.date().optional(),
+  deliveredAt: z.date().optional() || z.string(),
 
   orderItems: z.array(insertOrderItemSchema).optional(),
 });
@@ -161,4 +140,22 @@ export const paymentResultSchema = z.object({
   // update_time: z.string(),
   email_address: z.string(),
   pricePaid: z.string(),
+});
+
+// schema for updating user profile
+export const updateUserProfileSchema = z.object({
+  name: z.string().min(3, 'Name must be at least 3 characters').max(255),
+  email: z.string().email('Invalid email address').min(3, 'Email must be at least 3 characters').max(255),
+  // image: z.string().nullable(),
+});
+
+// update user schema
+export const updateUserSchema = updateUserProfileSchema.extend({
+  id: z.string().min(1, 'User ID is required'),
+  role: z.string().min(1, 'Role is required'),
+});
+
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, 'Product ID is required'),
 });

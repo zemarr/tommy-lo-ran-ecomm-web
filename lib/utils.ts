@@ -27,7 +27,7 @@ export function convertToPlainObject<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
 
-export function normalizeProduct(product: Product) {
+export function normalizeProduct(product: any): Product {
   return {
     ...product,
     care: product.care ?? "",
@@ -113,7 +113,7 @@ export function formatNumber(number: number) {
 
 // shorten uuid
 export function formatUUID(id: string) {
-  return `..${id.substring(id.length - 6)}`
+  return `${ id.substring(id.length - 6) }..`
 }
 
 // format the date and time string

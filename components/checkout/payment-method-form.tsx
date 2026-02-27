@@ -15,17 +15,17 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/lib/store/cart-store'
 
-const steps = ['shipping', 'payment', 'confirmation'] as const
-type Step = typeof steps[number]
+const steps = [ 'shipping', 'payment', 'pay', 'confirmation' ] as const
+type Step = typeof steps[ number ]
 
-const PaymentForm = ({ user }: { user: any; }) => {
+const PaymentMethodForm = ({ user, order }: { user: any; order: any; }) => {
   const router = useRouter();
   const { clearCart } = useCartStore();
 
-  const [isPending, startTransition] = useTransition();
+  const [ isPending, startTransition ] = useTransition();
 
   const goToStep = (step: Step) => {
-    router.push(`?step=${step}`);
+    router.push(`?step=${ step }`);
   }
 
   const paymentForm = useForm<z.infer<typeof paymentMethodSchema>>({
@@ -43,8 +43,8 @@ const PaymentForm = ({ user }: { user: any; }) => {
 
       setTimeout(() => {
         toast.success(res.message);
-        goToStep('confirmation')
-        clearCart();
+        goToStep('pay')
+        // clearCart();
       }, 2000)
     })
   }
@@ -62,7 +62,7 @@ const PaymentForm = ({ user }: { user: any; }) => {
                 <FormControl>
                   <RadioGroup onValueChange={field.onChange} className='flex flex-col space-y-2'>
                     {PAYMENT_METHODS.map((method, i) => (
-                      <FormItem key={`${i}-${method}`} className='flex items-center spac-x-3 space-y-0'>
+                      <FormItem key={`${ i }-${ method }`} className='flex items-center spac-x-3 space-y-0'>
                         <FormControl>
 
                           <RadioGroupItem value={method} checked={field.value === method}>
@@ -81,11 +81,13 @@ const PaymentForm = ({ user }: { user: any; }) => {
 
         </div>
         <div className="flex gap-2">
-          <Button type='submit' variant={"default"} size={"default"} disabled={isPending}>{isPending ? (<Loader className='animate-spin h-4 w-4' />) : (<ArrowRight className='w-4 h-4 animate-pulse' />)}{" "}Proceed to checkout</Button>
+          <Button disabled={isPending} type="submit" className="w-full text-xs rounded-sm py-6 mt-4 uppercase tracking-widest">
+            {isPending ? (<Loader className='animate-spin h-4 w-4' />) : (<ArrowRight className='w-4 h-4 animate-pulse' />)}{" "}Proceed to payment
+          </Button>
         </div>
       </form>
     </Form>
   )
 }
 
-export default PaymentForm
+export default PaymentMethodForm

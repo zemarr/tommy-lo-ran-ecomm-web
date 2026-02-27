@@ -1,33 +1,33 @@
 'use client'
 
-// import DeleteDialog from '@/components/shared/action-components/delete-option/delete-dialog'
-// import OrderActions from '@/components/shared/action-components/delete-option/order-table-actions'
-// import { useActionComponentStore } from '@/components/shared/action-components/store/action-components-store'
+import DeleteDialog from '@/components/shared/action-components/delete-option/delete-dialog'
+import OrderActions from '@/components/shared/action-components/delete-option/order-table-actions'
+import { useActionComponentStore } from '@/components/shared/action-components/store/action-components-store'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-// import { formatCurrency, formatDateTime, formatUUID } from '@/lib/utils'
-// import { deleteOrder } from '@/lib/server/actions/order.actions'
-import React from 'react'
+import { formatCurrency, formatDateTime, formatUUID } from '@/lib/utils'
+import { deleteOrder } from '@/lib/server/actions/order.actions'
+import { Order } from '../../../../types'
 
 const OrdersTable = ({ orders }: { orders: any }) => {
-  // const { deleting, deletingProduct, confirmDelete } = useActionComponentStore();
+  const { deleting, confirmDelete } = useActionComponentStore();
 
   return (
     <>
-      {/* <div>
+      <div className={"border! border-espresso/15! rounded-md overflow-hidden px-2 py-2"}>
         <Table className='mb-4'>
-          <TableHeader>
+          <TableHeader className={"bg-espresso/10 rounded-md!"}>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>DATE</TableHead>
-              <TableHead>BUYER</TableHead>
-              <TableHead>TOTAL</TableHead>
-              <TableHead>PAID</TableHead>
-              <TableHead>DELIVERED</TableHead>
-              <TableHead>ACTIONS</TableHead>
+              <TableHead className={"font-semibold"}>ID</TableHead>
+              <TableHead className={"font-semibold"}>DATE</TableHead>
+              <TableHead className={"font-semibold"}>BUYER</TableHead>
+              <TableHead className={"font-semibold"}>TOTAL</TableHead>
+              <TableHead className={"font-semibold"}>PAID</TableHead>
+              <TableHead className={"font-semibold"}>DELIVERED</TableHead>
+              <TableHead className={"flex items-center justify-center font-semibold"}></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order: any) => (
+            {orders.map((order: Order) => (
               <TableRow key={order.id}>
                 <TableCell>{formatUUID(order.id)}</TableCell>
                 <TableCell>{formatDateTime(order.createdAt).dateTime}</TableCell>
@@ -35,8 +35,8 @@ const OrdersTable = ({ orders }: { orders: any }) => {
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                 <TableCell>{order.isPaid && order.paidAt ? formatDateTime(order.paidAt).dateTime : 'Unpaid'}</TableCell>
                 <TableCell>{order.isDelivered && order.deliveredAt ? formatDateTime(order.deliveredAt).dateTime : 'Not delivered'}</TableCell>
-                <TableCell>
-                  <OrderActions order={{ id: order.id, orderitems: order.orderitems.map((item: any) => item['product']['name']) }} />
+                <TableCell className={"flex items-center justify-center"}>
+                  <OrderActions order={{ id: order.id, orderItems: order.orderItems.map((item: any) => item[ 'product' ][ 'name' ]) }} />
                 </TableCell>
               </TableRow>
             ))}
@@ -46,7 +46,7 @@ const OrdersTable = ({ orders }: { orders: any }) => {
           (deleting?.id && confirmDelete) && (
             <DeleteDialog key={deleting?.id} id={deleting?.id} action={deleteOrder} />)
         }
-      </div> */}
+      </div>
     </>
   )
 }

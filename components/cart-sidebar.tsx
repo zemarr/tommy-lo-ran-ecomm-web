@@ -6,7 +6,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -15,7 +15,7 @@ interface CartSidebarProps {
 
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   const router = useRouter();
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, initializeCart } = useCartStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();

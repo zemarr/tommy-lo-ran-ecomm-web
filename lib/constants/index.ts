@@ -53,6 +53,18 @@ export const TAGS = {
   cart: 'cart'
 };
 
+export const CATEGORIES = [
+  {
+    name: 'RTW Native'
+  },
+  {
+    name: 'RTW Smart Casual'
+  },
+  {
+    name: 'RTW Accessories'
+  },
+]
+
 export const HIDDEN_PRODUCT_TAG = 'nextjs-aevum-hidden';
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Bart Store";
@@ -93,9 +105,13 @@ export const PROTECTED_ROUTES = [
   /\/order\/(.*)/,
   /\/admin/,
 ];
-export const PAYMENT_METHODS = process.env.PAYMENT_METHODS ? process.env.PAYMENT_METHODS.split(', ') : ["Paystack", "Paypal", "PayOnDelivery"]
+export const PAYMENT_METHODS = process.env.PAYMENT_METHODS ? process.env.PAYMENT_METHODS.split(', ') : [
+  "Paystack",
+  //  "Paypal",
+  //  "PayOnDelivery"
+]
 export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD || "Paystack"
-export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10;
+export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 20;
 export const PRODUCT_DEFAULT_VALUES = {
   name: "",
   slug: "",

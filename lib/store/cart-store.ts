@@ -163,10 +163,9 @@ async function scheduleCartUpdateSyncToServer(productId: string, previousItems?:
       }
 
       if (!result.success) {
-        console.error("Sync failed:", result.message);
-
-        // 🔥 Rollback
         useCartStore.setState({ items: previousItems });
+      } else if (result.cart) {
+        useCartStore.setState({ items: result.cart });
       }
     } catch (error) {
       console.error('Sync error:', error);

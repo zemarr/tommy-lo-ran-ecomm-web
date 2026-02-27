@@ -11,8 +11,9 @@ import { updateUserAddress } from '@/lib/server/actions/user.actions'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useRouter } from 'next/navigation'
 import { Button } from '../ui/button'
+import { createOrder } from '../../lib/server/actions/order.actions'
 
-const steps = ['shipping', 'payment', 'confirmation'] as const
+const steps = [ 'shipping', 'payment-method', 'confirmation' ] as const
 type Step = typeof steps[number]
 
 const ShippingForm = ({ user }: { user: any }) => {
@@ -25,21 +26,23 @@ const ShippingForm = ({ user }: { user: any }) => {
     defaultValues: user?.address || shippingAddressDefaultValues,
   })
 
-  const goToStep = (step: Step) => {
-    router.push(`?step=${step}`)
-  }
 
   const handleShippingSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (values: any) => {
     startTransition(async () => {
       const res = await updateUserAddress(values);
-
+      const createdOrder = await createOrder();
+      console.log(createdOrder, 'createdOrder')
       if (!res.success) {
         // toast(res.message)
         return;
       }
-      goToStep('payment')
+      router.push(`?step=payment-method&id=${ createdOrder?.orderId }`)
     })
   }
+
+  // const goToStep = (step: Step) => {
+  //   router.push(`?step=${ step }`)
+  // }
 
   return (
     <Form {...shippingForm}>
@@ -151,7 +154,7 @@ const ShippingForm = ({ user }: { user: any }) => {
         </div>
 
         <Button type="submit" className="w-full text-xs rounded-sm py-6 mt-4 uppercase tracking-widest">
-          Continue to Payment
+          Continue to Payment Method
         </Button>
       </form>
     </Form>

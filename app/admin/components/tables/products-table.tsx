@@ -1,29 +1,27 @@
 'use client'
-
-// import DeleteDialog from '@/components/shared/action-components/delete-option/delete-dialog'
-// import ProductTableActions from '@/components/shared/action-components/delete-option/product-table-actions'
-// import { useActionComponentStore } from '@/components/shared/action-components/store/action-components-store'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-// import { formatCurrency, formatUUID } from '@/lib/utils'
-// import { deleteProduct } from '@/lib/server/actions/product.actions'
-import React from 'react'
+import { formatCurrency, formatUUID } from '../../../../lib/utils'
+import ProductTableActions from '../../../../components/shared/action-components/delete-option/product-table-actions'
+import { useActionComponentStore } from '../../../../components/shared/action-components/store/action-components-store'
+import DeleteDialog from '../../../../components/shared/action-components/delete-option/delete-dialog'
+import { deleteProduct } from '../../../../lib/server/actions/product.actions'
 
 const ProductsTable = ({ products, page }: { products: any, page: number }) => {
-  // const { deleting, confirmDelete } = useActionComponentStore();
+  const { deleting, confirmDelete } = useActionComponentStore();
 
   return (
     <>
-      {/* <div>
+      <div className={"border! border-espresso/15! rounded-md overflow-hidden px-2 py-2"}>
         <Table className='mb-4'>
-          <TableHeader>
+          <TableHeader className={"bg-espresso/10 rounded-md!"}>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>NAME</TableHead>
-              <TableHead className='text-left'>PRICE</TableHead>
-              <TableHead>CATEGORY</TableHead>
-              <TableHead>STOCK</TableHead>
-              <TableHead>RATING</TableHead>
-              <TableHead className='w-[100px]'>ACTIONS</TableHead>
+              <TableHead className={"font-semibold"}>ID</TableHead>
+              <TableHead className={"font-semibold"}>NAME</TableHead>
+              <TableHead className={"font-semibold text-left"}>PRICE</TableHead>
+              <TableHead className={"font-semibold"}>CATEGORY</TableHead>
+              <TableHead className={"font-semibold"}>STOCK</TableHead>
+              <TableHead className={"font-semibold"}>RATING</TableHead>
+              <TableHead className={"w-[100px] flex items-center justify-center font-semibold"}></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -37,7 +35,7 @@ const ProductsTable = ({ products, page }: { products: any, page: number }) => {
                 <TableCell>
                   {product.rating} / 5
                 </TableCell>
-                <TableCell>
+                <TableCell className={"flex items-center justify-center"}>
                   <ProductTableActions product={{ id: product.id, name: product.name }} />
                 </TableCell>
               </TableRow>
@@ -48,7 +46,7 @@ const ProductsTable = ({ products, page }: { products: any, page: number }) => {
           (deleting?.id && confirmDelete) && (
             <DeleteDialog key={deleting?.id} id={deleting?.id} action={deleteProduct} />)
         }
-      </div> */}
+      </div>
     </>
   )
 }

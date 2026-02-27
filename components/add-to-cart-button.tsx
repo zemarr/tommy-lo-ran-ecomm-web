@@ -63,12 +63,18 @@ export function AddToCartButton({
   }
 
   return (
-    <Button
+    <>
+      {product.stock === 0 ? (<Button disabled variant={"outline"} className={"flex items-center justify-center gap-2 hover:bg-transparent! transition-all duration-300 tracking-[0.2em] uppercase text-xs py-7 font-medium rounded-sm"}>
+        Out of Stock
+      </Button>) :
+
+        (<Button
       onClick={handleAddToCart}
       className={`flex items-center justify-center gap-2 bg-charcoal text-cream hover:bg-espresso transition-all duration-300 tracking-[0.2em] uppercase text-xs py-7 font-medium rounded-sm ${className}`}
     >
       <ShoppingBag className="w-4 h-4" />
       Add to Cart
-    </Button>
+        </Button>)}
+    </>
   );
 }

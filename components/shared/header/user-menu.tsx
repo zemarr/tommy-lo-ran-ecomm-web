@@ -21,8 +21,8 @@ export default async function UserMenu() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center">
-            <Button variant={"ghost"} className='relative w-8 h-8 rounded-sm ml-2 flex items-center justify-center bg-transparent border border-espresso p-4'>
-              <span className="text-sm font-bold text-gray-700">{initials}</span>
+            <Button variant={"ghost"} className='relative w-8 h-8 rounded-sm ml-2 flex items-center justify-center bg-transparent hover:bg-espresso! hover:text-background! border border-espresso p-4'>
+              <span className="text-sm font-bold">{initials}</span>
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></span>
             </Button>
           </div>
@@ -35,19 +35,19 @@ export default async function UserMenu() {
             </div>
           </DropdownMenuLabel>
 
-          <DropdownMenuItem>
-            <Link href="/user/profile" className="w-full text-foreground/80">
-              User Profile
+          <DropdownMenuItem className={"hover:bg-espresso! hover:text-background!"}>
+            <Link href="/user/profile" className="w-full">
+              My Profile
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/user/orders" className="w-full text-foreground/80">
-              Order history
+          <DropdownMenuItem className={"hover:bg-espresso! hover:text-background!"}>
+            <Link href="/user/orders" className="w-full">
+              My Orders
             </Link>
           </DropdownMenuItem>
           {session?.user?.role === "admin" && (
-            <DropdownMenuItem>
-              <Link href="/admin/overview" className="w-full text-foreground/80">
+            <DropdownMenuItem className={"hover:bg-espresso! hover:text-background!"}>
+              <Link href="/admin" className="w-full">
                 Admin
               </Link>
             </DropdownMenuItem>
@@ -55,7 +55,7 @@ export default async function UserMenu() {
           <DropdownMenuSeparator />
           <DropdownMenuItem className='cursor-pointer p-0 mb-1'>
             <Button
-              className="w-full py-4 px-2 h-4 justify-start rounded-md"
+              className="w-full py-4 px-2 h-4 justify-start rounded-md hover:bg-espresso! hover:text-background!"
               variant="ghost"
               onClick={signOutUser}
             >

@@ -4,21 +4,22 @@ import Header from "@/components/shared/header/header";
 
 
 export const metadata: Metadata = {
-  title: 'Tómmy ló ràn | Collections',
-  description: 'Rooted in culture. Tailored for now. Discover contemporary menswear inspired by African heritage, crafted with intentional artistry and timeless elegance.',
+  title: 'Tómmy ló ràn | Checkout',
+  description: '',
 }
-
-export const revalidate = 0;
 
 export default function CheckoutRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
   return (
     <div className="font-sans antialiased">
       <Header />
-      {children}
+      <div className={"flex-1 space-y-4 mx-auto max-w-10xl px-6 lg:px-14"}>
+        {children}
+      </div>
       {/* <Footer /> */}
     </div>
   )

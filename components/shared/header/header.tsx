@@ -7,6 +7,7 @@ import UserMenu from "./user-menu";
 import CartButton from "./cart-button";
 import MobileMenu from "./mobile-menu";
 import { auth } from "@/auth";
+import Image from "next/image";
 
 const navigation = [
   { name: "Our Story", href: "/#story" },
@@ -24,8 +25,11 @@ export default async function Header() {
         <nav className="mx-auto max-w-10xl px-6 lg:px-14">
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <TommyLoRanText classname="font-cursive text-2xl md:text-4xl tracking-tight text-foreground" />
+            <Link href="/" className="flex items-center gap-2">
+              <div className="bg-transparent rounded-md p-1 overflow-hidden">
+                <Image src={"https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7FDcBZnJ5is1LYfXzQwVjyF48AZCWa3o7cD06"} alt={"TLR_Logo"} width={50} height={50} className={"md:w-[50px] w-[35px] md:h-[50px] h-[35px]"} />
+              </div>
+              <TommyLoRanText classname="font-cursive text-2xl md:text-3xl tracking-[-1] text-foreground" />
             </Link>
 
             {/* Desktop Navigation - Centered */}

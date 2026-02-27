@@ -1,62 +1,37 @@
-'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getAllCategories } from '@/lib/server/actions/product.actions'
+import { SearchIcon } from 'lucide-react';
 
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useShopStore } from '@/lib/store/shop-store';
-import { useEffect, useState } from 'react';
-
-export default function ProductSearch() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const initialQuery = searchParams?.get('query') || '';
-
-  const setSearchQuery = useShopStore((s) => s.setSearchQuery);
-  // const searchQuery = useShopStore((s) => s.searchQuery);
-
-  const [localValue, setLocalValue] = useState(initialQuery);
-
-  // Sync URL → Zustand once on mount
-  useEffect(() => {
-    if (initialQuery) {
-      setSearchQuery(initialQuery);
-      setLocalValue(initialQuery);
-    }
-  }, [initialQuery, setSearchQuery]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setLocalValue(value);      // UI state (instant)
-    setSearchQuery(value);    // Zustand state (instant filtering)
-  };
+const Search = async () => {
+  const categories = await getAllCategories();
 
   return (
-    <div className="w-max-[550px] relative w-full lg:w-80 xl:w-full mb-10">
-      <div className="absolute left-0 top-0 ml-3 flex h-full items-center pointer-events-none">
-        <MagnifyingGlassIcon className="h-5" />
+    <form action="/search" method="GET">
+      <div className="flex items-center w-full space-x-2">
+        <Select name={'category'}>
+          <SelectTrigger className='w-[180px] h-auto! py-3'>
+            <SelectValue placeholder='All' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem key="All" value='all'>
+              All
+            </SelectItem>
+            {categories.map((category) => (
+              <SelectItem key={category.category} value={category.category}>
+                {category.category}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Input type="text" placeholder="Search by product name" name="q" className='w-full py-3 h-auto' />
+        <Button type="submit" className={"p-4 size-11"}>
+          <SearchIcon />
+        </Button>
       </div>
-      <input
-        type="text"
-        name="query"
-        placeholder="Search Name, Brand or Category"
-        autoComplete="off"
-        value={localValue}
-        onChange={handleChange}
-        className="w-full pl-12 pr-4 py-4 bg-muted border border-border rounded-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-gold/50 transition-all"
-      />
-    </div>
-  );
-}
-
-export function SearchSkeleton() {
-  return (
-    <form className="w-max-[550px] relative w-full lg:w-80 xl:w-full">
-      <div className="absolute left-0 top-0 ml-3 flex h-full items-center cursor-text">
-        <MagnifyingGlassIcon className="h-4" />
-      </div>
-      <input
-        placeholder="Search Name, Brand or Category"
-        className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 dark:border-neutral-800 dark:bg-transparent dark:text-primary-foreground dark:placeholder:text-neutral-400"
-      />
     </form>
-  );
+  )
 }
+
+export default Search
