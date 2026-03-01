@@ -5,7 +5,7 @@ import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
 import { prisma } from "@/db/prisma";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { CartItem, PaymentResult } from "../../../types";
+import { CartItem, PaymentResult } from "../../types";
 import { insertOrderSchema } from "../../validators";
 import { paystack } from "../../paystack";
 import { redirect } from "next/navigation";

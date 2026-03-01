@@ -55,13 +55,13 @@ export const TAGS = {
 
 export const CATEGORIES = [
   {
-    name: 'RTW Native'
+    name: 'TLR Native'
   },
   {
-    name: 'RTW Smart Casual'
+    name: 'TLR Smart Casual'
   },
   {
-    name: 'RTW Accessories'
+    name: 'TLR Accessories'
   },
 ]
 

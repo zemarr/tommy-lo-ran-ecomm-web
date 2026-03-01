@@ -2,7 +2,7 @@ import React from 'react'
 import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation';
 import { getOrderById } from '@/lib/server/actions/order.actions';
-import { ShippingAddress } from '@/types';
+import { ShippingAddress } from '@/lib/types';
 import { auth } from '@/auth';
 import OrderDetails from '../components/order-details';
 

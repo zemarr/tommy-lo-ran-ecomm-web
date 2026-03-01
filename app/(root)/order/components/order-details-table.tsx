@@ -1,6 +1,6 @@
 'use client'
 import React, { useTransition } from 'react'
-import { Order } from '@/types'
+import { Order } from '@/lib/types'
 import { formatCurrency, formatDateTime, formatError, nairaToKobo } from '@/lib/utils'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'

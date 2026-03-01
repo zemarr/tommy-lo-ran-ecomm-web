@@ -4,27 +4,72 @@ import { PAYMENT_METHODS } from "./constants";
 
 const currency = z.string()
   .refine((value) => /^\d+(\.\d{2})?$/.test(formatNumberToDecimal(Number(value))), "Price is required and must have 2 decimal places (i.e 5000.00)")
-// Schema for inserting products
-export const insertProductSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters"),
-  slug: z.string().min(3, "Slug must be at least 3 characters"),
-  category: z.string().min(3, "Category must be at least 3 characters"),
+
+export const productVariantSchema = z.object({
+  productId: z.string(),
+  size: z.string().min(1),
+  stock: z.coerce.number().min(0),
+  price: currency.optional(),
+});
+
+const baseProductSchema = z.object({
+  name: z.string().min(3),
+  slug: z.string().min(3),
+  category: z.string().min(3),
+
   price: currency,
-  images: z.array(z.string()).min(1, "Product must have at least 1 image"),
-  description: z.string().min(10, "Description must not be less than 10 characters"),
-  longDescription: z.string().min(30, "Description must not be less than 30 characters"),
-  features: z.array(z.string()).min(1, "Product must have at least 1 feature"),
-  materials: z.array(z.string()).min(1, "Product must have at least 1 material used"),
+
+  images: z.array(z.string()).min(1),
+
+  description: z.string().min(10),
+  longDescription: z.string().min(30),
+
+  features: z.array(z.string()).min(1),
+  materials: z.array(z.string()).min(1),
+
   care: z.string().nullable(),
   fit: z.string().nullable(),
-  deliveryFee: z.object({
-    lag: z.coerce.number(),
-    nationwide: z.coerce.number(),
-  }).nullable(),
-  stock: z.coerce.number(),
-  deliveryTime: z.string().min(5, "Description must not be less than 5 characters"),
-  // popularity: z.coerce.number().default(0)
+
+  deliveryFee: z
+    .object({
+      lag: z.coerce.number(),
+      nationwide: z.coerce.number(),
+    })
+    .nullable(),
+
+  deliveryTime: z.string().min(5),
+
+  hasVariants: z.boolean(),
+
+  stock: z.coerce.number().optional(),
+
+  variants: z.array(productVariantSchema).optional()
 });
+
+// Schema for inserting products
+export const insertProductSchema = baseProductSchema.superRefine(
+  (data, ctx) => {
+    if (!data.hasVariants) {
+      if (data.stock === undefined || data.stock < 0) {
+        ctx.addIssue({
+          path: [ "stock" ],
+          code: z.ZodIssueCode.custom,
+          message: "Stock is required for non-variant products",
+        });
+      }
+    }
+
+    if (data.hasVariants) {
+      if (!data.variants || data.variants.length === 0) {
+        ctx.addIssue({
+          path: [ "variants" ],
+          code: z.ZodIssueCode.custom,
+          message: "Variants are required when hasVariants is true",
+        });
+      }
+    }
+  }
+);
 
 // schema for signing users in
 export const signInFormSchema = z.object({
@@ -50,7 +95,7 @@ export const cartProductSchema = z.object({
   slug: z.string(),
   price: z.string(),
   images: z.array(z.string()).default([]),
-  stock: z.number(),
+  stock: z.number().int().optional()
 });
 
 /**
@@ -58,11 +103,12 @@ export const cartProductSchema = z.object({
  */
 export const cartItemSchema = z.object({
   productId: z.string().min(1), // `${product.id}-${Date.now()}`
-  product: cartProductSchema,
   quantity: z
     .number()
     .int()
     .positive("Quantity must be greater than 0"),
+  product: cartProductSchema,
+  variant: productVariantSchema.optional()
 });
 
 /**
@@ -156,6 +202,28 @@ export const updateUserSchema = updateUserProfileSchema.extend({
 });
 
 // Schema for updating products
-export const updateProductSchema = insertProductSchema.extend({
-  id: z.string().min(1, 'Product ID is required'),
-});
+export const updateProductSchema = baseProductSchema
+  .extend({
+    id: z.string().min(1, "Product ID is required"),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.hasVariants) {
+      if (data.stock === undefined || data.stock < 0) {
+        ctx.addIssue({
+          path: [ "stock" ],
+          code: z.ZodIssueCode.custom,
+          message: "Stock is required for non-variant products",
+        });
+      }
+    }
+
+    if (data.hasVariants) {
+      if (!data.variants || data.variants.length === 0) {
+        ctx.addIssue({
+          path: [ "variants" ],
+          code: z.ZodIssueCode.custom,
+          message: "Variants are required when hasVariants is true",
+        });
+      }
+    }
+  });

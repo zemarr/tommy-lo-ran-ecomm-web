@@ -16,14 +16,9 @@ interface CartSidebarProps {
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   const router = useRouter();
   // const pathname = usePathname();
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, initializeCart } = useCartStore();
+  const { items, removeItem, updateItemQuantity, getTotalPrice, getTotalItems } = useCartStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
-
-  useEffect(() => {
-    initializeCart();
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -108,13 +103,13 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               <div className="p-6 space-y-6">
                 {items?.map((item, itemIdx) => (
                   <div
-                    key={item.productId}
+                    key={`${ item.product.id }-${ itemIdx }-${ item.variant?.size }`}
                     className="border-b border-border pb-6 last:border-b-0"
                   >
                     {/* Product Info */}
                     <div className="flex gap-4 mb-4">
                       <img
-                        src={item.product.images[itemIdx] || '/placeholder.svg'}
+                        src={item.product.images[ 0 ] || '/placeholder.svg'}
                         alt={item.product.name}
                         className="w-20 h-24 object-cover bg-muted"
                       />
@@ -123,10 +118,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                           {item.product.name}
                         </h3>
                         <p className="text-xs text-muted-foreground mb-2">
-                          {item.product.category}
+                          {item?.variant?.size}
                         </p>
                         <p className="text-sm font-medium text-foreground">
-                          ₦{Number(item.product.price).toLocaleString()}
+                          ₦{item.variant ? Number(item.variant.price).toLocaleString() : Number(item.product.price).toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -136,9 +131,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       <div className="flex items-center gap-2 border border-border rounded-sm">
                         <button
                           onClick={() =>
-                            updateQuantity(
-                              (item.product.id),
-                              item.quantity - 1
+                            updateItemQuantity(
+                              item.product.id,
+                              item.quantity - 1,
+                              item?.variant
                             )
                           }
                           className="p-1 hover:bg-muted transition-colors"
@@ -146,17 +142,25 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         >
                           <Minus className="w-4 h-4" />
                         </button>
+
                         <span className="w-8 text-center text-sm font-medium">
                           {item.quantity}
                         </span>
+
+                        {/* 🔥 Disable if next quantity exceeds stock */}
                         <button
+                          disabled={
+                            item.quantity >=
+                            (item.variant?.stock ?? item.product.stock ?? 0)
+                          }
                           onClick={() =>
-                            updateQuantity(
+                            updateItemQuantity(
                               item.product.id,
-                              item.quantity + 1
+                              item.quantity + 1,
+                              item?.variant
                             )
                           }
-                          className="p-1 hover:bg-muted transition-colors"
+                          className="p-1 hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                           aria-label="Increase quantity"
                         >
                           <Plus className="w-4 h-4" />
@@ -164,7 +168,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       </div>
 
                       <button
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => removeItem(item.product.id, item.variant)}
                         className="p-1 text-muted-foreground hover:text-destructive transition-colors"
                         aria-label="Remove from cart"
                       >

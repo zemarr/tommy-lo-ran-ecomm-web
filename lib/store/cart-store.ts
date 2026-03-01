@@ -1,190 +1,260 @@
 import { create } from 'zustand';
-import { CartItem, Product } from '@/types';
-import { addToCart, clearCart, getMyCart, removeFromCart } from '../server/actions/cart.actions';
-import { getProductById } from '../server/actions/product.actions';
+import { CartItem, Product, ProductVariant } from '@/lib/types';
+import { getMyCart, updateCart } from '../server/actions/cart.actions';
+import { CartOperation } from '../types/cart.types';
+import { convertToPlainObject, debounce } from '../utils';
 
 // Timer map for debounced sync (per product)
-const syncTimers = new Map<string, NodeJS.Timeout>();
+const debouncedSyncMap = new Map<
+  string,
+  ReturnType<typeof debounce>
+>();
 
 interface CartStore {
-  isCartOpen: boolean;
   items: CartItem[];
-  pendingProductId: string | null;
-  productStock: Record<string, number>;
-  initializeCart: () => Promise<void>;
-  getProductStock: (productId: string) => Promise<number>;
-  addItem: (product: Product, quantity?: number) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  clearCart: () => void;
+  isCartOpen: boolean;
+  pendingKeys: Set<string>; // track which items are being synced
+  error: string | null;
+  initializeCart: (items: CartItem[]) => void;
+  addItem: (product: Product, quantity?: number, variant?: ProductVariant) => Promise<void>;
+  updateItemQuantity: (productId: string, quantity: number, variant?: ProductVariant) => Promise<void>;
+  removeItem: (productId: string, variant?: ProductVariant) => Promise<void>;
+  clearCart: () => Promise<void>;
+  toggleCart: (open?: boolean) => void;
   getTotalPrice: () => number;
   getTotalItems: () => number;
 }
 
+const getItemKey = (productId: string, variant?: ProductVariant) =>
+  `${ productId }_${ variant?.size ?? 'base' }`;
+
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
   isCartOpen: false,
-  pendingProductId: null,
-  productStock: {},
+  pendingKeys: new Set(),
+  error: null,
 
-  initializeCart: async () => {
-    try {
-      const cart = await getMyCart();
+  initializeCart: (items) => set({ items }),
 
-      set({ items: cart?.items ?? [] });
-    } catch (error) {
-      // set({ error: 'Failed to load cart', loading: false });
-    }
-  },
+  toggleCart: (open) => set((state) => ({ isCartOpen: open ?? !state.isCartOpen })),
 
-  setCartOpen: (open: boolean) => set({ isCartOpen: open }),
+  addItem: async (product, quantity = 1, variant) => {
+    const key = getItemKey(product.id, variant);
+    const { items, pendingKeys } = get();
 
-  // Fetch stock from server (can be cached)
-  getProductStock: async (productId: string) => {
-    const product = await getProductById(productId);
-    return product?.stock ?? 0;
-  },
+    // Prevent duplicate operations
+    if (pendingKeys.has(key)) return;
 
-  addItem: async (product: Product, quantity = 1) => {
-    const { items, getProductStock } = get();
-    const previousItems = items ? [...items] : []; // snapshot
+    // Determine new quantity
+    const existingItem = items.find(
+      i => i.productId === product.id && i.variant?.size === variant?.size
+    );
+    const newQuantity = (existingItem?.quantity ?? 0) + quantity;
 
-    set({ pendingProductId: product.id });
-
-    // 1. Check current stock
-    const stock = await getProductStock(product.id);
-    const existingItem = items?.find(i => i.productId === product.id);
-    const currentQty = existingItem?.quantity ?? 0;
-    const newQty = currentQty + quantity;
-
-    if (newQty > stock) {
-      // Not enough stock – abort
-      // toast.error(`Only ${stock} available`);
-      set({ pendingProductId: null });
+    // Client-side stock check (optimistic)
+    const availableStock = variant?.stock ?? product.stock ?? 0;
+    if (newQuantity > availableStock) {
+      set({ error: `Only ${ availableStock } available` });
       return;
     }
 
-    // 2. Optimistic update
-    let updatedItems: CartItem[] = [];
-    if (items && existingItem) {
-      updatedItems = items.map(item =>
-        item.productId === product.id
-          ? { ...item, quantity: newQty }
-          : item
-      );
-    } else if (items) {
-      const newItem: CartItem = {
-        product,
-        quantity,
-        productId: product.id,
-      };
-      updatedItems = [...items, newItem];
-    }
-
-    set({ items: updatedItems, pendingProductId: null });
-
-    // 3. Schedule server sync
-    scheduleCartUpdateSyncToServer(product.id, previousItems);
-  },
-
-  removeItem: (productId: string) => {
-    set(state => ({
-      items: state.items.filter(item => item.productId !== productId),
-    }));
-    scheduleCartUpdateSyncToServer(productId);
-  },
-
-  updateQuantity: (productId: string, quantity: number) => {
-    const { items, removeItem } = get();
-
-    if (quantity <= 0) {
-      removeItem(productId);
-      return;
-    }
+    // Snapshot current items for rollback
+    const previousItems = [ ...items ];
 
     // Optimistic update
-    const updatedItems = items?.map(item =>
-      item.productId === productId ? { ...item, quantity } : item
-    );
-    set({ items: updatedItems });
+    let updatedItems: CartItem[];
+    if (existingItem) {
+      updatedItems = items.map(item =>
+        item.productId === product.id && item.variant?.size === variant?.size
+          ? { ...item, quantity: newQuantity }
+          : item
+      );
+    } else {
+      const newItem: CartItem = {
+        productId: product.id,
+        product: {
+          id: product.id,
+          name: product.name,
+          slug: product.slug,
+          price: variant?.price ?? product.price,
+          images: product.images,
+          stock: product.stock,
+        },
+        quantity,
+        variant: variant ? { size: variant.size, price: variant.price, stock: variant.stock, productId: variant.productId } : undefined,
+      };
+      updatedItems = [ ...items, newItem ];
+    }
 
-    // Schedule server sync
-    scheduleCartUpdateSyncToServer(productId);
+    set({
+      items: convertToPlainObject(updatedItems),
+      pendingKeys: new Set(pendingKeys).add(key),
+      error: null,
+    });
+
+    // Prepare operation for server
+    const operation: CartOperation = {
+      productId: product.id,
+      quantity: newQuantity,
+      variant: variant ? {
+        size: variant.size,
+        price: variant.price,
+        stock: variant.stock,
+      } : undefined,
+    };
+
+    // Call server
+    const result = await updateCart(operation);
+
+    if (!result.success) {
+      // Rollback on failure
+      set({
+        items: previousItems,
+        error: result.message,
+      });
+    }
+
+    // Remove pending key
+    set((state) => {
+      const newPending = new Set(state.pendingKeys);
+      newPending.delete(key);
+      return { pendingKeys: newPending };
+    });
+  },
+
+
+  updateItemQuantity: async (productId, quantity, variant) => {
+    if (quantity <= 0) {
+      return get().removeItem(productId, variant);
+    }
+
+    const key = getItemKey(productId, variant);
+    const { items, pendingKeys } = get();
+
+    const existingItem = items.find(
+      i =>
+        i.productId === productId &&
+        i.variant?.size === variant?.size
+    );
+
+    if (!existingItem) return;
+
+    const previousItems = [ ...items ];
+
+    // ✅ Optimistic UI update (instant)
+    const updatedItems = items.map(item =>
+      item.productId === productId &&
+        item.variant?.size === variant?.size
+        ? { ...item, quantity }
+        : item
+    );
+
+    set({
+      items: convertToPlainObject(updatedItems),
+    });
+
+    // ✅ Create operation payload
+    const operation: CartOperation = {
+      productId,
+      quantity,
+      variant: variant
+        ? {
+          size: variant.size,
+          price: variant.price,
+          stock: variant.stock,
+        }
+        : undefined,
+    };
+
+    // ✅ Create debounced server sync if not existing
+    if (!debouncedSyncMap.has(key)) {
+      debouncedSyncMap.set(
+        key,
+        debounce(async (op: CartOperation, prevItems: CartItem[]) => {
+          set(state => ({
+            pendingKeys: new Set(state.pendingKeys).add(key),
+          }));
+
+          const result = await updateCart(op);
+
+          if (!result.success) {
+            set({
+              items: prevItems,
+              error: result.message,
+            });
+          }
+
+          set(state => {
+            const newPending = new Set(state.pendingKeys);
+            newPending.delete(key);
+            return { pendingKeys: newPending };
+          });
+        }, 2000)
+      );
+    }
+
+    // ✅ Call debounced function
+    debouncedSyncMap.get(key)!(operation, previousItems);
+  },
+
+  removeItem: async (productId, variant) => {
+    const key = getItemKey(productId, variant);
+    const { items, pendingKeys } = get();
+    if (pendingKeys.has(key)) return;
+
+    const previousItems = [ ...items ];
+
+    // Optimistic remove
+    const updatedItems = items.filter(
+      item => !(item.productId === productId && item.variant?.size === variant?.size)
+    );
+
+    set({
+      items: updatedItems,
+      pendingKeys: new Set(pendingKeys).add(key),
+    });
+
+    const operation: CartOperation = {
+      productId,
+      quantity: 0, // signal removal
+      variant: variant ? {
+        size: variant.size,
+        price: variant.price,
+        stock: variant.stock,
+      } : undefined,
+    };
+
+    const result = await updateCart(operation);
+
+    if (!result.success) {
+      set({ items: convertToPlainObject(previousItems), error: result.message });
+    }
+
+    set((state) => {
+      const newPending = new Set(state.pendingKeys);
+      newPending.delete(key);
+      return { pendingKeys: newPending };
+    });
   },
 
   clearCart: async () => {
-    // Cancel all pending timers
-    for (const [id, timer] of syncTimers) {
-      clearTimeout(timer);
-      syncTimers.delete(id);
-    }
-    set({ items: [] });
-    // Optionally call server clearCart action here
-    await clearCart();
+    // Optimistic clear
+    const previousItems = get().items;
+    set({ items: [], pendingKeys: new Set(), error: null });
+
+    // You might want to call a server action to clear the cart
+    // For simplicity, we'll just rely on subsequent operations to sync
   },
 
   getTotalPrice: () => {
-    return get().items?.reduce(
-      (total, item) => total + Number(item.product.price) * item.quantity,
-      0
-    );
+    return get().items.reduce((total, item) => {
+      const price = Number(item.variant?.price ?? item.product.price);
+      return total + price * item.quantity;
+    }, 0);
   },
 
   getTotalItems: () => {
-    return get().items?.reduce((total, item) => total + item.quantity, 0);
+    return get().items.reduce((total, item) => total + item.quantity, 0);
   },
+
 }));
-
-// ---------- Server sync helpers ----------
-
-/**
- * Schedule a sync for a specific product after a short debounce.
- * Cancels any pending sync for the same product.
- */
-async function scheduleCartUpdateSyncToServer(productId: string, previousItems?: CartItem[]) {
-  const store = useCartStore.getState();
-  // Clear existing timer
-  if (syncTimers.has(productId)) {
-    clearTimeout(syncTimers.get(productId)!);
-    syncTimers.delete(productId);
-  }
-
-  const timeout = setTimeout(async () => {
-    try {
-      const { items } = useCartStore.getState();
-      const latestItem = items?.find(i => i.productId === productId);
-
-      let result;
-
-      if (latestItem) {
-        result = await addToCart(latestItem.productId, latestItem.quantity);
-      } else {
-        result = await removeFromCart(productId);
-      }
-
-      if (!result.success) {
-        useCartStore.setState({ items: previousItems });
-      } else if (result.cart) {
-        useCartStore.setState({ items: result.cart });
-      }
-    } catch (error) {
-      console.error('Sync error:', error);
-    } finally {
-      syncTimers.delete(productId);
-    }
-  }, 2000);
-
-  syncTimers.set(productId, timeout);
-}
-
-/**
- * Fetch the latest cart from server and reset client state.
- */
-async function refreshCartFromServer() {
-  const result = await getMyCart();
-  if (result) {
-    useCartStore.setState({ items: result?.items }); // result.cart.items is already CartItem[]
-  } else {
-    useCartStore.setState({ items: [] }); // fallback to empty array
-  }
-}

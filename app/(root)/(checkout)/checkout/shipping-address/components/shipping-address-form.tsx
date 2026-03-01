@@ -1,6 +1,6 @@
 'use client'
 import React, { useTransition } from 'react'
-import { ShippingAddress } from '../../../../../../types'
+import { ShippingAddress } from '../../../../../../lib/types'
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 import { shippingAddressSchema } from '@/lib/validators'
