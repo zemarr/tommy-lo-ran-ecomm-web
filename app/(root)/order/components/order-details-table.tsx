@@ -220,8 +220,8 @@ const OrderDetailsTable = ({ order, paypalClientId, paystackPublicKey, isAdmin }
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {orderItems.map((item) => (
-                    <TableRow key={item.slug}>
+                  {orderItems.map((item, iI) => (
+                    <TableRow key={`${ item?.slug }-${ iI }-${ item.productId }`}>
                       <TableCell>
                         <Link href={`/products/${ item.slug }`} className='flex items-center'>
                           <Image src={item.image} alt={item.name} width={50} height={50} className='rounded-sm' />

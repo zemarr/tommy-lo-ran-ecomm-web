@@ -238,12 +238,17 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 
   clearCart: async () => {
-    // Optimistic clear
     const previousItems = get().items;
+    // Optimistic clear
     set({ items: [], pendingKeys: new Set(), error: null });
-
-    // You might want to call a server action to clear the cart
-    // For simplicity, we'll just rely on subsequent operations to sync
+    
+    try {
+      // Rollback on failure
+      set({ items: previousItems, error: "Failed to clear client cart" });
+    } catch (error) {
+      // Rollback on error
+      set({ items: previousItems, error: 'Failed to clear client cart' });
+    }
   },
 
   getTotalPrice: () => {

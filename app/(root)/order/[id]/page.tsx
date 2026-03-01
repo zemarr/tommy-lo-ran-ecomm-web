@@ -36,6 +36,7 @@ const OrderDetailsPage = async (props: {
           taxPrice: order.taxPrice.toString(),
           orderItems: order.orderItems.map((item) => ({
             ...item,
+            size: item.size ?? undefined,
             price: item.price.toString(),
           })),
           paidAt: order.paidAt ?? new Date(0),

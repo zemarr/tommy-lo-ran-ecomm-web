@@ -87,14 +87,15 @@ export const DEFAULT_SIGNUP_VALUES = {
 export const NAIRA_SIGN = `&#8358;`
 export const DOLLAR_SIGN = `$`
 export const shippingAddressDefaultValues = {
-  fullname: "",
-  streetAddress: "",
-  city: "",
-  state: "",
-  postalCode: "",
-  country: "",
-  // lng: "",
-  // lat: "7"
+  fullName: '',
+  phoneNumber: '',
+  streetAddress: '',
+  country: '',
+  city: undefined,
+  state: undefined,
+  postalCode: undefined,
+  lng: undefined,
+  lat: undefined,
 };
 export const PROTECTED_ROUTES = [
   /\/checkout/,

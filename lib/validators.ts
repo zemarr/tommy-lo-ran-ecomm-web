@@ -130,7 +130,7 @@ export const insertCartSchema = z.object({
 });
 
 export const shippingAddressSchema = z.object({
-  fullName: z.string().min(3, "First name is required"),
+  fullName: z.string().min(3, "Full name is required"),
   phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
   streetAddress: z.string().min(3, "Street address is required"),
   city: z.string().min(3, "City is required").optional(),
@@ -153,6 +153,7 @@ export const paymentMethodSchema = z.object({
 export const insertOrderItemSchema = z.object({
   productId: z.string().uuid(),
   quantity: z.number().int().min(1),
+  size: z.string().optional(),
   price: currency,
   name: z.string().min(1),
   slug: z.string().min(1),
