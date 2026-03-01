@@ -8,7 +8,7 @@ import { AddToCartButton } from "@/components/add-to-cart-button";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { useCartStore } from "@/lib/store/cart-store";
 import Image from "next/image";
-import { Product } from "@/types";
+import { Product, ProductVariant } from "@/lib/types";
 
 interface ProductDetailsProps {
   product: Product;
@@ -16,14 +16,20 @@ interface ProductDetailsProps {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const addItem = useCartStore((state) => state.addItem);
+  const [ isCartOpen, setIsCartOpen ] = useState(false);
+  const [ selectedVariant, setSelectedVariant ] = useState<ProductVariant | null>(
+    product.hasVariants && product.variants && product.variants.length > 0
+      ? product.variants[ 0 ] // default to first variant
+      : null
+  );
+
+  const displayPrice =
+    selectedVariant?.price ?? product.price;
 
   return (
     <>
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <div className="bg-background min-h-screen">
-        {/* Breadcrumb */}
         <div className="mx-auto max-w-10xl px-6 lg:px-14 py-8">
           <Link
             href="/#collections"
@@ -89,12 +95,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                   {product.name}
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                  ₦{Number(product.price).toLocaleString()}
+                  ₦{Number(displayPrice).toLocaleString()}
                 </p>
               </div>
 
               {/* Description */}
-              <div className="mb-12">
+              <div className="mb-8">
                 <p className="text-muted-foreground leading-loose">
                   {product.longDescription}
                 </p>
@@ -102,16 +108,61 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
               {/* CTA Buttons - Minimal */}
               <div className="flex flex-col gap-2 mb-16 space-y-1">
-                <AddToCartButton product={product} />
-                {/* <Button
-                  onClick={() => {
-                    addItem(product, 1);
-                    setIsCartOpen(true);
-                  }}
-                  className="bg-gold text-charcoal hover:bg-gold/90 tracking-[0.2em] uppercase text-xs py-7 font-medium rounded-sm"
-                >
-                  Purchase Now
-                </Button> */}
+                {/* Variant Selection */}
+                {(product?.hasVariants && product?.variants) && product?.variants?.length > 0 ? (
+                  <div className="mb-10">
+                    <h3 className="text-xs tracking-[0.2em] uppercase text-gold mb-4">
+                      Select Size
+                    </h3>
+
+                    <div className="flex flex-wrap gap-3">
+                      {product?.variants?.map((variant, index) => {
+                        const isOutOfStock = variant.stock <= 0;
+                        const isSelected = selectedVariant?.size === variant.size;
+
+                        return (
+                          <button
+                            key={index}
+                            disabled={isOutOfStock}
+                            onClick={() => setSelectedVariant(variant)}
+                            className={`
+              px-3 py-1 border text-xs rounded-sm transition-all
+              ${ isSelected
+                                ? "border-gold bg-gold text-black"
+                                : "border-border text-muted-foreground hover:border-gold" }
+              ${ isOutOfStock ? "opacity-30 cursor-not-allowed" : "" }
+            `}
+                          >
+                            {variant.size}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {selectedVariant && selectedVariant.stock <= 3 && (
+                      <p className="text-xs text-muted-foreground mt-3">
+                        Only {selectedVariant.stock} left in stock
+                      </p>
+                    )}
+                  </div>
+                ) : (<div className="flex flex-col py-2">
+                  <h3 className="text-xs tracking-[0.2em] uppercase text-gold mb-4">
+                    Size
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      disabled={true}
+                      className={`px-3 py-1 border text-xs rounded-sm transition-all border-gold bg-gold text-black`}
+                    >
+                        None
+                    </button>
+                  </div>
+                </div>)}
+                <AddToCartButton
+                  product={product}
+                  variant={selectedVariant ?? undefined}
+                  className="w-full"
+                />
               </div>
 
               {/* Details - Accordion Style */}

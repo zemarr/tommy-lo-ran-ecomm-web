@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
-import { Product } from '@/types';
+import { Product } from '@/lib/types';
 import { useShopStore } from '@/lib/store/shop-store';
 import { ShopFilters } from '@/components/shop-filters';
 import { ShopProductGrid } from '@/components/shop-product-grid';

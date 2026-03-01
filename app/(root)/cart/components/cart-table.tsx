@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react'
-import { Cart } from '@/types'
+import { Cart } from '@/lib/types'
 import { usePathname, useRouter } from 'next/navigation'
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Link from 'next/link'

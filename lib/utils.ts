@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx"
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 import qs from 'query-string'
-import { CartItem, DeliveryFee, Product } from "@/types";
+import { CartItem, DeliveryFee, Product } from "@/lib/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -200,5 +200,23 @@ export function calculateCartPricesClient(items: CartItem[]) {
     shippingPrice: shippingPrice.toFixed(2),
     taxPrice: taxPrice.toFixed(2),
     totalPrice: totalPrice.toFixed(2),
+  };
+}
+
+export function createVariantKey(variant?: { size?: string }) {
+  return variant ? JSON.stringify(variant) : 'base';
+}
+
+export function debounce<T extends (...args: any[]) => void>(
+  fn: T,
+  delay: number
+) {
+  let timer: ReturnType<typeof setTimeout>;
+
+  return (...args: Parameters<T>) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
   };
 }

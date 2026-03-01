@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
-import { Product } from '@/types';
+import React, { useEffect } from 'react';
+import { Product } from '@/lib/types';
 import { useRouter } from 'next/navigation';
-import { useForm, ControllerRenderProps, SubmitHandler } from 'react-hook-form';
+import { useForm, ControllerRenderProps, SubmitHandler, useFieldArray, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { insertProductSchema, updateProductSchema } from '@/lib/validators';
 import { z } from 'zod';
@@ -21,6 +21,9 @@ import { Checkbox } from '../ui/checkbox';
 import { UploadButton } from '@/lib/uploadThing';
 import { Select, SelectItem, SelectContent, SelectValue, SelectTrigger } from '../ui/select';
 import { MultiInputField } from '../shared/forms/multi-input-field';
+import { Switch } from '../ui/switch';
+import { Label } from '../ui/label';
+import { MultiVariantInputField } from '../shared/forms/multi-variant-input';
 
 const ProductForm = ({ type, product, productId }: {
   type: 'Create' | 'Update',
@@ -35,6 +38,21 @@ const ProductForm = ({ type, product, productId }: {
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (values) => {
+    // Format variants
+    if (values.variants) {
+      values.variants = values.variants.map(v => ({
+        ...v,
+        price: v.price ? Number(v.price).toFixed(2) : undefined,
+        // If schema requires productId, add a placeholder (or remove if optional)
+        // productId: v.productId || 'temp',
+      }));
+    }
+
+    // Ensure deliveryFee is not null
+    if (!values.deliveryFee) {
+      values.deliveryFee = { lag: 0, nationwide: 0 };
+    }
+
     // on create
     if (type === 'Create') {
       console.log(values, 'values')
@@ -58,7 +76,6 @@ const ProductForm = ({ type, product, productId }: {
 
     //     on update
     if (type === 'Update') {
-      console.log(values, 'values')
       if (!productId) {
         router.push('/admin/products');
       }
@@ -74,8 +91,18 @@ const ProductForm = ({ type, product, productId }: {
   };
 
   const images = form.watch('images');
-  // const isFeatured = form.watch('isFeatured');
-  // const banner = form.watch('banner');
+  const hasVariants = form.watch("hasVariants");
+
+
+  useEffect(() => {
+    if (!hasVariants) {
+      form.setValue("variants", undefined);
+    }
+  }, [ hasVariants ]);
+
+  useEffect(() => {
+    console.log(form.formState.errors, 'product form errors')
+  }, [ form.formState.errors ])
 
   return (
     <Form {...form}>
@@ -356,7 +383,7 @@ const ProductForm = ({ type, product, productId }: {
           />
         </div>
 
-        <div className="flex flex-col md:flex-row gap-5">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
           {/* price */}
           <FormField
             control={form.control}
@@ -367,36 +394,71 @@ const ProductForm = ({ type, product, productId }: {
               <FormItem className="form-item w-full">
                 <FormLabel htmlFor="price">Price</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product price" type="number"  {...field} />
+                  <Input placeholder="Enter product price" type="text" inputMode="numeric"
+                    pattern="^\d+(\.\d{2})?$"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {/* stock */}
+
+          {/* has variants? */}
           <FormField
             control={form.control}
-            name="stock"
-            render={({ field }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'stock'>;
-            }) => (
-              <FormItem className="form-item w-full">
-                <FormLabel htmlFor="stock">Stock</FormLabel>
+            name="hasVariants"
+            render={({ field }) => (
+              <FormItem className="flex items-center justify-between rounded-lg py-4">
+                <div>
+                  <FormLabel>Does this product have variants?</FormLabel>
+                </div>
                 <FormControl>
-                  <Input placeholder="Enter product stock" type="number"  {...field} />
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
+
         </div>
+        <>
+          {!hasVariants && (
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+              <FormField
+                control={form.control}
+                name="stock"
+                render={({ field }) => (
+                  <FormItem className="form-item w-full">
+                    <FormLabel>Stock</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+          {hasVariants && (
+            <div className="space-y-4">
+              <MultiVariantInputField name="variants" label={"Product variants"} />
+
+              <div className="flex justify-between items-center">
+                <Label className="text-lg font-semibold">Product Variants</Label>
+              </div>
+            </div>
+          )}
+        </>
 
         <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
           <h3 className="mb-3 text-lg font-semibold col-span-2">
             Delivery Fees
           </h3>
 
-          {/* Lagos */}
+          {/* Within Lagos */}
           <FormField
             control={form.control}
             name="deliveryFee.lag"
