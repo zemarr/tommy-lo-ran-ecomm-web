@@ -154,7 +154,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                       disabled={true}
                       className={`px-3 py-1 border text-xs rounded-sm transition-all border-gold bg-gold text-black`}
                     >
-                      Regular
+                        None
                     </button>
                   </div>
                 </div>)}

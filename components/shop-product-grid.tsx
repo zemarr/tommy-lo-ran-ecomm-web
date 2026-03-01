@@ -57,7 +57,7 @@ export function ShopProductGrid({
 }
 
 // Internal component to manage per‑product variant selection
-function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product }: { product: Product }) {
   const [ selectedVariant, setSelectedVariant ] = useState<ProductVariant | null>(
     product.hasVariants && product.variants && product.variants.length > 0
       ? product.variants[ 0 ] // default to first variant
@@ -132,7 +132,7 @@ function ProductCard({ product }: { product: Product }) {
                   disabled={true}
                   className={`px-3 py-1 border text-xs rounded-sm transition-all border-gold bg-gold text-black`}
                 >
-                  Regular
+                  None
                 </button>
               </div>
             </div>)}

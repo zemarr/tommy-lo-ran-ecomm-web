@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { getAllCategories, getAllProducts } from '@/lib/server/actions/product.actions';
 import Link from 'next/link';
 import React from 'react'
-import { ShopProductGrid } from '../../../components/shop-product-grid';
+import { ProductCard, ShopProductGrid } from '../../../components/shop-product-grid';
 import { AddToCartButton } from '../../../components/add-to-cart-button';
 import { SearchFiltersToggle } from './components/search-filters-toggle';
 
@@ -224,44 +224,7 @@ const SearchPage = async (props: {
               <div>No products found</div>
             )}
             {products.data.map((product) => (
-              <article key={product.id} className="group flex flex-col">
-                {/* Product Link */}
-                <Link
-                  href={`/shop/${ product.slug }`}
-                  className="flex-1"
-                >
-                  {/* Product Image */}
-                  <div className="aspect-3/4 overflow-hidden bg-muted mb-6 relative">
-                    <img
-                      src={product.images[ 0 ] || "/placeholder.svg"}
-                      alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.02]"
-                      loading="lazy"
-                    />
-                    {/* Museum lighting effect */}
-                    <div className="absolute inset-0 bg-linear-to-b from-charcoal/0 via-transparent to-charcoal/5 pointer-events-none" />
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="space-y-2 mb-4">
-                    <p className="text-xs tracking-widest uppercase text-gold">
-                      {product.category}
-                    </p>
-                    <h3 className="font-sans font-medium text-lg text-foreground group-hover:text-gold transition-colors duration-300">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {product.description}
-                    </p>
-                    <p className="text-lg font-medium text-foreground pt-3">
-                      ₦{Number(product.price).toLocaleString()}
-                    </p>
-                  </div>
-                </Link>
-
-                {/* Add to Cart Button */}
-                <AddToCartButton product={product} className="w-full" />
-              </article>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
