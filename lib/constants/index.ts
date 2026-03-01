@@ -114,18 +114,22 @@ export const PAYMENT_METHODS = process.env.PAYMENT_METHODS ? process.env.PAYMENT
 export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD || "Paystack"
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 20;
 export const PRODUCT_DEFAULT_VALUES = {
-  name: "",
-  slug: "",
-  category: "",
+  name: '',
+  slug: '',
+  category: '',
+  price: '',
   images: [],
-  brand: "",
-  description: "",
-  price: '0',
+  description: '',
+  longDescription: '',
+  features: [],
+  materials: [],
+  deliveryTime: '',
+  hasVariants: false,
   stock: 0,
-  rating: '0',
-  numReviews: '0',
-  isFeatured: false,
-  banner: null,
+  variants: undefined,
+  care: null,
+  fit: null,
+  deliveryFee: { lag: 0, nationwide: 0 },
 }
 export const USER_ROLES = process.env.USER_ROLES ? process.env.USER_ROLES.split(', ') : ["admin", "user"]
 export const REVIEW_FORM_DEFAULT_VALUES = {

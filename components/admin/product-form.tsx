@@ -38,14 +38,20 @@ const ProductForm = ({ type, product, productId }: {
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (values) => {
-    // if (!values.hasVariants) {
-    //   values.variants = undefined;
-    // }
+    // Format variants
+    if (values.variants) {
+      values.variants = values.variants.map(v => ({
+        ...v,
+        price: v.price ? Number(v.price).toFixed(2) : undefined,
+        // If schema requires productId, add a placeholder (or remove if optional)
+        // productId: v.productId || 'temp',
+      }));
+    }
 
-    // if (values.hasVariants) {
-    //   values.stock = undefined;
-    //   // values.price = "0";
-    // }
+    // Ensure deliveryFee is not null
+    if (!values.deliveryFee) {
+      values.deliveryFee = { lag: 0, nationwide: 0 };
+    }
 
     // on create
     if (type === 'Create') {
@@ -93,6 +99,10 @@ const ProductForm = ({ type, product, productId }: {
       form.setValue("variants", undefined);
     }
   }, [ hasVariants ]);
+
+  useEffect(() => {
+    console.log(form.formState.errors, 'product form errors')
+  }, [ form.formState.errors ])
 
   return (
     <Form {...form}>
@@ -384,7 +394,10 @@ const ProductForm = ({ type, product, productId }: {
               <FormItem className="form-item w-full">
                 <FormLabel htmlFor="price">Price</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product price" type="number"  {...field} />
+                  <Input placeholder="Enter product price" type="text" inputMode="numeric"
+                    pattern="^\d+(\.\d{2})?$"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -445,7 +458,7 @@ const ProductForm = ({ type, product, productId }: {
             Delivery Fees
           </h3>
 
-          {/* Lagos */}
+          {/* Within Lagos */}
           <FormField
             control={form.control}
             name="deliveryFee.lag"

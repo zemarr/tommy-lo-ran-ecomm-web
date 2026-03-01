@@ -11,10 +11,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Plus, Trash } from "lucide-react";
+
 type Props = {
   name: string;
   label: string;
-  // placeholder: string;
 };
 
 export function MultiVariantInputField({ name, label }: Props) {
@@ -22,97 +22,103 @@ export function MultiVariantInputField({ name, label }: Props) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name,
+    name, // should be "variants"
   });
 
+  // Default values for a new variant
+  const defaultVariant = {
+    size: '',
+    stock: 0,
+    price: '',
+  };
+
   return (
-    <FormField
-      control={control}
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      name={name as string}
-      render={() => (
-        <FormItem className="form-item w-full">
-          <FormLabel>{label}</FormLabel>
+    <div className="space-y-4">
+      {fields.map((fieldItem, index) => (
+        <div key={fieldItem.id} className="p-4 border border-border rounded-md space-y-4">
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* Size */}
+            <FormField
+              control={control}
+              name={`${ name }.${ index }.size`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Size</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., S, M, L" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <div className="space-y-3">
-            {fields.map((fieldItem, index) => (
-              <div key={fieldItem.id} className="p-2 rounded-md overflow-hidden">
-                <div className="grid md:grid-cols-3 gap-4 items-end">
+            {/* Stock */}
+            <FormField
+              control={control}
+              name={`${ name }.${ index }.stock`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stock</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="0"
+                      {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                  {/* Size */}
-                  <FormField
-                    control={control}
-                    name={`variants.${ index }.size`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Size</FormLabel>
-                        <FormControl>
-                          <Input placeholder="S, M, L..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Stock */}
-                  <FormField
-                    control={control}
-                    name={`variants.${ index }.stock`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Stock</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Price Override */}
-                  <FormField
-                    control={control}
-                    name={`variants.${ index }.price`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Price</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                </div>
-
-                <div className="mt-3 text-right">
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => remove(index)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              </div>
-            ))}
+            {/* Price Override */}
+            <FormField
+              control={control}
+              name={`${ name }.${ index }.price`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price (optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      placeholder="Leave blank to use base price"
+                      {...field}
+                      value={field.value ?? ''}
+                      onChange={(e) => field.onChange(e.target.value ? e.target.value : undefined)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            className="mt-3"
-            onClick={() => append("")}
-          >
-            <Plus size={16} className="mr-1" />
-            Add {label.slice(0, -1)}
-          </Button>
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              onClick={() => remove(index)}
+            >
+              <Trash size={16} className="mr-1" />
+              Remove
+            </Button>
+          </div>
+        </div>
+      ))}
 
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => append(defaultVariant)}
+        className="w-full"
+      >
+        <Plus size={16} className="mr-1" />
+        Add Variant
+      </Button>
+    </div>
   );
 }

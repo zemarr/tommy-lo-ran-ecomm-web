@@ -213,30 +213,38 @@ export async function createProduct(data: InsertProductSchema) {
       variants,
       hasVariants,
       stock,
+      price, // string from form
       ...product
     } = data;
+
+    // Convert product price to Decimal
+    const productPrice = new Prisma.Decimal(price);
+
+    // Prepare variants: remove productId if present and convert price to Decimal
+    const variantsData = variants?.map(({ productId: _ignore, ...variant }) => ({
+      size: variant.size,
+      stock: variant.stock,
+      price: variant.price ? new Prisma.Decimal(variant.price) : undefined,
+    }));
 
     await prisma.product.create({
       data: {
         ...product,
-
+        price: productPrice,
         hasVariants,
 
+        // stock: only set if no variants
         stock: hasVariants ? null : stock,
 
+        // deliveryFee: store as JSON
         deliveryFee: deliveryFee
           ? (deliveryFee as Prisma.InputJsonValue)
           : Prisma.JsonNull,
 
+        // variants: only create if hasVariants is true
         variants: hasVariants
           ? {
-            create: variants?.map((variant) => ({
-              size: variant.size,
-              stock: variant.stock,
-              price: variant.price
-                ? new Prisma.Decimal(variant.price)
-                : undefined,
-            })),
+            create: variantsData,
           }
           : undefined,
       },
@@ -255,6 +263,7 @@ export async function createProduct(data: InsertProductSchema) {
     };
   }
 }
+
 export async function getAllCategories() {
   const data = await prisma.product.groupBy({
     by: ['category'],

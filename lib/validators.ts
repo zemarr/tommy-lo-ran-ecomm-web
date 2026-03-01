@@ -6,7 +6,7 @@ const currency = z.string()
   .refine((value) => /^\d+(\.\d{2})?$/.test(formatNumberToDecimal(Number(value))), "Price is required and must have 2 decimal places (i.e 5000.00)")
 
 export const productVariantSchema = z.object({
-  productId: z.string(),
+  productId: z.string().optional(),
   size: z.string().min(1),
   stock: z.coerce.number().min(0),
   price: currency.optional(),
@@ -16,20 +16,14 @@ const baseProductSchema = z.object({
   name: z.string().min(3),
   slug: z.string().min(3),
   category: z.string().min(3),
-
   price: currency,
-
   images: z.array(z.string()).min(1),
-
   description: z.string().min(10),
   longDescription: z.string().min(30),
-
   features: z.array(z.string()).min(1),
   materials: z.array(z.string()).min(1),
-
   care: z.string().nullable(),
   fit: z.string().nullable(),
-
   deliveryFee: z
     .object({
       lag: z.coerce.number(),
