@@ -1,6 +1,6 @@
 'use client'
 import React, { useTransition } from 'react'
-import { ShippingAddress } from '../../../../../../types'
+import { ShippingAddress } from '../../../../../../lib/types'
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 import { shippingAddressSchema } from '@/lib/validators'
@@ -25,7 +25,6 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   })
 
   const onSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (values: any) => {
-    console.log(values, 'values')
     startTransition(async () => {
       const res = await updateUserAddress(values);
 
@@ -66,11 +65,13 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
                     <SelectContent>
                       {[ { name: 'Nigeria' }, { name: 'United Kingdom' } ].map((country) => (
                         <SelectItem
-                          className={"text-base"}
+                          className={"text-sm"}
                           key={country.name}
                           value={country.name}
                         >
-                          {country.name}
+                          <span className="text-sm">
+                            {country.name}
+                          </span>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -125,51 +126,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
               )}
             />
           </div>
-          {/* <div className="flex flex-col md:flex-row  gap-5">
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'city'> }) => (
-                <FormItem className='w-full'>
-                  <FormLabel>City</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter city" {...field} className={"py-6"} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col md:flex-row  gap-5">
-            <FormField
-              control={form.control}
-              name="state"
-              render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'state'> }) => (
-                <FormItem className='w-full'>
-                  <FormLabel>State</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter state" {...field} className={"py-6"} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col md:flex-row  gap-5">
-            <FormField
-              control={form.control}
-              name="postalCode"
-              render={({ field }: { field: ControllerRenderProps<z.infer<typeof shippingAddressSchema>, 'postalCode'> }) => (
-                <FormItem className='w-full'>
-                  <FormLabel>Postal code</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter postal code" {...field} className={"py-6"} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
+
           <div className="flex-1 gap-2">
             <Button type='submit' variant={"default"} size={"default"} disabled={isPending} className={"w-full py-6 text-xs tracking-[1] uppercase!"}>{isPending ? (<Loader className='animate-spin h-4 w-4' />) : (<ArrowRight className='w-4 h-4 animate-pulse' />)}{" "}Continue</Button>
           </div>

@@ -5,6 +5,7 @@ import ProductTableActions from '../../../../components/shared/action-components
 import { useActionComponentStore } from '../../../../components/shared/action-components/store/action-components-store'
 import DeleteDialog from '../../../../components/shared/action-components/delete-option/delete-dialog'
 import { deleteProduct } from '../../../../lib/server/actions/product.actions'
+import { Product } from '../../../../lib/types'
 
 const ProductsTable = ({ products, page }: { products: any, page: number }) => {
   const { deleting, confirmDelete } = useActionComponentStore();
@@ -19,23 +20,29 @@ const ProductsTable = ({ products, page }: { products: any, page: number }) => {
               <TableHead className={"font-semibold"}>NAME</TableHead>
               <TableHead className={"font-semibold text-left"}>PRICE</TableHead>
               <TableHead className={"font-semibold"}>CATEGORY</TableHead>
-              <TableHead className={"font-semibold"}>STOCK</TableHead>
-              <TableHead className={"font-semibold"}>RATING</TableHead>
-              <TableHead className={"w-[100px] flex items-center justify-center font-semibold"}></TableHead>
+              <TableHead className={"font-semibold text-center"}>VARIATIONS</TableHead>
+              <TableHead className={"font-semibold text-center"}>STOCK</TableHead>
+              <TableHead className={"font-semibold text-center"}>RATING</TableHead>
+              <TableHead className={"w-[100px] flex items-center justify-end font-semibold"}></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.map((product: any) => (
+            {products.map((product: Product) => (
               <TableRow key={product.id}>
                 <TableCell>{formatUUID(product.id)}</TableCell>
                 <TableCell>{product.name}</TableCell>
-                <TableCell>{formatCurrency(product.price)}</TableCell>
+                <TableCell>{(product?.hasVariants ? `From ${ formatCurrency(product.price) }` : formatCurrency(product.price))}</TableCell>
                 <TableCell>{product.category}</TableCell>
-                <TableCell>{product.stock}</TableCell>
                 <TableCell>
+                  <span className="flex items-center justify-center w-full font-medium text-sm">
+                    {product?.hasVariants ? "YES" : "NO"}
+                  </span>
+                </TableCell>
+                <TableCell className={"text-center"}>{product.hasVariants ? 'Varies' : product.stock}</TableCell>
+                <TableCell className={"text-center"}>
                   {product.rating} / 5
                 </TableCell>
-                <TableCell className={"flex items-center justify-center"}>
+                <TableCell className={"flex items-center justify-end"}>
                   <ProductTableActions product={{ id: product.id, name: product.name }} />
                 </TableCell>
               </TableRow>

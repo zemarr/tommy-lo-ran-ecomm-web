@@ -46,8 +46,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <Suspense fallback={<div className="w-screen h-screen absolute top-0 left-0 bg-black/20 transition-all"></div>}>
           <ProductDetails product={{
             ...product,
+            stock: product.stock ?? 0,
+            variants: product.variants.map((variant) => {
+              return {
+                id: variant.id,
+                productId: variant.productId,
+                size: variant?.size ?? null,
+                stock: variant?.stock ?? null,
+                price: variant?.price?.toString() ?? undefined,
+              }
+            }),
             updatedAt: product.updatedAt?.toString() ?? ""
-
           }} />
         </Suspense>
       </main>

@@ -6,14 +6,20 @@ import { Check, Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { FormEvent } from 'react'
 import { useFormStatus } from 'react-dom'
+import { useCartStore } from '../../../../../../lib/store/cart-store'
 
 const PlaceOrderForm = () => {
   const router = useRouter();
+  const { clearCart, initializeCart } = useCartStore()
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const res = await createOrder();
 
-    if (res.redirectTo) router.push(res.redirectTo)
+    if (res.redirectTo) {
+      clearCart();
+      initializeCart([])
+      router.push(res.redirectTo)
+    }
   }
 
   const PlaceOrderButton = () => {

@@ -7,6 +7,7 @@ import '@/styles/photography.css'
 import Script from "next/script"
 import { auth } from "@/auth"
 import { SessionProvider } from "next-auth/react"
+import { CartProvider } from "../components/shared/cart/cart-provider"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -46,6 +47,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true} className={`${playfair.variable} ${inter.variable} ${cormorant.variable} ${greatVibes.variable}`}>
       <SessionProvider session={session}>
+        <CartProvider>
         <body className="font-sans antialiased">
           {children}
           <Script
@@ -53,7 +55,8 @@ export default async function RootLayout({
             strategy="afterInteractive"
           />
           {/* <Analytics /> */}
-        </body>
+          </body>
+        </CartProvider>
       </SessionProvider>
     </html>
   )

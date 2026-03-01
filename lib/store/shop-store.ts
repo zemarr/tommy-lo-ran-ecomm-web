@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Product } from '@/types';
+import { Product } from '@/lib/types';
 
 type SortBy = 'price-asc' | 'price-desc' | 'popular' | 'newest';
 

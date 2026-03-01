@@ -4,7 +4,7 @@ import { getMyCart } from '@/lib/server/actions/cart.actions'
 import { auth } from '@/auth'
 import { getUserById } from '@/lib/server/actions/user.actions'
 import { redirect } from 'next/navigation'
-import { ShippingAddress } from '@/types'
+import { ShippingAddress } from '@/lib/types'
 import CheckoutSteps from '@/components/shared/checkout/checkout-steps'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
@@ -41,7 +41,7 @@ const PlaceOrderPage = async () => {
       </h1>
       <div className="grid md:grid-cols-3 gap-5">
         <div className='md:col-span-2 overflow-x-auto space-y-4'>
-          <Card>
+          <Card className={"rounded-sm"}>
             <CardContent className='px-4 gap-4'>
               <h2 className="text-base pb-4 mt-4 font-semibold uppercase!">Shipping address</h2>
               <p className='font-semibold'>{userAddress.fullName}</p>
@@ -58,7 +58,7 @@ const PlaceOrderPage = async () => {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className={"rounded-sm"}>
             <CardContent className='px-4 gap-4'>
               <h2 className="text-base pb-4 mt-4 font-semibold uppercase!">Payment method</h2>
               <p>{user.paymentMethod}</p>
@@ -70,7 +70,7 @@ const PlaceOrderPage = async () => {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className={"rounded-sm"}>
             <CardContent className='px-4 gap-4'>
               <h2 className="text-base pb-4 mt-4 font-semibold uppercase!">Order items</h2>
               <Table>
@@ -82,19 +82,22 @@ const PlaceOrderPage = async () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {cart.items.map((item) => (
-                    <TableRow key={item?.product?.slug}>
+                  {cart.items.map((item, iI) => (
+                    <TableRow key={`${ item?.product?.slug }-${ iI }-${ item.variant?.size }`}>
                       <TableCell>
-                        <Link href={`/products/${ item?.product?.slug }`} className='flex items-center'>
+                        <Link href={`/shop/${ item?.product?.slug }`} className='flex items-center'>
                           <Image src={item?.product?.images[ 0 ]} alt={item?.product?.name} width={50} height={50} className='rounded-md' />
-                          <span className='px-2'>{item?.product?.name}</span>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className='px-2'>{item?.product?.name}</span>
+                            {item.variant && <span className='block px-2 text-xs border-gold border rounded-sm'>{item?.variant?.size ?? null}</span>}
+                          </div>
                         </Link>
                       </TableCell>
                       <TableCell>
                         <span className='px-2'>{item.quantity}</span>
                       </TableCell>
                       <TableCell>
-                        <span className='px-2'>{formatCurrency(item?.product?.price)}</span>
+                        <span className='px-2'>{formatCurrency(!item.variant ? item?.product?.price : item?.variant?.price || null)}</span>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -102,7 +105,7 @@ const PlaceOrderPage = async () => {
               </Table>
 
               <div className="mt-3">
-                <Link href="/cart">
+                <Link href="/shop">
                   <Button variant={"outline"}>Edit</Button>
                 </Link>
               </div>
@@ -110,7 +113,7 @@ const PlaceOrderPage = async () => {
           </Card>
         </div>
         <div>
-          <Card>
+          <Card className={"rounded-sm"}>
             <CardContent className='px-4 gap-4 space-y-4 text-sm'>
               <div className="flex justify-between px-3 rounded-md w-full">
                 <div>Items</div>
