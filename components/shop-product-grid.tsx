@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Product, ProductVariant } from "@/lib/types";
 
@@ -73,10 +74,12 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="group flex flex-col">
         {/* Product Image */}
         <Link href={`/shop/${ product.slug }`} className="aspect-3/4 overflow-hidden bg-muted mb-6 relative">
-          <img
+          <Image
             src={product.images[ 0 ] || "/placeholder.svg"}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.02]"
+            fill
+            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 40vw, 90vw"
+            className="object-cover transition-transform duration-1000 group-hover:scale-[1.02]"
             loading="lazy"
           />
           {/* Museum lighting effect */}

@@ -38,9 +38,9 @@ export function CollectionsSection() {
                   <Image
                     src={collection.image || "/placeholder.svg"}
                     alt={`${collection.name} - editorial collection photography`}
-                    width={100}
-                    height={300}
-                    className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.01]"
+                    fill
+                    sizes="(min-width: 1024px) 45vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.01]"
                     loading="lazy"
                   />
                   {/* Museum lighting effect */}
