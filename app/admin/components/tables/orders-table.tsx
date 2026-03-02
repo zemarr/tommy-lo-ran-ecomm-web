@@ -6,7 +6,7 @@ import { useActionComponentStore } from '@/components/shared/action-components/s
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatCurrency, formatDateTime, formatUUID } from '@/lib/utils'
 import { deleteOrder } from '@/lib/server/actions/order.actions'
-import { Order } from '../../../../types'
+import { Order } from '../../../../lib/types'
 
 const OrdersTable = ({ orders }: { orders: any }) => {
   const { deleting, confirmDelete } = useActionComponentStore();

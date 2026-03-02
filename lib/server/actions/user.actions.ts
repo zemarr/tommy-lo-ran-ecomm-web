@@ -17,7 +17,7 @@ import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "@/lib/constants";
 import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { ShippingAddress } from "@/types";
+import { ShippingAddress } from "@/lib/types";
 import { AuthError } from "next-auth";
 import z from "zod";
 
