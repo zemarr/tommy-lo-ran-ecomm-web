@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { useCartStore } from '../../../lib/store/cart-store';
 import { getMyCart } from '../../../lib/server/actions/cart.actions';
-import { CartItem } from '../../../lib/types';
+import { CartSidebar } from '../../cart-sidebar';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const initializeCart = useCartStore((state) => state.initializeCart);
@@ -24,5 +24,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
   }, [ initializeCart ]);
 
-  return (children);
+  return (
+    <>
+      <CartSidebar />
+      {children}
+    </>
+  );
 }
