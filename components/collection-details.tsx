@@ -5,8 +5,6 @@ import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/add-to-cart-button";
-import { CartSidebar } from "@/components/cart-sidebar";
-import { useCartStore } from "@/lib/store/cart-store";
 import type { Collection } from "@/lib/products";
 import Image from "next/image";
 import BookConsultationButton from "./book-consultation-button";
@@ -17,12 +15,9 @@ interface CollectionDetailsProps {
 
 export function CollectionDetails({ collection }: CollectionDetailsProps) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const addItem = useCartStore((state) => state.addItem);
 
   return (
     <>
-      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <div className="bg-background min-h-screen">
         {/* Breadcrumb */}
         <div className="mx-auto max-w-10xl px-6 lg:px-14 py-8">
