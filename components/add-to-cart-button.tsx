@@ -21,7 +21,7 @@ export function AddToCartButton({
   className,
   onAddToCart,
 }: AddToCartButtonProps) {
-  const { addItem, updateItemQuantity, items, pendingKeys } = useCartStore();
+  const { addItem, updateItemQuantity, items, pendingKeys, toggleCart } = useCartStore();
 
   const variantKey = variant?.size ?? null;
 
@@ -48,11 +48,12 @@ export function AddToCartButton({
 
   // ─── Handlers ─────────────────────────────────────────────
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (product.hasVariants && !variant) return; // variant required but none selected
     if (isPending) return;
 
-    addItem(product, 1, variant);
+    await addItem(product, 1, variant);
+    toggleCart(true);
     onAddToCart?.();
   };
 

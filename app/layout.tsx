@@ -8,6 +8,7 @@ import Script from "next/script"
 import { auth } from "@/auth"
 import { SessionProvider } from "next-auth/react"
 import { CartProvider } from "../components/shared/cart/cart-provider"
+import { Toaster } from "@/components/ui/sonner"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default async function RootLayout({
         <CartProvider>
         <body className="font-sans antialiased">
           {children}
+          <Toaster />
           <Script
             src="https://assets.calendly.com/assets/external/widget.js"
             strategy="afterInteractive"
