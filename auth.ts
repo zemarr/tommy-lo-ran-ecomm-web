@@ -67,7 +67,7 @@ export const config = {
         token.role = user.role
 
         // if use has no name use the name part of their email
-        if (user.name = "NO_NAME") {
+        if (user.name === "NO_NAME") {
           const email = user.email as string
           const name = email!.split("@")[ 0 ];
           token.name = name.charAt(0).toUpperCase() + name.slice(1)

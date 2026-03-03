@@ -8,15 +8,11 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-interface CartSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
+export function CartSidebar() {
   const router = useRouter();
   // const pathname = usePathname();
-  const { items, removeItem, updateItemQuantity, getTotalPrice, getTotalItems } = useCartStore();
+  const { items, removeItem, updateItemQuantity, getTotalPrice, getTotalItems, isCartOpen: isOpen, toggleCart } = useCartStore();
+  const onClose = () => toggleCart(false);
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
 

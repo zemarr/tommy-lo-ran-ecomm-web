@@ -1,14 +1,13 @@
 'use client'
 
-import { CartSidebar } from "@/components/cart-sidebar";
 import { useCartStore } from "@/lib/store/cart-store";
 import { ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const CartButton = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const totalItems = useCartStore((state) => state.getTotalItems());
+  const toggleCart = useCartStore((state) => state.toggleCart);
 
   useEffect(() => {
     setMounted(true);
@@ -16,10 +15,8 @@ const CartButton = () => {
 
   return (
     <>
-      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-
       <button
-        onClick={() => setIsCartOpen(true)}
+        onClick={() => toggleCart(true)}
         className="relative p-2 hover:bg-muted transition-colors rounded-sm"
         aria-label="Shopping bag"
       >

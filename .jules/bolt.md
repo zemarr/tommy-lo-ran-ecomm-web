@@ -1,0 +1,3 @@
+## 2024-05-23 - [Image Optimization with `unoptimized: true`]
+**Learning:** In projects where `next.config.mjs` has `unoptimized: true`, `next/image` does not provide server-side resizing. However, migrating from standard `<img>` tags or fixing misconfigured `next/image` dimensions to a `fill` strategy with responsive `sizes` still provides significant performance wins: it prevents Cumulative Layout Shift (CLS), enables native lazy loading, and ensures better visual quality by avoiding low-resolution fixed dimension crops (like 100x300) being scaled up by CSS.
+**Action:** Always check `next.config.js` for the `unoptimized` flag. If true, focus on `fill`, `sizes`, and `priority` to improve layout stability and LCP even without server-side image processing.

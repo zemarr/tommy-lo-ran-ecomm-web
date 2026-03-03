@@ -5,8 +5,6 @@ import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/add-to-cart-button";
-import { CartSidebar } from "@/components/cart-sidebar";
-import { useCartStore } from "@/lib/store/cart-store";
 import Image from "next/image";
 import { Product, ProductVariant } from "@/lib/types";
 
@@ -16,7 +14,6 @@ interface ProductDetailsProps {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [ isCartOpen, setIsCartOpen ] = useState(false);
   const [ selectedVariant, setSelectedVariant ] = useState<ProductVariant | null>(
     product.hasVariants && product.variants && product.variants.length > 0
       ? product.variants[ 0 ] // default to first variant
@@ -28,7 +25,6 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
   return (
     <>
-      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <div className="bg-background min-h-screen">
         <div className="mx-auto max-w-10xl px-6 lg:px-14 py-8">
           <Link

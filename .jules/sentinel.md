@@ -1,0 +1,4 @@
+## 2025-05-14 - [Insecure API Endpoint & Authentication Logic Bug]
+**Vulnerability:** An unauthenticated POST endpoint at `/api/uploadthing/delete` allowed anyone to delete files from UploadThing by providing a file key. Additionally, an assignment bug in `auth.ts` (`user.name = "NO_NAME"`) caused the user's name to be overwritten with "NO_NAME" during every JWT callback execution if it wasn't already caught by other logic.
+**Learning:** Next.js API routes are public by default. Even if they are intended for internal use by client components, they must be secured if they perform sensitive operations. Also, simple typos in comparison operators (`=` vs `===`) can lead to unintended state changes and potential security bypasses if they occur in authentication flows.
+**Prevention:** Always implement authentication and authorization checks in all API routes. Use linting rules (like `no-cond-assign`) to catch accidental assignments in conditional statements.

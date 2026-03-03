@@ -45,10 +45,10 @@ export function HeroSection() {
           <Image
             src={HeroImage}
             alt="African menswear editorial - model in natural light with cultural setting"
-            width={100}
-            height={300}
-            className="w-full h-full object-cover hero-image"
-            loading="eager"
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover hero-image"
+            priority
           />
           {/* Subtle gradient overlay for depth */}
           <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-charcoal/5 pointer-events-none" />
