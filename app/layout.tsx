@@ -48,17 +48,17 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true} className={`${playfair.variable} ${inter.variable} ${cormorant.variable} ${greatVibes.variable}`}>
       <SessionProvider session={session}>
-        <CartProvider>
         <body className="font-sans antialiased">
-          {children}
-          <Toaster />
-          <Script
-            src="https://assets.calendly.com/assets/external/widget.js"
-            strategy="afterInteractive"
-          />
-          {/* <Analytics /> */}
-          </body>
+          <CartProvider>
+            {children}
+            <Toaster />
+            <Script
+              src="https://assets.calendly.com/assets/external/widget.js"
+              strategy="afterInteractive"
+            />
+            {/* <Analytics /> */}
         </CartProvider>
+        </body>
       </SessionProvider>
     </html>
   )
