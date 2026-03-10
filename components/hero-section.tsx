@@ -2,15 +2,16 @@
 
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import HeroImage from "../public/assets/images/TLR_main.jpg"
-import Link from "next/link";
+// import Image from "next/image";
+// import HeroImage from "../public/assets/images/TLR_main.jpg"
+// import Link from "next/link";
+import HeroVideo from "./hero-video";
 
 export function HeroSection() {
   return (
     <section className="relative h-screen flex flex-col pt-20">
       {/* Main Hero Content */}
-      <div className="flex-1 flex flex-col lg:flex-row h-[80vh]">
+      <div className="flex-1 flex flex-col lg:flex-row h-[87vh]">
         {/* Left - Typography */}
         <div className="flex-1 flex items-center justify-start px-6 lg:px-16 py-16 lg:py-24">
           <div className="max-w-5xl">
@@ -41,15 +42,16 @@ export function HeroSection() {
         </div>
 
         {/* Right - Hero Image - Editorial */}
-        <div className="lg:flex lg:flex-1 hidden relative h-full bg-muted">
-          <Image
+        <div className="lg:flex lg:flex-1 hidden overflow-hidden relative h-full bg-muted">
+          {/* <Image
             src={HeroImage}
             alt="African menswear editorial - model in natural light with cultural setting"
-            width={100}
-            height={300}
-            className="w-full h-full object-cover hero-image"
-            loading="eager"
-          />
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover hero-image"
+            priority
+          /> */}
+          <HeroVideo />
           {/* Subtle gradient overlay for depth */}
           <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-charcoal/5 pointer-events-none" />
         </div>
@@ -57,8 +59,8 @@ export function HeroSection() {
 
       {/* Bottom Bar - Minimal Stats */}
       <div className="border-t border-border">
-        <div className="mx-auto max-w-10xl px-8 lg:px-16 h-[12vh]">
-          <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between py-8">
+        <div className="mx-auto max-w-10xl px-8 lg:px-16 h-auto">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between py-5">
             <a
               href="/#collections"
               className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
@@ -66,7 +68,7 @@ export function HeroSection() {
               Scroll to discover
             </a>
             <span>
-              <ArrowDown className="animate-bounce" />
+              <ArrowDown className="animate-bounce md:size-6 size-4" />
             </span>
             <a
               href="#collections"

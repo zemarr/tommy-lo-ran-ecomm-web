@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 import { ShoppingBag, X, Plus, Minus, Trash2 } from 'lucide-react';
@@ -8,15 +9,11 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-interface CartSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
+export function CartSidebar() {
   const router = useRouter();
   // const pathname = usePathname();
-  const { items, removeItem, updateItemQuantity, getTotalPrice, getTotalItems } = useCartStore();
+  const { items, removeItem, updateItemQuantity, getTotalPrice, getTotalItems, isCartOpen: isOpen, toggleCart } = useCartStore();
+  const onClose = () => toggleCart(false);
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
 
@@ -37,17 +34,15 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
       {/* Backdrop */}
       <Transition
         show={isOpen}
-        enter="transition-opacity duration-300"
+        enter="transition-opacity duration-300 ease-out"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        leave="transition-opacity duration-300"
+        leave="transition-opacity duration-300 ease-in"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div
-          className="backdrop fixed h-screen inset-0 bg-charcoal/40 z-9999"
-          onClick={onClose}
-        />
+        <span className="backdrop fixed top-0 left-0 w-full h-screen inset-0 bg-charcoal/40 z-9999" onClick={onClose}
+          aria-label="Close cart"></span>
       </Transition>
 
       {/* Sidebar */}

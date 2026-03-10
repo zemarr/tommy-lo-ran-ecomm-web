@@ -8,6 +8,7 @@ import Script from "next/script"
 import { auth } from "@/auth"
 import { SessionProvider } from "next-auth/react"
 import { CartProvider } from "../components/shared/cart/cart-provider"
+import { Toaster } from "@/components/ui/sonner"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -47,16 +48,17 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true} className={`${playfair.variable} ${inter.variable} ${cormorant.variable} ${greatVibes.variable}`}>
       <SessionProvider session={session}>
-        <CartProvider>
         <body className="font-sans antialiased">
-          {children}
-          <Script
-            src="https://assets.calendly.com/assets/external/widget.js"
-            strategy="afterInteractive"
-          />
-          {/* <Analytics /> */}
-          </body>
+          <CartProvider>
+            {children}
+            <Toaster />
+            <Script
+              src="https://assets.calendly.com/assets/external/widget.js"
+              strategy="afterInteractive"
+            />
+            {/* <Analytics /> */}
         </CartProvider>
+        </body>
       </SessionProvider>
     </html>
   )
