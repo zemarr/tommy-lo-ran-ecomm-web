@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingBag } from "lucide-react";
 import Link from 'next/link';
@@ -27,7 +27,12 @@ const AdminMobileMenu = ({ user }: { user: any }) => {
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-full sm:w-80 bg-background border-l border-border px-8 py-16">
+        <SheetContent side="right" className="w-full sm:w-80 bg-background border-l border-border px-8 py-16 [&>button]:absolute [&>button]:top-4 [&>button]:right-4 [&>button]:p-4 [&>button]:focus:ring-0 [&>button]:focus:ring-offset-0 [&>button]:focus:outline-none focus:cursor-pointer">
+          <SheetHeader className={"p-0 m-0"}>
+            <SheetTitle className={"font-serif text-xl font-light text-foreground tracking-wide"}>Admin Menu</SheetTitle>
+            <SheetDescription>
+            </SheetDescription>
+          </SheetHeader>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col space-y-1">
               <div className="text-sm font-medium leading-none text-foreground">{user?.name}</div>

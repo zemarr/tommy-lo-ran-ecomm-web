@@ -11,7 +11,7 @@ export function HeroSection() {
   return (
     <section className="relative h-screen flex flex-col pt-20">
       {/* Main Hero Content */}
-      <div className="flex-1 flex flex-col lg:flex-row h-[92vh]">
+      <div className="flex-1 flex flex-col lg:flex-row h-[87vh]">
         {/* Left - Typography */}
         <div className="flex-1 flex items-center justify-start px-6 lg:px-16 py-16 lg:py-24">
           <div className="max-w-5xl">
@@ -59,8 +59,8 @@ export function HeroSection() {
 
       {/* Bottom Bar - Minimal Stats */}
       <div className="border-t border-border">
-        <div className="mx-auto max-w-10xl px-8 lg:px-16 h-[8vh]">
-          <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between py-8">
+        <div className="mx-auto max-w-10xl px-8 lg:px-16 h-auto">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between py-5">
             <a
               href="/#collections"
               className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
@@ -68,7 +68,7 @@ export function HeroSection() {
               Scroll to discover
             </a>
             <span>
-              <ArrowDown className="animate-bounce" />
+              <ArrowDown className="animate-bounce md:size-6 size-4" />
             </span>
             <a
               href="#collections"

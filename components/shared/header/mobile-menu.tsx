@@ -1,10 +1,10 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ShoppingBag } from "lucide-react";
+import { Sheet, SheetContent, SheetTitle, SheetHeader, SheetTrigger, SheetDescription } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { signOutUser } from "../../../lib/server/actions/user.actions";
 
 const navigation = [
@@ -23,10 +23,15 @@ const MobileMenu = ({ user }: { user: any }) => {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" aria-label="Open menu">
-            <Menu className="h-5 w-5" />
+            <Menu className="text-lg size-5!" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-full h-screen sm:w-80 bg-background border-l border-border px-8 py-16">
+        <SheetContent side="right" className="w-full h-screen sm:w-80 bg-background border-l border-border px-8 py-16 [&>button]:absolute [&>button]:top-4 [&>button]:right-4 [&>button]:p-4 [&>button>svg]:size-5! [&>button&>svg]:text-lg! [&>button]:focus:ring-0 [&>button]:focus:ring-offset-0 [&>button]:focus:outline-none focus:cursor-pointer">
+          <SheetHeader className={"p-0 m-0"}>
+            <SheetTitle className={"font-serif text-xl font-light text-foreground tracking-wide"}>Menu</SheetTitle>
+            <SheetDescription>
+            </SheetDescription>
+          </SheetHeader>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col space-y-1">
               <div className="text-sm font-medium leading-none text-foreground">{user?.name}</div>
