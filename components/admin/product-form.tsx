@@ -7,7 +7,7 @@ import { useForm, ControllerRenderProps, SubmitHandler, useFieldArray, useFormCo
 import { zodResolver } from '@hookform/resolvers/zod';
 import { insertProductSchema, updateProductSchema } from '@/lib/validators';
 import { z } from 'zod';
-import { CATEGORIES, PRODUCT_DEFAULT_VALUES } from '@/lib/constants';
+import { CATEGORIES, getFileId, PRODUCT_DEFAULT_VALUES } from '@/lib/constants';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import slugify from 'slugify';
 import { Input } from '../ui/input';
@@ -330,7 +330,7 @@ const ProductForm = ({ type, product, productId }: {
                           <button
                             type="button"
                             onClick={async () => {
-                              const removed = [ field.value[ index ] ]
+                              const removed = [ getFileId(field.value[ index ] as string) ]
                               // Delete from UploadThing
                               await fetch("/api/uploadthing/delete", {
                                 method: "POST",

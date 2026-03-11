@@ -185,11 +185,9 @@ export async function deleteProduct(id: string) {
       },
     });
 
-    if (!existingProduct) throw new Error('Product not found');
-
     const fileIds: string[] = existingProduct.images.map((img: string) => getFileId(img));
 
-    if (fileIds.length > 0) {
+    if (existingProduct && fileIds.length > 0) {
       // delete image(s) from uploadthing
       const res = await fetch(`${ uploadThingApiBaseUrl }/v6/deleteFiles`, {
         method: 'POST',
@@ -202,6 +200,8 @@ export async function deleteProduct(id: string) {
 
       const result = await res.json();
     }
+
+    if (!existingProduct) throw new Error('Product not found');
 
     // delete product after deleting image from uploadthing
     await prisma.product.delete({
