@@ -5,21 +5,21 @@ import { Instagram, Facebook, Linkedin } from "lucide-react";
 import TommyLoRanText from "./tommy-lo-ran-text";
 
 const footerLinks = {
-  shop: [
-    { name: "Suits", href: "#" },
-    { name: "Jackets", href: "#" },
-    { name: "Shirts", href: "#" },
-    { name: "Outerwear", href: "#" },
-  ],
+  // shop: [
+  //   { name: "Suits", href: "#" },
+  //   { name: "Jackets", href: "#" },
+  //   { name: "Shirts", href: "#" },
+  //   { name: "Outerwear", href: "#" },
+  // ],
   info: [
     { name: "Size Guide", href: "#" },
-    { name: "Shipping", href: "#" },
-    { name: "Returns", href: "#" },
+    // { name: "Shipping", href: "#" },
+    // { name: "Returns", href: "#" },
   ],
   company: [
-    { name: "Story", href: "#" },
-    { name: "Craftsmanship", href: "#" },
-    { name: "Contact", href: "#" },
+    { name: "Our Story", href: "/#story" },
+    // { name: "Craftsmanship", href: "/#craftsmanship" },
+    { name: "Contact", href: "/#contact" },
   ],
 };
 
@@ -28,7 +28,7 @@ export function Footer() {
     <footer className="bg-charcoal text-cream">
       <div className="mx-auto max-w-10xl px-6 lg:px-14">
         {/* Main Footer */}
-        <div className="py-20 lg:py-24 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12">
+        <div className="py-20 lg:py-24 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-12">
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="flex items-center mb-2">
@@ -64,7 +64,7 @@ export function Footer() {
           </div>
 
           {/* Links Columns */}
-          <div>
+          {/* <div>
             <h4 className="text-xs tracking-[0.2em] uppercase text-gold mb-6">
               Shop
             </h4>
@@ -80,7 +80,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           <div>
             <h4 className="text-xs tracking-[0.2em] uppercase text-gold mb-6">
