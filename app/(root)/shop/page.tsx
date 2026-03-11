@@ -36,11 +36,10 @@ export default async function ShopPage(props: {
           {/* Page Header */}
           <div className="mb-16 lg:mb-20">
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-light text-foreground mb-6">
-              Shop
+              Shop Ready-To-Wear
             </h1>
             <p className="text-muted-foreground leading-loose max-w-2xl">
-              Shop our curated selection of contemporary African menswear.
-              Each piece carries intentional storytelling, rooted in heritage and designed for today.
+              Our Ready-to-Wear collection is produced in limited quantities and can also be made to order in your preferred size.
             </p>
           </div>
 
