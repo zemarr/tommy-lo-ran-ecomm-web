@@ -363,7 +363,7 @@ const ProductForm = ({ type, product, productId }: {
                             const updatedImages = [
                               ...(field.value ?? []),
                               ...newUrls,
-                            ].slice(0, 2); // 🚨 enforce max 2 images
+                            ].slice(0, 8); // 🚨 enforce max 8 images
 
                             field.onChange(updatedImages);
                             toast.success("Product image uploaded successfully");
