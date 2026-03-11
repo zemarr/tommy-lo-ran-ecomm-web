@@ -50,12 +50,12 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
               </div>
 
               {/* Thumbnails - Editorial Selection */}
-              <div className="flex gap-4">
+              <div className="flex gap-4 overflow-x-auto">
                 {collection.images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-24 overflow-hidden transition-all duration-300 bg-muted ${selectedImage === index
+                    className={`min-w-20 min-h-24 overflow-hidden transition-all duration-300 bg-muted ${ selectedImage === index
                       ? "opacity-100 ring-2 ring-gold"
                       : "opacity-40 hover:opacity-70"
                       }`}
@@ -65,7 +65,7 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
                       src={image || "/placeholder.svg"}
                       alt={`${collection.name} view ${index + 1}`}
                       width={40}
-                      height={100}
+                      height={60}
                       className="w-full h-full object-cover portrait-image"
                       loading="lazy"
                     />
@@ -99,7 +99,7 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
               {/* CTA Buttons - Minimal */}
               <div className="flex flex-col gap-2 mb-16 space-y-1">
                 <BookConsultationButton />
-                <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground w-full text-center">Terms and conditions apply</span>
+                <span className="text-xs font-medium tracking-wide text-muted-foreground w-full text-center">Terms and conditions apply</span>
               </div>
 
               {/* Bespoke process */}

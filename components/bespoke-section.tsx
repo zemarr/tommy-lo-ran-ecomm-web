@@ -5,23 +5,23 @@ import { Ruler, Scissors, Sparkles, Clock } from "lucide-react";
 const services = [
   {
     icon: Ruler,
-    title: "Precise Fit",
-    description: "Every measurement considered with intention.",
+    title: "Precision Tailoring",
+    description: "Every piece is crafted with expert attention to fit and detail that defines true bespoke luxury.",
   },
   {
     icon: Scissors,
-    title: "Handcraft",
-    description: "Heritage techniques woven into every garment.",
+    title: "Premium Fabric Selection",
+    description: "We source high-quality traditional and luxury fabrics, ensuring lasting quality and comfort.",
   },
   {
     icon: Sparkles,
-    title: "Sacred Materials",
-    description: "Fabrics chosen for story and substance.",
+    title: "Cultural Craftsmanship ",
+    description: "Our designs celebrate rich African heritage while embracing modern, global elegance.",
   },
   {
     icon: Clock,
-    title: "Thoughtful Delivery",
-    description: "Carefully prepared, worldwide.",
+    title: "Limited Production",
+    description: "We focus on quality over quantity, ensuring each garment receives the personal attention and mastery it deserves.",
   },
 ];
 
@@ -32,9 +32,9 @@ export function BespokeSection() {
         {/* Two Column Layout */}
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Left - Image */}
-          <div className="aspect-[3/4] overflow-hidden">
+          <div className="aspect-3/4 overflow-hidden">
             <img
-              src="https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7uHJxNpnPQ9n1WNj4TrzSpZbDLevfmcoaUBRs"
+              src="/assets/images/DSC_5216.jpeg"
               alt="Luxury suit details"
               className="w-full h-full object-cover"
             />
