@@ -1,6 +1,6 @@
 'use server';
 import { prisma } from "@/db/prisma";
-import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "@/lib/constants";
+import { getFileId, LATEST_PRODUCTS_LIMIT, PAGE_SIZE, uploadThingApiBaseUrl } from "@/lib/constants";
 import { convertToPlainObject, formatError, normalizeProduct } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
@@ -187,6 +187,23 @@ export async function deleteProduct(id: string) {
 
     if (!existingProduct) throw new Error('Product not found');
 
+    const fileIds: string[] = existingProduct.images.map((img: string) => getFileId(img));
+
+    if (fileIds.length > 0) {
+      // delete image(s) from uploadthing
+      const res = await fetch(`${ uploadThingApiBaseUrl }/v6/deleteFiles`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-uploadthing-api-key': process.env.UPLOADTHING_SECRET!,
+        },
+        body: JSON.stringify({ fileKeys: fileIds }),
+      });
+
+      const result = await res.json();
+    }
+
+    // delete product after deleting image from uploadthing
     await prisma.product.delete({
       where: { id: id },
     });

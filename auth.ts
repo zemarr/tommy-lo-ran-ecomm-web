@@ -4,11 +4,7 @@ import { prisma } from "@/db/prisma";
 import CredentiialsProvider from "next-auth/providers/credentials"
 import { compareSync } from "bcrypt-ts-edge";
 import type { NextAuthConfig } from "next-auth"
-import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { PROTECTED_ROUTES } from "./lib/constants";
-import { calculateCartPrices } from "./lib/server/actions/cart.actions";
-import { CartItem } from "./lib/types";
 import { authConfig } from "./auth.config";
 
 export const config = {

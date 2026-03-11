@@ -330,12 +330,12 @@ const ProductForm = ({ type, product, productId }: {
                           <button
                             type="button"
                             onClick={async () => {
-                              const removed = field.value[ index ]
+                              const removed = [ field.value[ index ] ]
                               // Delete from UploadThing
                               await fetch("/api/uploadthing/delete", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ key: removed }),
+                                body: JSON.stringify({ fileKeys: removed }),
                               })
 
                               // Update form state
