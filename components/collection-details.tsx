@@ -20,7 +20,7 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
     <>
       <div className="bg-background min-h-screen">
         {/* Breadcrumb */}
-        <div className="mx-auto max-w-10xl px-6 lg:px-14 py-8">
+        <div className="mx-auto max-w-10xl px-6 lg:px-0 py-8">
           <Link
             href="/collections"
             className="inline-flex items-center gap-3 text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
@@ -31,7 +31,7 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
         </div>
 
         {/* Collection Section */}
-        <section className="mx-auto max-w-10xl px-6 lg:px-14 pb-32">
+        <section className="mx-auto max-w-10xl px-6 lg:px-0 pb-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             {/* Editorial Image Gallery - Museum Quality */}
             <div className="space-y-8">
@@ -99,6 +99,21 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
               {/* CTA Buttons - Minimal */}
               <div className="flex flex-col gap-2 mb-16 space-y-1">
                 <BookConsultationButton />
+                <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground w-full text-center">Terms and conditions apply</span>
+              </div>
+
+              {/* Bespoke process */}
+              <div className="border-t border-border py-8">
+                <h3 className="text-xs tracking-[0.2em] uppercase text-gold mb-6">
+                  Our Bespoke Process
+                </h3>
+                <ol className="space-y-3 list-decimal list-inside">
+                  {collection.deliveryProcessList?.map((process, index) => (
+                    <li key={index} className="text-sm font-medium text-muted-foreground">
+                      {process}
+                    </li>
+                  ))}
+                </ol>
               </div>
 
               <div className="space-y-8">
@@ -111,7 +126,7 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
                     {collection.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3">
                         <Check className="h-4 w-4 text-gold mt-0.5 shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
+                        <div dangerouslySetInnerHTML={{ __html: feature }} className="text-sm text-muted-foreground" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} />
                       </li>
                     ))}
                   </ul>
@@ -144,8 +159,8 @@ export function CollectionDetails({ collection }: CollectionDetailsProps) {
         </section>
 
         {/* Bottom Promise Bar */}
-        <section className="bg-charcoal text-cream py-16">
-          <div className="mx-auto max-w-10xl px-6 lg:px-14">
+        <section className="bg-charcoal text-cream py-16 shadow-[0px_8px_20px_-10px_#111111] mb-6 rounded-sm">
+          <div className="w-full px-6 lg:px-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
               <div>
                 <p className="text-xs tracking-[0.2em] uppercase text-gold mb-2">Guarantee</p>

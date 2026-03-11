@@ -17,6 +17,7 @@ export interface Collection {
   features: string[];
   materials: string[];
   deliveryTime: string;
+  deliveryProcessList: string[] | null;
   popularity?: number;
 }
 
@@ -24,7 +25,7 @@ export enum Collections {
   BESPOKE = "TLR Bespoke Collection",
   RTW_NATIVE = "TLR RTW Native",
   RTW_CASUAL = "TLR RTW Smart Casual",
-  ACCESSORIES = "Caps, Scarves, Add-ons",
+  ACCESSORIES = "Accessories",
 }
 
 export interface Product {
@@ -54,7 +55,7 @@ export const collections: Collection[] = [
       "/assets/images/specif-duo-4.jpg",
     ],
     description: "Bespoke Two & Three Piece Outfits",
-    longDescription: "Bespoke Two & Three-piece outfits by Tómmy ló ràn feature creatively crafted ensembles.",
+    longDescription: "Bespoke Two & Three-piece outfits by Tómmy ló ràn features creatively crafted ensembles for your special occasions.",
     options: [
       {
         id: "",
@@ -178,20 +179,64 @@ export const collections: Collection[] = [
       }
     ],
     features: [
-      "Full canvas construction",
-      "Hand-finished buttonholes",
-      "Surgeon's cuffs with working buttons",
-      "Pick-stitched lapels and edges",
-      "Interior monogram available",
-      "Professional embroidery designs",
+      `
+      <span style={{display: flex; align-items: center}}>
+        Custom Body Measurements
+      </span>
+      `,
+      `
+      <span style={{display: flex; align-items: center}}>
+        Personalised Design Consultation
+      </span>
+      `,
+      `
+       <span style={{display: flex; align-items: center}}>
+        Handcrafted Embroidery (Aso Oke & Native Designs)
+      </span>
+      `,
+      `
+      <span style={{display: flex; align-items: center}}>
+        Premium Tailoring Finish
+      </span>
+      `,
+      `
+       <span style={{display: flex; align-items: center}}>
+        Traditional & Contemporary Silhouettes
+      </span>
+      `,
+      `
+      <span style={{display: flex; align-items: center}}>
+        Luxury Detailing
+      </span>
+      `,
+      `
+      <span style={{display: flex; align-items: center}}>
+        Made-to-Measure Construction
+      </span>
+      `,
+      `
+      <span style={{display: flex; align-items: center}}>
+        Occasion-based Styling
+      </span>
+      `,
     ],
     materials: [
-      "Super 150s Merino wool from Loro Piana",
-      "Bemberg silk lining",
-      "Mother-of-pearl buttons",
-      "Real horn buttons optional",
+      "Premium Quality Aso-Oke Fabric",
+      "Cashmere & Wool Blends for structured native wear",
+      "Senator Materials",
+      "Atiku Fabric",
+      "Linen & Cotton Blends",
+      "Velvet & Brocade (Occasion Wear)",
+      "Adire & Hand-Dyed Textiles",
     ],
-    deliveryTime: "8-10 weeks",
+    deliveryTime: "Delivery is 3-5 working days",
+    deliveryProcessList: [
+      "Consultation",
+      "Fabric Selection",
+      "Measurement & Fitting",
+      "Crafting & Embroidery",
+      "Final Delivery",
+    ],
     popularity: 95,
   },
   {
@@ -289,11 +334,12 @@ export const collections: Collection[] = [
       "Melton undercollar",
     ],
     deliveryTime: "6-8 weeks",
+    deliveryProcessList: [],
     popularity: 88,
   },
   {
-    id: "caps-scarves-addons",
-    name: "Caps, Scarves, Add-ons",
+    id: "accessories",
+    name: "Accessories",
     image: "https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7RW43iqY4H9LOfxBy7850VtbgoqaYPNcklzsw",
     images: [
       "https://9f0567cfj6.ufs.sh/f/XHGN3lvVNzO7RW43iqY4H9LOfxBy7850VtbgoqaYPNcklzsw",
@@ -316,6 +362,7 @@ export const collections: Collection[] = [
       "Aluminium collar stays",
     ],
     deliveryTime: "3-4 weeks",
+    deliveryProcessList: [],
     popularity: 82,
   },
 ];

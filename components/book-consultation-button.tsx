@@ -5,7 +5,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { XIcon } from "lucide-react";
 
-export default function BookConsultationButton() {
+export default function BookConsultationButton({ label }: { label?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const calendlyContainerRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +40,7 @@ export default function BookConsultationButton() {
         onClick={() => setIsOpen(true)}
         className="bg-[#ba9951] text-[#232323] px-6 py-4 rounded-sm text-xs tracking-[2px] font-normal hover:opacity-90 transition uppercase"
       >
-        Book a consultation
+        {label ? label : "Book your consultation"}
       </button>
 
       {/* Modal */}

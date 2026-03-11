@@ -10,7 +10,7 @@
     "seed": "tsx ./db/seed.ts",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
-    "prisma:studio": "eprisma studio"
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",

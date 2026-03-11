@@ -23,9 +23,9 @@ export function StorySection() {
               Our Story
             </p>
             <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-light text-foreground leading-tight">
-              Rooted in
+              The Tommy Ló Rán
               <br />
-              <span className="italic">Traditional Heritage.</span>
+              <span className="italic">Bespoke Experience.</span>
               <br />
               Designed for Modern Men
             </h2>
@@ -44,6 +44,11 @@ export function StorySection() {
                 weave cultural intention into every fiber. We don't simply make clothes—
                 we craft stories. Stories told through handwork, through fabric selection,
                 through the deliberate marriage of heritage and innovation.
+              </p>
+              <p>
+                At Tommy ló rán, every garment begins with a conversation. Our bespoke process ensures that
+                every client receives a garment crafted specifically for their body, style, and occasion,
+                transforming high-quality fabrics into a piece of wearable art.
               </p>
             </div>
 
