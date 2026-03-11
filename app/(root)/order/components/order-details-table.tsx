@@ -225,7 +225,12 @@ const OrderDetailsTable = ({ order, paypalClientId, paystackPublicKey, isAdmin }
                       <TableCell>
                         <Link href={`/shop/${ item.slug }`} className='flex items-center'>
                           <Image src={item.image} alt={item.name} width={50} height={50} className='rounded-sm' />
-                          <span className='px-2'>{item.name}</span>
+                          <div className='flex flex-col'>
+                            <span className='px-2'>{item.name}</span>
+                            <span className='px-2 text-xs text-muted-foreground'>
+                              {[item.size, item.color].filter(Boolean).join(' / ')}
+                            </span>
+                          </div>
                         </Link>
                       </TableCell>
                       <TableCell>

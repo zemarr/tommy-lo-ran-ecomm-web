@@ -16,17 +16,17 @@ interface CartStore {
   pendingKeys: Set<string>; // track which items are being synced
   error: string | null;
   initializeCart: (items: CartItem[]) => void;
-  addItem: (product: Product, quantity?: number, variant?: ProductVariant) => Promise<void>;
-  updateItemQuantity: (productId: string, quantity: number, variant?: ProductVariant) => Promise<void>;
-  removeItem: (productId: string, variant?: ProductVariant) => Promise<void>;
+  addItem: (product: Product, quantity?: number, variant?: ProductVariant, color?: string) => Promise<void>;
+  updateItemQuantity: (productId: string, quantity: number, variant?: ProductVariant, color?: string) => Promise<void>;
+  removeItem: (productId: string, variant?: ProductVariant, color?: string) => Promise<void>;
   clearCart: () => Promise<void>;
   toggleCart: (open?: boolean) => void;
   getTotalPrice: () => number;
   getTotalItems: () => number;
 }
 
-const getItemKey = (productId: string, variant?: ProductVariant) =>
-  `${ productId }_${ variant?.size ?? 'base' }`;
+const getItemKey = (productId: string, variant?: ProductVariant, color?: string) =>
+  `${ productId }_${ variant?.size ?? 'base' }_${ color ?? 'base' }`;
 
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
@@ -38,8 +38,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   toggleCart: (open) => set((state) => ({ isCartOpen: open ?? !state.isCartOpen })),
 
-  addItem: async (product, quantity = 1, variant) => {
-    const key = getItemKey(product.id, variant);
+  addItem: async (product, quantity = 1, variant, color) => {
+    const key = getItemKey(product.id, variant, color);
     const { items, pendingKeys } = get();
 
     // Prevent duplicate operations
@@ -47,7 +47,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
     // Determine new quantity
     const existingItem = items.find(
-      i => i.productId === product.id && i.variant?.size === variant?.size
+      i =>
+        i.productId === product.id &&
+        i.variant?.size === variant?.size &&
+        i.color === color
     );
     const newQuantity = (existingItem?.quantity ?? 0) + quantity;
 
@@ -65,7 +68,9 @@ export const useCartStore = create<CartStore>((set, get) => ({
     let updatedItems: CartItem[];
     if (existingItem) {
       updatedItems = items.map(item =>
-        item.productId === product.id && item.variant?.size === variant?.size
+        item.productId === product.id &&
+          item.variant?.size === variant?.size &&
+          item.color === color
           ? { ...item, quantity: newQuantity }
           : item
       );
@@ -82,6 +87,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
         },
         quantity,
         variant: variant ? { size: variant.size, price: variant.price, stock: variant.stock, productId: variant.productId } : undefined,
+        color: color,
       };
       updatedItems = [ ...items, newItem ];
     }
@@ -101,6 +107,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
         price: variant.price,
         stock: variant.stock,
       } : undefined,
+      color: color,
     };
 
     // Call server
@@ -123,18 +130,19 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 
 
-  updateItemQuantity: async (productId, quantity, variant) => {
+  updateItemQuantity: async (productId, quantity, variant, color) => {
     if (quantity <= 0) {
-      return get().removeItem(productId, variant);
+      return get().removeItem(productId, variant, color);
     }
 
-    const key = getItemKey(productId, variant);
+    const key = getItemKey(productId, variant, color);
     const { items, pendingKeys } = get();
 
     const existingItem = items.find(
       i =>
         i.productId === productId &&
-        i.variant?.size === variant?.size
+        i.variant?.size === variant?.size &&
+        i.color === color
     );
 
     if (!existingItem) return;
@@ -144,7 +152,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
     // ✅ Optimistic UI update (instant)
     const updatedItems = items.map(item =>
       item.productId === productId &&
-        item.variant?.size === variant?.size
+        item.variant?.size === variant?.size &&
+        item.color === color
         ? { ...item, quantity }
         : item
     );
@@ -164,6 +173,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
           stock: variant.stock,
         }
         : undefined,
+      color,
     };
 
     // ✅ Create debounced server sync if not existing
@@ -197,8 +207,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
     debouncedSyncMap.get(key)!(operation, previousItems);
   },
 
-  removeItem: async (productId, variant) => {
-    const key = getItemKey(productId, variant);
+  removeItem: async (productId, variant, color) => {
+    const key = getItemKey(productId, variant, color);
     const { items, pendingKeys } = get();
     if (pendingKeys.has(key)) return;
 
@@ -206,7 +216,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
     // Optimistic remove
     const updatedItems = items.filter(
-      item => !(item.productId === productId && item.variant?.size === variant?.size)
+      item => !(item.productId === productId && item.variant?.size === variant?.size && item.color === color)
     );
 
     set({
@@ -222,6 +232,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
         price: variant.price,
         stock: variant.stock,
       } : undefined,
+      color,
     };
 
     const result = await updateCart(operation);

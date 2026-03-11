@@ -9,6 +9,7 @@ export const storedCartItemSchema = z.object({
     size: z.string(),
     price: z.string().optional(), // stored as string to match DB Decimal
   }).optional(),
+  color: z.string().optional(),
 });
 
 export type StoredCartItem = z.infer<typeof storedCartItemSchema>;
@@ -22,6 +23,7 @@ export const cartOperationSchema = z.object({
     price: z.string().optional(),
     stock: z.number().int(),
   }).optional(),
+  color: z.string().optional(),
 });
 
 export type CartOperation = z.infer<typeof cartOperationSchema>;

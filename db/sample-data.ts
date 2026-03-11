@@ -48,6 +48,7 @@ const sampleData = {
         nationwide: 10000
       },
       deliveryTime: "2-5 working days (Within Lagos) | 5-7 working days (Other States Nationwide)",
+      colors: ["Black", "White", "Navy"],
       popularity: 95,
       rating: 4.8,
       numReviews: 0,

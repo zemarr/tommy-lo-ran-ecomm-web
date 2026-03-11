@@ -10,7 +10,7 @@ import { useCartStore } from '../../../../lib/store/cart-store'
 const CartTable = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, initializeCart } = useCartStore();
+  const { items, removeItem, updateItemQuantity, getTotalPrice, getTotalItems, initializeCart } = useCartStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
 
@@ -56,7 +56,7 @@ const CartTable = () => {
             <div className="p-6 space-y-6">
               {items?.map((item, itemIdx) => (
                 <div
-                  key={item.productId}
+                  key={`${item.productId}-${itemIdx}-${item.variant?.size}-${item.color}`}
                   className="flex justify-between border-b border-border pb-6 last:border-b-0"
                 >
                   {/* Product Info */}
@@ -70,8 +70,11 @@ const CartTable = () => {
                       <h3 className="font-heading text-sm font-light text-foreground mb-1">
                         {item.product.name}
                       </h3>
-                      <p className="text-xs text-muted-foreground mb-2">
+                      <p className="text-xs text-muted-foreground mb-1">
                         {item.product.category}
+                      </p>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        {[item.variant?.size, item.color].filter(Boolean).join(' / ')}
                       </p>
                       <p className="text-sm font-medium text-foreground">
                         ₦{Number(item.product.price).toLocaleString()}
@@ -84,9 +87,11 @@ const CartTable = () => {
                     <div className="flex items-center gap-2 border border-border rounded-sm">
                       <button
                         onClick={() =>
-                          updateQuantity(
-                            (item.product.id),
-                            item.quantity - 1
+                          updateItemQuantity(
+                            item.product.id,
+                            item.quantity - 1,
+                            item.variant,
+                            item.color
                           )
                         }
                         className="p-1 hover:bg-muted transition-colors"
@@ -99,9 +104,11 @@ const CartTable = () => {
                       </span>
                       <button
                         onClick={() =>
-                          updateQuantity(
+                          updateItemQuantity(
                             item.product.id,
-                            item.quantity + 1
+                            item.quantity + 1,
+                            item.variant,
+                            item.color
                           )
                         }
                         className="p-1 hover:bg-muted transition-colors"
@@ -112,7 +119,7 @@ const CartTable = () => {
                     </div>
 
                     <button
-                      onClick={() => removeItem(item.product.id)}
+                      onClick={() => removeItem(item.product.id, item.variant, item.color)}
                       className="p-1 text-muted-foreground hover:text-destructive transition-colors"
                       aria-label="Remove from cart"
                     >

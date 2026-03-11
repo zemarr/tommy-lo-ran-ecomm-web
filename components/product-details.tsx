@@ -19,6 +19,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       ? product.variants[ 0 ] // default to first variant
       : null
   );
+  const [selectedColor, setSelectedColor] = useState<string | null>(
+    product.colors && product.colors.length > 0 ? product.colors[0] : null
+  );
 
   const displayPrice =
     selectedVariant?.price ?? product.price;
@@ -154,9 +157,37 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     </button>
                   </div>
                 </div>)}
+                {/* Color Selection */}
+                {product.colors && product.colors.length > 0 && (
+                  <div className="mb-10">
+                    <h3 className="text-xs tracking-[0.2em] uppercase text-gold mb-4">
+                      Select Color
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
+                      {product.colors.map((color, index) => {
+                        const isSelected = selectedColor === color;
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => setSelectedColor(color)}
+                            className={`
+                              px-3 py-1 border text-xs rounded-sm transition-all
+                              ${isSelected
+                                ? "border-gold bg-gold text-black"
+                                : "border-border text-muted-foreground hover:border-gold"}
+                            `}
+                          >
+                            {color}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 <AddToCartButton
                   product={product}
                   variant={selectedVariant ?? undefined}
+                  color={selectedColor ?? undefined}
                   className="w-full"
                 />
               </div>

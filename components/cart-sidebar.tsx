@@ -99,7 +99,7 @@ export function CartSidebar() {
               <div className="p-6 space-y-6">
                 {items?.map((item, itemIdx) => (
                   <div
-                    key={`${ item.product.id }-${ itemIdx }-${ item.variant?.size }`}
+                    key={`${ item.product.id }-${ itemIdx }-${ item.variant?.size }-${ item.color }`}
                     className="border-b border-border pb-6 last:border-b-0"
                   >
                     {/* Product Info */}
@@ -114,7 +114,7 @@ export function CartSidebar() {
                           {item.product.name}
                         </h3>
                         <p className="text-xs text-muted-foreground mb-2">
-                          {item?.variant?.size}
+                          {[item.variant?.size, item.color].filter(Boolean).join(' / ')}
                         </p>
                         <p className="text-sm font-medium text-foreground">
                           ₦{item.variant ? Number(item.variant.price).toLocaleString() : Number(item.product.price).toLocaleString()}
@@ -130,7 +130,8 @@ export function CartSidebar() {
                             updateItemQuantity(
                               item.product.id,
                               item.quantity - 1,
-                              item?.variant
+                              item?.variant,
+                              item.color
                             )
                           }
                           className="p-1 hover:bg-muted transition-colors"
@@ -153,7 +154,8 @@ export function CartSidebar() {
                             updateItemQuantity(
                               item.product.id,
                               item.quantity + 1,
-                              item?.variant
+                              item?.variant,
+                              item.color
                             )
                           }
                           className="p-1 hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
@@ -164,7 +166,7 @@ export function CartSidebar() {
                       </div>
 
                       <button
-                        onClick={() => removeItem(item.product.id, item.variant)}
+                        onClick={() => removeItem(item.product.id, item.variant, item.color)}
                         className="p-1 text-muted-foreground hover:text-destructive transition-colors"
                         aria-label="Remove from cart"
                       >
