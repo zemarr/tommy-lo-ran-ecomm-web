@@ -7,7 +7,7 @@ import { useForm, ControllerRenderProps, SubmitHandler, useFieldArray, useFormCo
 import { zodResolver } from '@hookform/resolvers/zod';
 import { insertProductSchema, updateProductSchema } from '@/lib/validators';
 import { z } from 'zod';
-import { CATEGORIES, PRODUCT_DEFAULT_VALUES } from '@/lib/constants';
+import { CATEGORIES, getFileId, PRODUCT_DEFAULT_VALUES } from '@/lib/constants';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import slugify from 'slugify';
 import { Input } from '../ui/input';
@@ -330,12 +330,12 @@ const ProductForm = ({ type, product, productId }: {
                           <button
                             type="button"
                             onClick={async () => {
-                              const removed = field.value[ index ]
+                              const removed = [ getFileId(field.value[ index ] as string) ]
                               // Delete from UploadThing
                               await fetch("/api/uploadthing/delete", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ key: removed }),
+                                body: JSON.stringify({ fileKeys: removed }),
                               })
 
                               // Update form state
@@ -363,7 +363,7 @@ const ProductForm = ({ type, product, productId }: {
                             const updatedImages = [
                               ...(field.value ?? []),
                               ...newUrls,
-                            ].slice(0, 2); // 🚨 enforce max 2 images
+                            ].slice(0, 8); // 🚨 enforce max 8 images
 
                             field.onChange(updatedImages);
                             toast.success("Product image uploaded successfully");

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import Image from "next/image";
 import { Product, ProductVariant } from "@/lib/types";
+import BookConsultationButton from "./book-consultation-button";
 
 interface ProductDetailsProps {
   product: Product;
@@ -154,11 +155,15 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     </button>
                   </div>
                 </div>)}
-                <AddToCartButton
-                  product={product}
-                  variant={selectedVariant ?? undefined}
-                  className="w-full"
-                />
+                <div className="flex flex-col gap-2">
+                  {/* Add to Cart Button */}
+                  <AddToCartButton
+                    product={product}
+                    variant={selectedVariant ?? undefined}
+                    className="w-full"
+                  />
+                  <BookConsultationButton label="Book a consultation" />
+                </div>
               </div>
 
               {/* Details - Accordion Style */}

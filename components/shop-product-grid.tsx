@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Product, ProductVariant } from "@/lib/types";
+import BookConsultationButton from "./book-consultation-button";
 
 interface ShopProductGridProps {
   products: Product[];
@@ -142,20 +143,24 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
 
           <p className="text-lg font-medium text-foreground pt-3">
-            ₦
+            <span className="text-xs uppercase tracking-wide text-muted-foreground">From</span> ₦
             {selectedVariant?.price
               ? Number(selectedVariant.price).toLocaleString()
               : Number(product.price).toLocaleString()}
           </p>
+          <span className="text-xs text-muted-foreground block">Final price may vary depending on fabric selection, embroidery, and sizing.</span>
         </div>
       </div>
 
-      {/* Add to Cart Button */}
-      <AddToCartButton
-        product={product}
-        variant={selectedVariant ?? undefined}
-        className="w-full"
-      />
+      <div className="flex flex-col gap-2">
+        {/* Add to Cart Button */}
+        <AddToCartButton
+          product={product}
+          variant={selectedVariant ?? undefined}
+          className="w-full"
+        />
+        <BookConsultationButton label="Book a consultation" />
+      </div>
     </article>
   );
 }

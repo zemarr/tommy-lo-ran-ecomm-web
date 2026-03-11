@@ -13,7 +13,6 @@ const navigation = [
   { name: "Our Story", href: "/#story" },
   { name: "Our Collection", href: "/#collections" },
   { name: "Services", href: "/#services" },
-  // { name: "Craftsmanship", href: "/#craftsmanship" },
 ];
 
 export default async function Header() {

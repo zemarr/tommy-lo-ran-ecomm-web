@@ -1,6 +1,6 @@
 "use client";
 
-import { collections } from "@/lib/products";
+import { Collections, collections } from "@/lib/products";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,7 +11,7 @@ export function CollectionsSection() {
         {/* Section Header - Minimal */}
         <div className="mb-24 lg:mb-32">
           <p className="text-gold tracking-[0.4em] uppercase text-xs font-medium mb-6">
-            Our Collection
+            TLR Signature Collection
           </p>
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-light text-foreground">
             Culture, Tailored.
@@ -26,7 +26,7 @@ export function CollectionsSection() {
           {collections.slice(0, 6).map((collection, index) => (
             <Link
               key={collection.id}
-              href={collection.id !== "tlr-ready-to-wear" ? `/collections/${collection.id}` : `shop`}
+              href={(collection.id === "tlr-bespoke-collection") ? `/collections/${ collection.id }` : `shop`}
               className={`group block ${index === 0 || index === 3 ? '' : ''}`}
             >
               <article>
@@ -60,7 +60,7 @@ export function CollectionsSection() {
                     </h3>
                   </div>
                   <p className="text-sm text-muted-foreground whitespace-nowrap">
-                    {collection.id !== "tlr-ready-to-wear" ? "View collection" : "Shop now"}
+                    {collection.id === "tlr-bespoke-collection" ? "View collection" : "Shop now"}
                   </p>
                 </div>
               </article>

@@ -30,9 +30,11 @@ next-env.d.ts
 /generated/prisma
 
 /necessities.txt
+
+
 # next-video
-videos/*
-!videos/*.json
-!videos/*.js
-!videos/*.ts
+./next-videos/*
+!./next-videos/*.json
+!./next-videos/*.js
+!./next-videos/*.ts
 public/_next-video

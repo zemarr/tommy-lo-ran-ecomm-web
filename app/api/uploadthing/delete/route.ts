@@ -11,13 +11,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { key } = await req.json()
+  const { fileKeys } = await req.json()
 
-  if (!key) {
+  if (!fileKeys) {
     return NextResponse.json({ error: "Missing key" }, { status: 400 })
   }
 
-  await utapi.deleteFiles(key)
+  await utapi.deleteFiles(fileKeys as string[])
 
   return NextResponse.json({ success: true })
 }
