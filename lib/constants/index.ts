@@ -124,6 +124,7 @@ export const PRODUCT_DEFAULT_VALUES = {
   features: [],
   materials: [],
   deliveryTime: '',
+  colors: [],
   hasVariants: false,
   stock: 0,
   variants: undefined,

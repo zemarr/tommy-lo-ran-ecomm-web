@@ -87,6 +87,7 @@ export async function createOrder() {
           slug: product.slug,
           image: product.images[ 0 ] || '',
           size: variantSize,
+          color: item.color,
         });
       }
 

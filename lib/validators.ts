@@ -33,6 +33,8 @@ const baseProductSchema = z.object({
 
   deliveryTime: z.string().min(5),
 
+  colors: z.array(z.string()).default([]),
+
   hasVariants: z.boolean(),
 
   stock: z.coerce.number().optional(),
@@ -102,7 +104,8 @@ export const cartItemSchema = z.object({
     .int()
     .positive("Quantity must be greater than 0"),
   product: cartProductSchema,
-  variant: productVariantSchema.optional()
+  variant: productVariantSchema.optional(),
+  color: z.string().optional(),
 });
 
 /**
@@ -148,6 +151,7 @@ export const insertOrderItemSchema = z.object({
   productId: z.string().uuid(),
   quantity: z.number().int().min(1),
   size: z.string().optional(),
+  color: z.string().optional(),
   price: currency,
   name: z.string().min(1),
   slug: z.string().min(1),

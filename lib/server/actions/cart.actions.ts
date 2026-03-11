@@ -10,7 +10,7 @@ import { CartItem, CartOperation, cartOperationSchema, StoredCartItem } from '..
 export async function updateCart(input: CartOperation) {
   try {
     // 1. Validate input
-    const { productId, quantity, variant } = cartOperationSchema.parse(input);
+    const { productId, quantity, variant, color } = cartOperationSchema.parse(input);
 
     const sessionCartId = (await cookies()).get('sessionCartId')?.value;
     if (!sessionCartId) throw new Error('Cart session not found');
@@ -60,6 +60,7 @@ export async function updateCart(input: CartOperation) {
           productId,
           quantity,
           variant: variant?.size ? { size: variant.size, price: effectivePrice } : undefined,
+          color,
         } ]
         : [];
     } else {
@@ -68,7 +69,8 @@ export async function updateCart(input: CartOperation) {
       // Find existing item index
       const existingIndex = currentItems.findIndex(item =>
         item.productId === productId &&
-        (item.variant?.size ?? null) === (variant?.size ?? null)
+        (item.variant?.size ?? null) === (variant?.size ?? null) &&
+        (item.color ?? null) === (color ?? null)
       );
 
       if (quantity === 0) {
@@ -89,6 +91,7 @@ export async function updateCart(input: CartOperation) {
             productId,
             quantity,
             variant: variant?.size ? { size: variant.size, price: effectivePrice } : undefined,
+            color,
           },
         ];
       }
@@ -265,6 +268,7 @@ export async function getMyCart() {
         quantity: item.quantity,
         product: cartProduct,
         variant,
+        color: item.color,
       };
     })
     .filter((item) => item !== null);

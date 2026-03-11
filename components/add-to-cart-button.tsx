@@ -9,6 +9,7 @@ import { Product, ProductVariant } from '@/lib/types';
 interface AddToCartButtonProps {
   product: Product;
   variant?: ProductVariant;      // selected variant (if any)
+  color?: string;                // selected color (if any)
   disabled?: boolean;            // external disable flag
   className?: string;
   onAddToCart?: () => void;      // optional callback after add
@@ -17,6 +18,7 @@ interface AddToCartButtonProps {
 export function AddToCartButton({
   product,
   variant,
+  color,
   disabled: externalDisabled = false,
   className,
   onAddToCart,
@@ -24,20 +26,22 @@ export function AddToCartButton({
   const { addItem, updateItemQuantity, items, pendingKeys, toggleCart } = useCartStore();
 
   const variantKey = variant?.size ?? null;
+  const colorKey = color ?? null;
 
-  // Find existing cart item for this product+variant
+  // Find existing cart item for this product+variant+color
   const cartItem = useMemo(() => {
     return items.find(
       (item) =>
         item.productId === product.id &&
-        (item.variant?.size ?? null) === variantKey
+        (item.variant?.size ?? null) === variantKey &&
+        (item.color ?? null) === colorKey
     );
-  }, [ items, product.id, variantKey ]);
+  }, [ items, product.id, variantKey, colorKey ]);
 
   // Unique key for pending state tracking
   const itemKey = useMemo(() => {
-    return `${ product.id }_${ variantKey ?? 'base' }`;
-  }, [ product.id, variantKey ]);
+    return `${ product.id }_${ variantKey ?? 'base' }_${ colorKey ?? 'base' }`;
+  }, [ product.id, variantKey, colorKey ]);
 
   const isPending = pendingKeys.has(itemKey);
 
@@ -50,9 +54,10 @@ export function AddToCartButton({
 
   const handleAddToCart = async () => {
     if (product.hasVariants && !variant) return; // variant required but none selected
+    if (product.colors && product.colors.length > 0 && !color) return; // color required but none selected
     if (isPending) return;
 
-    await addItem(product, 1, variant);
+    await addItem(product, 1, variant, color);
     toggleCart(true);
     onAddToCart?.();
   };
@@ -62,7 +67,7 @@ export function AddToCartButton({
     if (cartItem.quantity >= availableStock) return;
     if (isPending) return;
 
-    updateItemQuantity(product.id, cartItem.quantity + 1, variant);
+    updateItemQuantity(product.id, cartItem.quantity + 1, variant, color);
   };
 
   const handleDecrease = () => {
@@ -70,7 +75,7 @@ export function AddToCartButton({
     if (isPending) return;
 
     const newQuantity = cartItem.quantity - 1;
-    updateItemQuantity(product.id, newQuantity, variant);
+    updateItemQuantity(product.id, newQuantity, variant, color);
   };
 
   // Determine if the button should be disabled
@@ -127,6 +132,19 @@ export function AddToCartButton({
         className={`tracking-[0.2em] uppercase text-xs py-7 font-medium rounded-sm ${ className }`}
       >
         Select Size
+      </Button>
+    );
+  }
+
+  // 2.5. Color selection required but none selected
+  if (product.colors && product.colors.length > 0 && !color) {
+    return (
+      <Button
+        disabled
+        variant="outline"
+        className={`tracking-[0.2em] uppercase text-xs py-7 font-medium rounded-sm ${ className }`}
+      >
+        Select Color
       </Button>
     );
   }

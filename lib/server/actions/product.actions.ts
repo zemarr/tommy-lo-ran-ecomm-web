@@ -25,6 +25,7 @@ export async function getProductBySlug(slug: string) {
     ...product,
     care: product.care ?? "",
     fit: product.fit ?? "",
+    colors: product.colors ?? [],
     variants: product.variants ?? undefined,
     deliveryFee: product.deliveryFee as { lag: number; nationwide: number } | null,
     createdAt: product.createdAt.toDateString(),
@@ -51,6 +52,7 @@ export async function getProductById(productId: string) {
     ...product,
     care: product.care ?? "",
     fit: product.fit ?? "",
+    colors: product.colors ?? [],
     variants: product.variants ?? undefined,
     deliveryFee: product.deliveryFee as { lag: number; nationwide: number } | null,
     createdAt: product.createdAt.toDateString(),
@@ -214,6 +216,7 @@ export async function createProduct(data: InsertProductSchema) {
       hasVariants,
       stock,
       price, // string from form
+      colors,
       ...product
     } = data;
 
@@ -232,6 +235,7 @@ export async function createProduct(data: InsertProductSchema) {
         ...product,
         price: productPrice,
         hasVariants,
+        colors: colors || [],
 
         // stock: only set if no variants
         stock: hasVariants ? null : stock,
@@ -281,6 +285,7 @@ export async function updateProduct(data: UpdateProductSchema) {
       hasVariants,
       stock,
       deliveryFee,
+      colors,
       ...productFields
     } = data;
 
@@ -300,6 +305,7 @@ export async function updateProduct(data: UpdateProductSchema) {
         data: {
           ...productFields,
           hasVariants,
+          colors: colors || [],
           stock: hasVariants ? null : stock,
           deliveryFee: deliveryFee
             ? (deliveryFee as Prisma.InputJsonValue)

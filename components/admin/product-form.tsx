@@ -155,6 +155,12 @@ const ProductForm = ({ type, product, productId }: {
         </div>
 
         <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+          <MultiInputField name={"colors"} label="Colors" placeholder={"Add a color"} />
+
+          <div className="empty hidden md:block"></div>
+        </div>
+
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
           {/* Category */}
           <FormField
             control={form.control}
