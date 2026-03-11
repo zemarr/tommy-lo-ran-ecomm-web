@@ -62,8 +62,6 @@ export const collections: Collection[] = [
       "/assets/images/DSC_5202.jpeg",
       "/assets/images/DSC_5212.jpeg",
       "/assets/images/DSC_5199.jpeg",
-      "/assets/images/DSC_5200.jpeg",
-      "/assets/images/DSC_5202.jpeg",
       // "/assets/images/specif-duo-1.jpg",
       // "/assets/images/specif-duo-4.jpg",
     ],

@@ -139,3 +139,8 @@ export const REVIEW_FORM_DEFAULT_VALUES = {
 }
 export const SENDER_EMAIL = process.env.SENDER_EMAIL || "onboarding@resend.dev";
 
+export const uploadThingApiBaseUrl = "https://api.uploadthing.com"
+
+export function getFileId(url: string): string {
+  return url.substring(url.lastIndexOf('/') + 1);
+}

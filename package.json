@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm prisma generate && pnpm prisma migrate deploy && next build",
-    "dev": "next dev & npx next-video sync -w",
+    "dev": "next dev",
     "lint": "eslint .",
     "start": "next start",
     "seed": "tsx ./db/seed.ts",
